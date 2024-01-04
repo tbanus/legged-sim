@@ -1,0 +1,273 @@
+<mujoco model="solo12">
+  <compiler angle="radian" meshdir="meshes/" autolimits="true"/>
+  <default class="main"/>
+
+  <asset>
+    <!-- <hfield name="hmap" file="my_output_image_low.png" size="2 1 0.3 0.07"/> -->
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="32" height="192"/>
+    <texture type="cube" name="body" builtin="flat" mark="cross" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" width="127" height="762"/>
+    <texture type="2d" name="grid" builtin="checker" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4" width="512" height="512"/>
+    <material name="body" texture="body" texuniform="true" rgba="0.8 0.6 0.4 1"/>
+    <material name="grid" texture="grid" texuniform="true" reflectance="0.2"/>
+    <mesh name="GOVDE" file="GOVDE.stl"/>
+    <mesh name="ABDUCTION_1" file="ABDUCTION_1.stl"/>
+    <mesh name="HIP_1" file="HIP_1.stl"/>
+    <mesh name="KNEE_1" file="KNEE_1.stl"/>
+    <mesh name="FOOT_1" file="FOOT_1.stl"/>
+    <mesh name="ABDUCTION_2" file="ABDUCTION_2.stl"/>
+    <mesh name="HIP_2" file="HIP_2.stl"/>
+    <mesh name="KNEE_2" file="KNEE_2.stl"/>
+    <mesh name="FOOT_2" file="FOOT_2.stl"/>
+    <mesh name="ABDUCTION_3" file="ABDUCTION_3.stl"/>
+    <mesh name="HIP_3" file="HIP_3.stl"/>
+    <mesh name="KNEE_3" file="KNEE_3.stl"/>
+    <mesh name="FOOT_3" file="FOOT_3.stl"/>
+    <mesh name="ABDUCTION_4" file="ABDUCTION_4.stl"/>
+    <mesh name="HIP_4" file="HIP_4.stl"/>
+    <mesh name="KNEE_4" file="KNEE_4.stl"/>
+    <mesh name="FOOT_4" file="FOOT_4.stl"/>
+    <mesh name="BOX" file="box.stl" scale = "0.1 0.1 0.1"/>
+
+  </asset>
+  <option  mpr_tolerance="1e-8" mpr_iterations = "100">
+    <flag multiccd="enable"/>
+    
+  </option>
+  <worldbody>
+    <!-- <geom name="floor" size="0 0 1" type="hfield" material="grid"  hfield='hmap' /> -->
+    <geom name="floor" size="0 0 1" type="plane" material="grid" />
+   
+    <light name="spotlight" target="solo12/base_link_inertia" pos="0 -6 6" dir="0 0 -1" cutoff="30" diffuse="0.8 0.8 0.8" mode="targetbodycom"/>
+
+
+
+    <body name="solo12/base_link_inertia"  pos="0 0 0.07">
+
+      <freejoint name="body_joint"/>
+      <site name="sensorsurf" pos="0 0 0" size=".0005 .0005 .0005" rgba="0.1 0.7 0.7 1" euler="0 0 0"/>
+      <inertial pos="0 0 0" quat="-0.00116678 0.706653 0.00115432 0.707559" mass="1.25124" diaginertia="0.0160537 0.0138852 0.00266206"/>
+      <geom type="mesh" mesh="GOVDE"/>
+
+    <body name="solo12/abad_1" pos="0.2141 -0.0875 0">
+      <inertial pos="-0.0940725 0.00438935 1.384e-05" quat="0.473379 0.474075 0.524526 0.525393" mass="0.14196" diaginertia="0.000386433 0.0003805 2.42272e-05"/>
+      <joint name="solo12/abad_1_joint" pos="0 0 0" axis="1 0 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+      <geom type="mesh" rgba="0 0.4 0 1" mesh="ABDUCTION_1"/>
+      <body name="solo12/hip_1" pos="-0.0195 -0.0145 0" quat="0.000796327 0 0 1">
+        <inertial pos="-1.53e-05 -0.0176764 -0.0783823" quat="0.706558 0.0411345 -0.0412383 0.705254" mass="0.147373" diaginertia="0.000421743 0.0004154 2.44467e-05"/>
+        <joint name="solo12/hip_1_joint" pos="0 0 0" axis="0 1 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+        <geom quat="4.63268e-05 0 0 1" type="mesh" rgba="0 0.4 0 1" mesh="HIP_1"/>
+        <body name="solo12/knee_1" pos="0 0.03745 -0.16">
+          <inertial pos="0 0.00776716 -0.0700388" quat="0.707057 -0.00837059 0.00837059 0.707057" mass="0.0231829" diaginertia="8.58474e-05 8.508e-05 1.34264e-06"/>
+          <joint name="solo12/knee_1_joint" pos="0 0 0" axis="0 1 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+          <geom quat="4.63268e-05 0 0 1" type="mesh" rgba="0 0.4 0 1" mesh="KNEE_1"/>
+          <geom size="0.02" pos="0 0.009 -0.16" rgba="0 0 0 0.9"/>
+        </body>
+      </body>
+    </body>
+    <body name="solo12/abad_2" pos="0.2141 0.0875 0">
+      <inertial pos="-0.0940725 -0.00438935 1.384e-05" quat="0.525393 0.524526 0.474075 0.473379" mass="0.14196" diaginertia="0.000386433 0.0003805 2.42272e-05"/>
+      <joint name="solo12/abad_2_joint" pos="0 0 0" axis="1 0 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+      <geom type="mesh" rgba="0 0.4 0 1" mesh="ABDUCTION_2"/>
+      <body name="solo12/hip_2" pos="-0.0195 0.0145 0" quat="0.000796327 0 0 1">
+        <inertial pos="-1.53e-05 0.0176764 -0.0783823" quat="0.705254 -0.0412383 0.0411345 0.706558" mass="0.147373" diaginertia="0.000421743 0.0004154 2.44467e-05"/>
+        <joint name="solo12/hip_2_joint" pos="0 0 0" axis="0 1 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+        <geom quat="4.63268e-05 0 0 1" type="mesh" rgba="0 0.4 0 1" mesh="HIP_2"/>
+        <body name="solo12/knee_2" pos="0 -0.03745 -0.16">
+          <inertial pos="0 -0.00776716 -0.0700388" quat="0.707057 0.00837059 -0.00837059 0.707057" mass="0.0231829" diaginertia="8.58474e-05 8.508e-05 1.34264e-06"/>
+          <joint name="solo12/knee_2_joint" pos="0 0 0" axis="0 1 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+          <geom quat="4.63268e-05 0 0 1" type="mesh" rgba="0 0.4 0 1" mesh="KNEE_2"/>
+          <geom size="0.02" pos="0 -0.009 -0.16" rgba="0 0 0 0.9"/>
+        </body>
+      </body>
+    </body>
+    <body name="solo12/abad_3" pos="-0.2141 -0.0875 0">
+      <inertial pos="0.0940725 0.00438935 1.384e-05" quat="0.524526 0.525393 0.473379 0.474075" mass="0.14196" diaginertia="0.000386433 0.0003805 2.42272e-05"/>
+      <joint name="solo12/abad_3_joint" pos="0 0 0" axis="1 0 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+      <geom type="mesh" rgba="0 0.4 0 1" mesh="ABDUCTION_3"/>
+      <body name="solo12/hip_3" pos="0.0195 -0.0145 0" quat="0.000796327 0 0 1">
+        <inertial pos="-1.53e-05 -0.0176764 -0.0783823" quat="0.705254 0.0412383 -0.0411345 0.706558" mass="0.147373" diaginertia="0.000421743 0.0004154 2.44467e-05"/>
+        <joint name="solo12/hip_3_joint" pos="0 0 0" axis="0 1 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+        <geom quat="4.63268e-05 0 0 1" type="mesh" rgba="0 0.4 0 1" mesh="HIP_3"/>
+        <body name="solo12/knee_3" pos="0 0.03745 -0.16">
+          <inertial pos="0 0.00776716 -0.0700388" quat="0.707057 -0.00837059 0.00837059 0.707057" mass="0.0231829" diaginertia="8.58474e-05 8.508e-05 1.34264e-06"/>
+          <joint name="solo12/knee_3_joint" pos="0 0 0" axis="0 1 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+          <geom quat="4.63268e-05 0 0 1" type="mesh" rgba="0 0.4 0 1" mesh="KNEE_3"/>
+          <geom size="0.02" pos="0 0.009 -0.16" rgba="0 0 0 0.9"/>
+        </body>
+      </body>
+    </body>
+    <body name="solo12/abad_4" pos="-0.2141 0.0875 0">
+      <inertial pos="0.0940725 -0.00438935 1.384e-05" quat="0.474075 0.473379 0.525393 0.524526" mass="0.14196" diaginertia="0.000386433 0.0003805 2.42272e-05"/>
+      <joint name="solo12/abad_4_joint" pos="0 0 0" axis="1 0 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+      <geom type="mesh" rgba="0 0.4 0 1" mesh="ABDUCTION_4"/>
+      <body name="solo12/hip_4" pos="0.0195 0.0145 0" quat="0.000796327 0 0 1">
+        <inertial pos="-1.53e-05 0.0176764 -0.0783823" quat="0.706558 -0.0411345 0.0412383 0.705254" mass="0.147373" diaginertia="0.000421743 0.0004154 2.44467e-05"/>
+        <joint name="solo12/hip_4_joint" pos="0 0 0" axis="0 1 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+        <geom quat="4.63268e-05 0 0 1" type="mesh" rgba="0 0.4 0 1" mesh="HIP_4"/>
+        <body name="solo12/knee_4" pos="0 -0.03745 -0.16">
+          <inertial pos="0 -0.00776716 -0.0700388" quat="0.707057 0.00837059 -0.00837059 0.707057" mass="0.0231829" diaginertia="8.58474e-05 8.508e-05 1.34264e-06"/>
+          <joint name="solo12/knee_4_joint" pos="0 0 0" axis="0 1 0" range="-3.14159 3.14159" damping="0.3" frictionloss="0.5"/>
+          <geom quat="4.63268e-05 0 0 1" type="mesh" rgba="0 0.4 0 1" mesh="KNEE_4"/>
+          <geom size="0.02" pos="0 -0.009 -0.16" rgba="0 0 0 0.9"/>
+        </body>
+      </body>
+    </body>
+        </body>
+
+ 
+    <body pos="1. 0 -.015" euler = "0 0 0">
+      <inertial pos="0.5 .5 0" mass= "18"/>
+      <geom type="mesh" mesh = "BOX" name ="box"  rgba = ".9 0 0 1" />
+    </body>
+    <body pos="1.2 0 0.05" euler = "0 0 0">
+      <inertial pos="0.5 .5 0" mass= "18"/>
+      <geom type="mesh" mesh = "BOX" name ="box2"  rgba = ".9 0 0 1" />
+    </body>
+        <body pos="1.4 0 0.1" euler = "0 0 0">
+      <inertial pos="0.5 .5 0" mass= "18"/>
+      <geom type="mesh" mesh = "BOX" name ="box3"  rgba = ".9 0 0 1" />
+    </body>
+        <body pos="1.6 0 0.15" euler = "0. 0 0">
+      <inertial pos="0.5 .5 0" mass= "18"/>
+      <geom type="mesh" mesh = "BOX" name ="box4"  rgba = ".9 0 0 1" />
+    </body>
+        <body pos="1.8 0 0.2" euler = "0 0 0">
+      <inertial pos="0.5 .5 0" mass= "18"/>
+      <geom type="mesh" mesh = "BOX" name ="box5"  rgba = ".9 0 0 1" />
+    </body>
+        <body pos="2 0 0.25" euler = "-0. 0 0">
+      <inertial pos="0.5 .5 0" mass= "18"/>
+      <geom type="mesh" mesh = "BOX" name ="box6"  rgba = ".9 0 0 1" />
+    </body>
+        <body pos="2.2 0 0.3" euler = "0. 0 0">
+      <inertial pos="0.5 .5 0" mass= "18"/>
+      <geom type="mesh" mesh = "BOX" name ="box7"  rgba = ".9 0 0 1" />
+    </body>
+
+    <body name= "sphere1" pos="0 0 20" euler = "0 0 0" >
+      <geom type="sphere"  name ="debugSphere1" contype="0" conaffinity="0" size = "0.01" rgba = ".1 1 1 1" />
+      <joint type="free" />
+    </body>
+    <body name= "sphere2" pos="0 0 20" euler = "0 0 0" >
+      <geom type="sphere"  name ="debugSphere2" contype="0" conaffinity="0" size = "0.01" rgba = ".1 1 1 1" />
+      <joint type="free" />
+    </body>
+    <body name= "sphere3" pos="0 0 20" euler = "0 0 0" >
+      <geom type="sphere"  name ="debugSphere3" contype="0" conaffinity="0" size = "0.01" rgba = ".1 1 1 1" />
+      <joint type="free" />
+    </body>
+    <body name= "sphere4" pos="0 0 20" euler = "0 0 0" >
+      <geom type="sphere"  name ="debugSphere4" contype="0" conaffinity="0" size = "0.01" rgba = ".1 1 1 1" />
+      <joint type="free" />
+    </body> 
+
+    <body name= "bodysphere" pos="0 0 20" euler = "0 0 0" >
+      <geom type="sphere"  name ="debugSphere5" contype="0" conaffinity="0" size = "0.08" rgba = "1 0 0 1" />
+      <joint type="free" />
+
+    </body> 
+    <body name= "sphere11" pos="0 0 20" euler = "0 0 0" >
+      <geom type="sphere"  name ="debugSphere11" contype="0" conaffinity="0" size = "0.01" rgba = "0 1 0 1" />
+      <joint type="free" />
+    </body>
+    <body name= "sphere22" pos="0 0 20" euler = "0 0 0" >
+      <geom type="sphere"  name ="debugSphere22" contype="0" conaffinity="0" size = "0.01" rgba ="0 1 0 1" />
+      <joint type="free" />
+    </body>
+    <body name= "sphere33" pos="0 0 20" euler = "0 0 0" >
+      <geom type="sphere"  name ="debugSphere33" contype="0" conaffinity="0" size = "0.01" rgba = "0 1 0 1" />
+      <joint type="free" />
+    </body>
+    <body name= "sphere44" pos="0 0 20" euler = "0 0 0" >
+      <geom type="sphere"  name ="debugSphere44" contype="0" conaffinity="0" size = "0.01" rgba = "0 1 0 1" />
+      <joint type="free" />
+    </body> 
+  </worldbody>
+  <actuator>
+    <motor name="solo12/abad_1_torque" joint="solo12/abad_1_joint" forcelimited="true" forcerange="-15 15" />
+    <position name="solo12/abad_1_pos" joint="solo12/abad_1_joint" kp="0" />
+    <velocity name="solo12/abad_1_vel" joint="solo12/abad_1_joint" kv="0" />
+    <motor name="solo12/hip_1_joint" joint="solo12/hip_1_joint"  forcelimited="true" forcerange="-15 15"  />
+    <position name="solo12/hip_1_pos" joint="solo12/hip_1_joint" kp="0" />
+    <velocity name="solo12/hip_1_vel" joint="solo12/hip_1_joint" kv="0" />
+
+
+    <motor name="solo12/knee_1_joint" joint="solo12/knee_1_joint"  forcelimited="true" forcerange="-15 15" />
+    <position name="solo12/knee_1_pos" joint="solo12/knee_1_joint" kp="0" />
+    <velocity name="solo12/knee_1_vel" joint="solo12/knee_1_joint" kv="0" />
+
+
+
+    <motor name="solo12/abad_2_torque" joint="solo12/abad_2_joint" forcelimited="true" forcerange="-15 15" />
+    <position name="solo12/abad_2_pos" joint="solo12/abad_2_joint" kp="0" />
+    <velocity name="solo12/abad_2_vel" joint="solo12/abad_2_joint" kv="0" />
+    <motor name="solo12/hip_2_joint" joint="solo12/hip_2_joint"  forcelimited="true" forcerange="-15 15"  />
+    <position name="solo12/hip_2_pos" joint="solo12/hip_2_joint" kp="0" />
+    <velocity name="solo12/hip_2_vel" joint="solo12/hip_2_joint" kv="0" />
+
+
+    <motor name="solo12/knee_2_joint" joint="solo12/knee_2_joint"  forcelimited="true" forcerange="-15 15" />
+    <position name="solo12/knee_2_pos" joint="solo12/knee_2_joint" kp="0" />
+    <velocity name="solo12/knee_2_vel" joint="solo12/knee_2_joint" kv="0" />
+
+
+    <motor name="solo12/abad_3_torque" joint="solo12/abad_3_joint" forcelimited="true" forcerange="-15 15" />
+    <position name="solo12/abad_3_pos" joint="solo12/abad_3_joint" kp="0" />
+    <velocity name="solo12/abad_3_vel" joint="solo12/abad_3_joint" kv="0" />
+
+    <motor name="solo12/hip_3_joint" joint="solo12/hip_3_joint"  forcelimited="true" forcerange="-15 15"  />
+    <position name="solo12/hip_3_pos" joint="solo12/hip_3_joint" kp="0" />
+    <velocity name="solo12/hip_3_vel" joint="solo12/hip_3_joint" kv="0" />
+
+
+    <motor name="solo12/knee_3_joint" joint="solo12/knee_3_joint"  forcelimited="true" forcerange="-15 15" />
+    <position name="solo12/knee_3_pos" joint="solo12/knee_3_joint" kp="0" />
+    <velocity name="solo12/knee_3_vel" joint="solo12/knee_3_joint" kv="0" />
+
+
+
+    <motor name="solo12/abad_4_torque" joint="solo12/abad_4_joint" forcelimited="true" forcerange="-15 15" />
+    <position name="solo12/abad_4_pos" joint="solo12/abad_4_joint" kp="0" />
+    <velocity name="solo12/abad_4_vel" joint="solo12/abad_4_joint" kv="0" />
+
+    <motor name="solo12/hip_4_joint" joint="solo12/hip_4_joint"  forcelimited="true" forcerange="-15 15"  />
+    <position name="solo12/hip_4_pos" joint="solo12/hip_4_joint" kp="0" />
+    <velocity name="solo12/hip_4_vel" joint="solo12/hip_4_joint" kv="0" />
+
+
+    <motor name="solo12/knee_4_joint" joint="solo12/knee_4_joint"  forcelimited="true" forcerange="-15 15" />
+    <position name="solo12/knee_4_pos" joint="solo12/knee_4_joint" kp="0" />
+    <velocity name="solo12/knee_4_vel" joint="solo12/knee_4_joint" kv="0" />
+
+
+  </actuator>
+
+  <contact>
+  <!-- <pair geom1="floor" geom2="FOOT_1" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6" />
+  <pair geom1="floor" geom2="FOOT_2" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6"/>
+  <pair geom1="floor" geom2="FOOT_3" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6"/>
+  <pair geom1="floor" geom2="FOOT_4" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6"/>  -->
+  <!-- <pair geom1="box" geom2="FOOT_1" condim="3" friction="1 1 0.005 0.0001 0.0001"  solimp =  "0.9 0.95 0.001 0.1 6" />
+  <pair geom1="box" geom2="FOOT_2" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6"/>
+  <pair geom1="box" geom2="FOOT_3" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6"/>
+  <pair geom1="box" geom2="FOOT_4" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6"/>   -->
+  <!-- <pair geom1="obs" geom2="solo12/foot_1" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6"/> 
+  <pair geom1="obs" geom2="solo12/foot_2" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6"/>
+  <pair geom1="obs" geom2="solo12/foot_3" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6"/>
+  <pair geom1="obs" geom2="solo12/foot_4" condim="3" friction="1 1 0.005 0.0001 0.0001" solimp =  "0.9 0.95 0.001 0.1 6"/> -->
+  <exclude body1="solo12/hip_1" body2="solo12/base_link_inertia" />
+  <exclude body1="solo12/hip_2" body2="solo12/base_link_inertia" />
+   <exclude body1="solo12/hip_3" body2="solo12/base_link_inertia" />
+    <exclude body1="solo12/hip_4" body2="solo12/base_link_inertia" />
+
+  </contact>
+  <sensor>
+  <accelerometer name="acc" site="sensorsurf" />
+  <gyro site="sensorsurf" />
+  <framequat name="quat" objtype="body" objname="solo12/base_link_inertia" />
+  </sensor>
+
+
+  </mujoco>
+
+
