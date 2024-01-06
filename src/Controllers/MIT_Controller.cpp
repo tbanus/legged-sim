@@ -2,13 +2,14 @@
 // #include <FSM/ControlFSM.h>
 #include <iostream>
 #include <eigen3/Eigen/Dense>
-MIT_Controller::MIT_Controller():RobotController(){  }
+MIT_Controller::MIT_Controller():RobotController(){ initializeController(); }
 
 //#define RC_ESTOP
 /**
  * Initializes the Control FSM.
  */
 void MIT_Controller::initializeController() {
+  OriKp << 20,20,20;
   // Initialize a new GaitScheduler object
   // _gaitScheduler = new GaitScheduler<float>(&userParameters, _controlParameters->controller_dt);
 
@@ -20,6 +21,7 @@ void MIT_Controller::initializeController() {
   // _controlFSM = new ControlFSM<float>(_quadruped, _stateEstimator,
   //                                     _legController, 
   //                                     _desiredStateCommand);
+  
 }
 
 /**
@@ -34,10 +36,67 @@ void MIT_Controller::runController() {
 
   // // Run the Control FSM code
   // _controlFSM->runFSM();
-  std::cout<<"controller"<<std::endl;
+  if(desiredBodyHeight<0.2){
+    desiredBodyHeight+=0.0005;
+  }
+  OrientationControl();
+  OriQuat<< _ImuData->quat[0],_ImuData->quat[1],_ImuData->quat[2],_ImuData->quat[3];
+  
+  std::cout<<"OriEuler"<<OriEuler<<std::endl;
+  OriEuler=ori::quatToRPY(OriQuat);
+
+  
+  // OriKPY =
+  std::cout<<"controller "<< OrientationControl()<<std::endl;
+  // std::cout<<"end "<< std::endl;
+  for(int leg=0; leg<4; leg++){
+    
+  _legController->commands[leg].qDes(0)=0;
+  _legController->commands[leg].qDes(1)=-M_PI_4;
+  _legController->commands[leg].qDes(2)=M_PI_2;
+  
+  _legController->commands[leg].qdDes(0)=0;
+  _legController->commands[leg].qdDes(1)=0;
+  _legController->commands[leg].qdDes(2)=0;
+  
+  _legController->commands[leg].kpJoint(0)=5;
+  _legController->commands[leg].kpJoint(1)=5;
+  _legController->commands[leg].kpJoint(2)=5;
+
+  _legController->commands[leg].kpCartesian= Vec3<float>(100,100,100).asDiagonal();
+  _legController->commands[leg].kdCartesian= Vec3<float>(0,0,0).asDiagonal();
+  OriCmd=OrientationControl();
+  _legController->commands[leg].forceFeedForward=Vec3<float>(0,-kDirSign_[leg]*OriCmd[2],-kSideSign_[leg]*OriCmd[0]+kDirSign_[leg]*OriCmd[1]);
+  
+
+
+  // _legController->commands[leg].kdJoint(0)=5;
+  // _legController->commands[leg].kdJoint(1)=5;
+  // _legController->commands[leg].kdJoint(2)=5;
+
+  _legController->commands[leg].pDes(0)=0;
+  _legController->commands[leg].pDes(1)=0.02;
+  _legController->commands[leg].pDes(2)=-desiredBodyHeight;
+  }
+
 
   
   
 }
 
 
+  Vec3<float> MIT_Controller::OrientationControl(){
+
+    float pitch=OriEuler[1];
+
+    float pitchdes=0;
+    
+    OriEulerDes<< 0,0,-M_PI/4;
+    return OriKp.asDiagonal()*(OriEulerDes-OriEuler);
+
+    // float Cmd=Kp_Pitch*(pitchdes-pitch);
+    // std::cout<<"cmd"<<Cmd<<std::endl;
+    // leg_cmd << Cmd, Cmd, -Cmd, -Cmd;
+        
+    
+  }

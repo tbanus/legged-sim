@@ -50,13 +50,13 @@ void RobotRunner::init() {
   // } else {
   //   _quadruped = buildCheetah3<float>();
   // }
-
+    _quadruped=buildModelFromURDF<float>(std::string("../resource/solo12/solo12.urdf"),RobotType::MINI_CHEETAH);
   // // Initialize the model and robot data
   // _model = _quadruped.buildModel();
   // _jpos_initializer = new JPosInitializer<float>(3., controlParameters->controller_dt);
 
   // // Always initialize the leg controller and state entimator
-  // _legController = new LegController<float>(_quadruped);
+  _legController = new LegController<float>(_quadruped);
   // _stateEstimator = new StateEstimatorContainer<float>(
   //     cheaterState, vectorNavData, _legController->datas,
   //     &_stateEstimate, controlParameters);
@@ -74,7 +74,8 @@ void RobotRunner::init() {
   // // Controller initializations
   // _robot_ctrl->_model = &_model;
   // _robot_ctrl->_quadruped = &_quadruped;
-  // _robot_ctrl->_legController = _legController;
+  _robot_ctrl->_legController = _legController;
+  _robot_ctrl->_ImuData=_ImuData;
   // _robot_ctrl->_stateEstimator = _stateEstimator;
   // _robot_ctrl->_stateEstimate = &_stateEstimate;
   // _robot_ctrl->_visualizationData= visualizationData;
@@ -142,7 +143,10 @@ void RobotRunner::run() {
   //       }
   //     } else {
   //       // Run Control 
-        _robot_ctrl->runController();
+        _legController->updateData(_Feedback);
+        _robot_ctrl->runController(); 
+        _legController->updateCommand(_Command);
+
   //       cheetahMainVisualization->p = _stateEstimate.position;
 
   //       // Update Visualization

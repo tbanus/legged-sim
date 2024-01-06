@@ -38,6 +38,7 @@ protected:
   LegController<float>* _legController = nullptr;
   StateEstimatorContainer<float>* _stateEstimator = nullptr;
   StateEstimate<float>* _stateEstimate = nullptr;
+  VectorNavData* _ImuData;
   GamepadCommand* _driverCommand = nullptr;
   // RobotControlParameters* _controlParameters = nullptr;
   DesiredStateCommand<float>* _desiredStateCommand = nullptr;

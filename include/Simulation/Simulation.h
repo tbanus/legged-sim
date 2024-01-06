@@ -49,7 +49,7 @@ class Simulation
     int kAbad_ =0;
     int kHip_ =1;
     int kKnee_ =2; 
-    int kDirSign_[4]={1,1,1,1};
+    int kDirSign_[4]={1,1,-1,-1};
     int kSideSign_[4]={-1,1,-1,1};
 
     //priv methods

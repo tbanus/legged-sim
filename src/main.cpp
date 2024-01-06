@@ -88,7 +88,7 @@ int main(int argc, char* argv[]){
   RobotController* _ctrl = new MIT_Controller();
   LOG(INFO)<<"Lez GOOO!!!!";
   if (!_ctrl){LOG(FATAL)<<"Cannot initalize RobotController";}
-
+  // _ctrl->_Command=_Command;
   // #ifdef HW_ENABLE
    
   //   IMUReaderVN100 _IMUReader(&_vectorNavData,&taskManager, .00125f, "IMU Read");

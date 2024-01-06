@@ -25,6 +25,7 @@
 #include <Utilities/RobotCommands.h>
 #include "Utilities/utilities.h"
 #include <Simulation/Simulation.h>
+#include <Dynamics/buildModelFromURDF.h>
 // #include "cheetah_visualization_lcmt.hpp"
 // #include "state_estimator_lcmt.hpp"
 #include "RobotController.h"
@@ -48,7 +49,7 @@ class RobotRunner : public PeriodicTask {
   RobotController* _robot_ctrl;
 
   // GamepadCommand* driverCommand;
-  // RobotType robotType;
+  RobotType robotType;
   // VectorNavData* vectorNavData;
   // CheaterState<double>* cheaterState;
   SpiData* _Feedback;
@@ -73,8 +74,8 @@ class RobotRunner : public PeriodicTask {
   void finalizeStep();
 
   // JPosInitializer<float>* _jpos_initializer;
-  // Quadruped<float> _quadruped;
-  // LegController<float>* _legController = nullptr;
+  Quadruped<float> _quadruped;
+  LegController<float>* _legController = nullptr;
   // StateEstimate<float> _stateEstimate;
   // StateEstimatorContainer<float>* _stateEstimator;
   // bool _cheaterModeEnabled = false;
