@@ -13,6 +13,9 @@
 #include "Controllers/DesiredStateCommand.h"
 // #include "SimUtilities/VisualizationData.h"
 // #include "SimUtilities/GamepadCommand.h"
+#include "ControlParameters/ControlParameters.h"
+#include "ControlParameters/RobotParameters.h"
+#include <ControlParameters/MIT_UserParameters.h>
 
 /*!
  * Parent class of user robot controllers
@@ -29,7 +32,7 @@ public:
  */
   virtual void runController() = 0;
   virtual void updateVisualization() = 0;
-  // virtual ControlParameters* getUserControlParameters() = 0;
+  virtual ControlParameters* getUserControlParameters() = 0;
   virtual void Estop() {}
 
 protected:
@@ -40,7 +43,7 @@ protected:
   StateEstimate<float>* _stateEstimate = nullptr;
   VectorNavData* _ImuData;
   GamepadCommand* _driverCommand = nullptr;
-  // RobotControlParameters* _controlParameters = nullptr;
+  RobotControlParameters* _controlParameters = nullptr;
   DesiredStateCommand<float>* _desiredStateCommand = nullptr;
 
   // VisualizationData* _visualizationData = nullptr;

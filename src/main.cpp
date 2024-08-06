@@ -11,7 +11,7 @@
 // #include "LCM/RecieveLCMMessage.h"
 // #include "Controllers/DesiredStateCommand.h"
 #include <RobotController.h>
-#include "Controllers/MIT_Controller.hpp"
+#include "EmbeddedController.hpp"
 #include "Utilities/PeriodicTask.h"
 #include <Utilities/RobotCommands.h>
 #include <RobotRunner.h>
@@ -68,14 +68,14 @@ int main(int argc, char* argv[]){
   SpiData _Feedback;
   if (! &_Feedback){LOG(FATAL)<<"Cannot initalize _Feedback";}
 
-  // GamepadCommand _GamepadCommand;
-  // if (! &_GamepadCommand){LOG(FATAL)<<"Cannot initalize _GamepadCommand";}
+  GamepadCommand _GamepadCommand;
+  if (! &_GamepadCommand){LOG(FATAL)<<"Cannot initalize _GamepadCommand";}
 
   VectorNavData _ImuData;
   if (! &_ImuData){LOG(FATAL)<<"Cannot initalize ImuData";}
 
-  // RobotControlParameters _robotParams;
-  // if (! &_robotParams){LOG(FATAL)<<"Cannot initalize _robotParams";}
+  RobotControlParameters _robotParams;
+  if (! &_robotParams){LOG(FATAL)<<"Cannot initalize _robotParams";}
 
 
   // usleep(1e6);
@@ -84,8 +84,8 @@ int main(int argc, char* argv[]){
   //   InitializeSLCs(&_Feedback,&_Command,&taskManager);
   // #endif
 
-  // // Create MIT_Controller instance
-  RobotController* _ctrl = new MIT_Controller();
+  // // Create Ori_Controller instance
+  RobotController* _ctrl = new EmbeddedController();
   LOG(INFO)<<"Lez GOOO!!!!";
   if (!_ctrl){LOG(FATAL)<<"Cannot initalize RobotController";}
   // _ctrl->_Command=_Command;
@@ -102,15 +102,17 @@ int main(int argc, char* argv[]){
   if (!_robotRunner){
     LOG(FATAL)<<"Cannot initalize RobotRunner";
     }
+  PeriodicMemberFunction<RobotRunner> RR_Gamepad(&taskManager,0.00125,"RR-GamePad",&RobotRunner::ReceiveLCM,_robotRunner);
 
   // // Assign the parameters of the robotrunner object. 
   // // These are the real physical variables such as CAN addresses.
 
-  // _robotRunner->driverCommand = &_GamepadCommand;
+  _robotRunner->driverCommand = &_GamepadCommand;
   _robotRunner-> _ImuData= &_ImuData;
   _robotRunner->_Feedback = &_Feedback;
   _robotRunner->_Command = &_Command;
-  // _robotRunner->controlParameters = &_robotParams;
+  _robotRunner->controlParameters = &_robotParams;
+  _robotRunner->initializeParameters();
   
   // // auto* param = _ctrl->getUserControlParameters();
 
@@ -141,7 +143,7 @@ int main(int argc, char* argv[]){
   // #endif
   
   _robotRunner->start();
-  // RR_Gamepad.start();
+  RR_Gamepad.start();
   // // KeyboardCommand.start();
   // usleep(1e6);
 

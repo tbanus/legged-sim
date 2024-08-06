@@ -26,17 +26,17 @@
     <mesh name="HIP_4" file="HIP_4.stl"/>
     <mesh name="KNEE_4" file="KNEE_4.stl"/>
     <mesh name="FOOT_4" file="FOOT_4.stl"/>
-    <mesh name="BOX" file="box.stl" scale = "0.1 0.1 0.1"/>
+<mesh name="BOX" file="box.stl" scale = "0.1 0.1 0.1"/>
 
   </asset>
-  <option  mpr_tolerance="1e-8" mpr_iterations = "100">
+<option  mpr_tolerance="1e-8" mpr_iterations = "100">
     <flag multiccd="enable"/>
-    
-  </option>
+
+</option>
   <worldbody>
-    <!-- <geom name="floor" size="0 0 1" type="hfield" material="grid"  hfield='hmap' /> -->
+<!-- <geom name="floor" size="0 0 1" type="hfield" material="grid"  hfield='hmap' /> -->
     <geom name="floor" size="0 0 1" type="plane" material="grid" />
-   
+
     <light name="spotlight" target="solo12/base_link_inertia" pos="0 -6 6" dir="0 0 -1" cutoff="30" diffuse="0.8 0.8 0.8" mode="targetbodycom"/>
 
 
@@ -112,7 +112,7 @@
         </body>
       </body>
     </body>
-        </body>
+    </body>
 
  
     <body pos="1. 0 -.015" euler = "0 0 0">
@@ -183,7 +183,7 @@
       <joint type="free" />
     </body> 
   </worldbody>
-  <actuator>
+<actuator>
     <motor name="solo12/abad_1_torque" joint="solo12/abad_1_joint" forcelimited="true" forcerange="-15 15" />
     <position name="solo12/abad_1_pos" joint="solo12/abad_1_joint" kp="0" />
     <velocity name="solo12/abad_1_vel" joint="solo12/abad_1_joint" kv="0" />

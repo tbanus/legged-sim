@@ -16,7 +16,7 @@
 #include "Dynamics/SpatialInertia.h"
 
 #include <eigen3/Eigen/StdVector>
-
+#include <stdlib.h>
 
 
 /*!
@@ -65,7 +65,7 @@ class Quadruped {
   RobotType _robotType;
   T _bodyLength, _bodyWidth, _bodyHeight, _bodyMass;
   T _abadGearRatio, _hipGearRatio, _kneeGearRatio;
-  T _abadLinkLength, _hipLinkLength, _kneeLinkLength, _kneeLinkY_offset, _maxLegLength;
+  T _abadLinkLength, _hipLinkLength, _kneeLinkLength, _kneeLinkY_offset, _maxLegLength, _abadXOffset;
   T _motorKT, _motorR, _batteryV;
   T _motorTauMax;
   T _jointDamping, _jointDryFriction;

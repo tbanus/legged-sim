@@ -227,7 +227,7 @@ Simulation::Simulation(std::string filename)
     }
     // create window_, make OpenGL context current, request v-sync
     DLOG(INFO)<<"[SIM]"<<"Create Sim Window";
-    window_=glfwCreateWindow(1244, 700, " Mujoco Simulation", NULL, NULL);
+    window_=glfwCreateWindow(1244, 700, " MuJoCo Simulation", NULL, NULL);
     glfwMakeContextCurrent(window_);
     glfwSwapInterval(1);
 
@@ -556,8 +556,8 @@ void Simulation::SetInitialConditions()  //TODO: Do this from a YAML file?
 {
     for(int leg=0; leg<4; leg++){
         mujoco::d->qpos[(leg)*3+  kAbad_  +7]=1*(M_PI/180)*kSideSign_[leg];     // Add 7 to skip the first 7 dofs from body. (Position + Quaternion)
-        mujoco::d->qpos[(leg)*3+  kHip_   +7]=-90*(M_PI/180)*kDirSign_[leg];
-        mujoco::d->qpos[(leg)*3+  kKnee_  +7]=173*(M_PI/180)*kDirSign_[leg];
+        mujoco::d->qpos[(leg)*3+  kHip_   +7]=-90*(M_PI/180);//*kDirSign_[leg];
+        mujoco::d->qpos[(leg)*3+  kKnee_  +7]=173*(M_PI/180);//*kDirSign_[leg];
     }
 
 }

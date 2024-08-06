@@ -10,7 +10,7 @@
 #ifndef PROJECT_STATEESTIMATOR_H
 #define PROJECT_STATEESTIMATOR_H
 
-// #include "ControlParameters/RobotParameters.h"
+#include "ControlParameters/RobotParameters.h"
 #include "Controllers/LegController.h"
 // #include "SimUtilities/IMUTypes.h"
 // #include "SimUtilities/VisualizationData.h"
@@ -63,7 +63,7 @@ struct StateEstimatorData {
   // CheaterState<double>* cheaterState;
   LegControllerData<T>* legControllerData;
   Vec4<T>* contactPhase;
-  // RobotControlParameters* parameters;
+  RobotControlParameters* parameters;
 };
 
 /*!
@@ -97,14 +97,16 @@ class StateEstimatorContainer {
   StateEstimatorContainer(
                           VectorNavData* vectorNavData,
                           LegControllerData<T>* legControllerData,
-                          StateEstimate<T>* stateEstimate
+                          StateEstimate<T>* stateEstimate,
+                          RobotControlParameters* parameters
+
                           ) {
     _data.vectorNavData = vectorNavData;
     _data.legControllerData = legControllerData;
     _data.result = stateEstimate;
     _phase = Vec4<T>::Zero();
     _data.contactPhase = &_phase;
-    // _data.parameters = parameters;
+    _data.parameters = parameters;
   }
 
   /*!

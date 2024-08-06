@@ -5,22 +5,22 @@
 
 // Contains all of the control related data
 #include "ControlFSMData.h"
-
+#include <ControlParameters/RobotParameters.h>
 // Checks the robot state and commands for safety
 // #include "SafetyChecker.h"
 
 // FSM States
-// #include "../FSM_States/FSM_State.h"
-// #include "../FSM_States/FSM_State_BalanceStand.h"
-// #include "../FSM_States/FSM_State_ImpedanceControl.h"
-// #include "../FSM_States/FSM_State_JointPD.h"
-// #include "../FSM_States/FSM_State_Locomotion.h"
-// #include "../FSM_States/FSM_State_Passive.h"
-// #include "../FSM_States/FSM_State_StandUp.h"
-// #include "../FSM_States/FSM_State_RecoveryStand.h"
-// #include "../FSM_States/FSM_State_Vision.h"
-// #include "../FSM_States/FSM_State_BackFlip.h"
-// #include "../FSM_States/FSM_State_FrontJump.h"
+#include <FSM/FSM_State.h>
+#include "FSM/FSM_State_BalanceStand.h"
+// #include "FSM/FSM_State_ImpedanceControl.h"
+// #include "FSM/FSM_State_JointPD.h"
+#include "FSM/FSM_State_Locomotion.h"
+#include "FSM/FSM_State_Passive.h"
+#include "FSM/FSM_State_StandUp.h"
+// #include "FSM/FSM_State_RecoveryStand.h"
+// #include "FSM/FSM_State_Vision.h"
+// #include "FSM/FSM_State_BackFlip.h"
+// #include "FSM/FSM_State_FrontJump.h"
 
 /**
  * Enumerate all of the operating modes
@@ -34,12 +34,12 @@ enum class FSM_OperatingMode {
 template <typename T>
 struct FSM_StatesList {
   FSM_State<T>* invalid;
-  // FSM_State_Passive<T>* passive;
+  FSM_State_Passive<T>* passive;
   // FSM_State_JointPD<T>* jointPD;
   // FSM_State_ImpedanceControl<T>* impedanceControl;
-  // FSM_State_StandUp<T>* standUp;
-  // FSM_State_BalanceStand<T>* balanceStand;
-  // FSM_State_Locomotion<T>* locomotion;
+  FSM_State_StandUp<T>* standUp;
+  FSM_State_BalanceStand<T>* balanceStand;
+  FSM_State_Locomotion<T>* locomotion;
   // FSM_State_RecoveryStand<T>* recoveryStand;
   // FSM_State_Vision<T>* vision;
   // FSM_State_BackFlip<T>* backflip;
@@ -62,9 +62,12 @@ template <typename T>
 class ControlFSM {
  public:
   ControlFSM(Quadruped<T>* _quadruped,
-             StateEstimatorContainer<T>* _stateEstimator,
-             LegController<T>* _legController, 
-             DesiredStateCommand<T>* _desiredStateCommand
+                          StateEstimatorContainer<T>* _stateEstimator,
+                          LegController<T>* _legController,
+                          GaitScheduler<T>* _gaitScheduler,
+                          DesiredStateCommand<T>* _desiredStateCommand,
+                          RobotControlParameters* controlParameters,
+                          MIT_UserParameters* userParameters
           );
 
   // Initializes the Control FSM instance
@@ -95,7 +98,7 @@ class ControlFSM {
   FSM_StateName nextStateName;   // next FSM state name
 
   // Checks all of the inputs and commands for safety
-  SafetyChecker<T>* safetyChecker;
+  // SafetyChecker<T>* safetyChecker;
 
   TransitionData<T> transitionData;
 

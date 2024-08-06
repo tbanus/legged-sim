@@ -2,7 +2,7 @@
 __collection-name__: user-parameters
 
 Kd_joint          : [0.7,0.1,0.1]
-Kp_joint          : [15, 13, 13]
+Kp_joint          : [4, 4, 4]
 
 #Kp_body           : [100, 100, 100]
 #Kd_body           : [10, 10, 10]
@@ -17,11 +17,11 @@ Kp_joint          : [15, 13, 13]
 #Kd_joint          : [1.5, 1.5, 1.5]
 #Kp_joint          : [15, 15, 15]
 
-Kp_body           : [100, 100, 100]
-Kd_body           : [10, 10, 10]
+Kp_body           : [10, 10, 10]
+Kd_body           : [0, 0, 0]
 
-Kp_foot           : [50, 50, 50]
-Kd_foot           : [10, 10, 10]
+Kp_foot           : [10, 10, 10]
+Kd_foot           : [1, 1, 1]
 
 #Kp_foot           : [200, 200, 200]
 #Kd_foot           : [20, 20, 20]

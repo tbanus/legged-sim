@@ -1,0 +1,12 @@
+Fri Feb  2 17:48:08 2024
+WARNING: mju_openResource: unknown file '../resource/solo12/solo12.xml'
+
+Fri Feb  2 17:48:08 2024
+ERROR: Load model error: mjParseXML: could not open file '../resource/solo12/solo12.xml'
+
+Fri Feb  2 17:48:12 2024
+WARNING: mju_openResource: unknown file '../resource/solo12/solo12.xml'
+
+Fri Feb  2 17:48:12 2024
+ERROR: Load model error: mjParseXML: could not open file '../resource/solo12/solo12.xml'
+
