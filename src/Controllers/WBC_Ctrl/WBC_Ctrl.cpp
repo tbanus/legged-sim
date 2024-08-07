@@ -114,11 +114,11 @@ void WBC_Ctrl<T>::_UpdateLegCMD(ControlFSMData<T> & data){
         cmd[leg].kpJoint(jidx, jidx) = _Kp_joint[jidx];
         cmd[leg].kdJoint(jidx, jidx) = _Kd_joint[jidx];
 
-        std::cout<< " cmd[leg].tauFeedForward[jidx] "<< cmd[leg].tauFeedForward[jidx] << std::endl;
-        std::cout<< " md[leg].qDes[jidx]"<< cmd[leg].qDes[jidx]<< std::endl;
-        std::cout<< "cmd[leg].qdDes[jidx] "<<cmd[leg].qdDes[jidx] << std::endl;
-        std::cout<< " cmd[leg].kpJoint(jidx, jidx) "<< cmd[leg].kpJoint(jidx, jidx) << std::endl;
-        std::cout<< "cmd[leg].kdJoint(jidx, jidx) "<<cmd[leg].kdJoint(jidx, jidx) << std::endl;
+        // std::cout<< " cmd[leg].tauFeedForward[jidx] "<< cmd[leg].tauFeedForward[jidx] << std::endl;
+        // std::cout<< " md[leg].qDes[jidx]"<< cmd[leg].qDes[jidx]<< std::endl;
+        // std::cout<< "cmd[leg].qdDes[jidx] "<<cmd[leg].qdDes[jidx] << std::endl;
+        // std::cout<< " cmd[leg].kpJoint(jidx, jidx) "<< cmd[leg].kpJoint(jidx, jidx) << std::endl;
+        // std::cout<< "cmd[leg].kdJoint(jidx, jidx) "<<cmd[leg].kdJoint(jidx, jidx) << std::endl;
         // std::cout<< " "<< << std::endl;
        
        //if(contact[leg] > 0.){ // Contact

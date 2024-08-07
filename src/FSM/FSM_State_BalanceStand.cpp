@@ -65,7 +65,7 @@ void FSM_State_BalanceStand<T>::run() {
   Vec4<T> contactState;
   contactState<< 0.5, 0.5, 0.5, 0.5;
   int value;
-  std::cin>>value;
+  // std::cin>>value;
   this->_data->_stateEstimator->setContactPhase(contactState);
   BalanceStandStep();
 }
@@ -217,7 +217,7 @@ void FSM_State_BalanceStand<T>::onExit() {
  */
 template <typename T>
 void FSM_State_BalanceStand<T>::BalanceStandStep() {
-
+  // printf("BalanceStandStep\n");
   _wbc_data->pBody_des = _ini_body_pos;
   _wbc_data->vBody_des.setZero();
   _wbc_data->aBody_des.setZero();
@@ -252,23 +252,23 @@ void FSM_State_BalanceStand<T>::BalanceStandStep() {
     _wbc_data->vFoot_des[i].setZero();
     _wbc_data->aFoot_des[i].setZero();
     _wbc_data->Fr_des[i].setZero();
-    printf("_body_weight %f ", _body_weight);
-    _wbc_data->Fr_des[i][2] = 6;
+    // printf("_body_weight %f ", _body_weight);
+    _wbc_data->Fr_des[i][2] = 80;
     _wbc_data->contact_state[i] = true;
   }
   
   if(this->_data->_desiredStateCommand->trigger_pressed) {
     _wbc_data->pBody_des[2] = 0.05;
-
+    printf("pBody_des %f\n ", _body_weight);
     if(last_height_command - _wbc_data->pBody_des[2] > 0.001) {
       _wbc_data->pBody_des[2] = last_height_command - 0.001;
     }
   }
   last_height_command = _wbc_data->pBody_des[2];
   _wbc_data->pBody_RPY_des.setZero();
-  std::cout<<"_wbc_data->pBody_RPY_des: "<< _wbc_data->pBody_RPY_des<<std::endl;
-  std::cout<<"_wbc_data->pBody_des: "<< _wbc_data->pBody_des<<std::endl;
-  std::cout<<"this->_data->_stateEstimator->getResult()).position"<<this->_data->_stateEstimator->getResult().position<<std::endl;
+  // std::cout<<"_wbc_data->pBody_RPY_des: "<< _wbc_data->pBody_RPY_des<<std::endl;
+  // std::cout<<"_wbc_data->pBody_des: "<< _wbc_data->pBody_des<<std::endl;
+  // std::cout<<"this->_data->_stateEstimator->getResult()).position"<<this->_data->_stateEstimator->getResult().position<<std::endl;
   _wbc_ctrl->run(_wbc_data, *this->_data);
 }
 

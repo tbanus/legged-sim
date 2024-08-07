@@ -61,18 +61,18 @@ LinearKFPositionVelocityEstimator<T>::LinearKFPositionVelocityEstimator() {}
  */
 template <typename T>
 void LinearKFPositionVelocityEstimator<T>::run() {
-  T process_noise_pimu =
-      this->_stateEstimatorData.parameters->imu_process_noise_position;
-  T process_noise_vimu =
-      this->_stateEstimatorData.parameters->imu_process_noise_velocity;
-  T process_noise_pfoot =
-      this->_stateEstimatorData.parameters->foot_process_noise_position;
-  T sensor_noise_pimu_rel_foot =
-      this->_stateEstimatorData.parameters->foot_sensor_noise_position;
-  T sensor_noise_vimu_rel_foot =
-      this->_stateEstimatorData.parameters->foot_sensor_noise_velocity;
-  T sensor_noise_zfoot =
-      this->_stateEstimatorData.parameters->foot_height_sensor_noise;
+  T process_noise_pimu = 0.1;
+    //   this->_stateEstimatorData.parameters->imu_process_noise_position;
+  T process_noise_vimu =0.1;
+    //   this->_stateEstimatorData.parameters->imu_process_noise_velocity;
+  T process_noise_pfoot =0.1;
+    //   this->_stateEstimatorData.parameters->foot_process_noise_position;
+  T sensor_noise_pimu_rel_foot =0.1;
+    //   this->_stateEstimatorData.parameters->foot_sensor_noise_position;
+  T sensor_noise_vimu_rel_foot =0.1;
+    //   this->_stateEstimatorData.parameters->foot_sensor_noise_velocity;
+  T sensor_noise_zfoot =0.1;
+    //   this->_stateEstimatorData.parameters->foot_height_sensor_noise;
 
   Eigen::Matrix<T, 18, 18> Q = Eigen::Matrix<T, 18, 18>::Identity();
   Q.block(0, 0, 3, 3) = _Q0.block(0, 0, 3, 3) * process_noise_pimu;

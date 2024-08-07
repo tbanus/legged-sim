@@ -87,5 +87,5 @@ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
 
 add_executable(legged_sim ${sources})
 
-target_link_libraries(legged_sim glog lcm mujoco glfw qpOASES JCQP osqp GLEW  ${CURSES_LIBRARIES} glog gflags urdf tinyxml2 ${TinyXML_LIBRARIES})
+target_link_libraries(legged_sim glog lcm mujoco glfw qpOASES JCQP osqp GLEW  ${CURSES_LIBRARIES} glog gflags tinyxml2 ${TinyXML_LIBRARIES})
 

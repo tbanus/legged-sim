@@ -3,9 +3,9 @@ import csv
 import math
 import os
 import sys
-sys.path.append('/home/banus/legged-sim/lcm_types/python/')
+sys.path.append('../')
 # from lcm_types.debug_data_lcmt import debug_data_lcmt
-from state_estimator_lcmt import *
+from lcm_types.python.state_estimator_lcmt import *
 msg_type=state_estimator_lcmt
 global data_writer
 global data_f

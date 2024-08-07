@@ -424,6 +424,10 @@ void Simulation::UpdateCan(){
      bodyIMU->acc_y = mujoco::d->sensordata[1];
      bodyIMU->acc_z = mujoco::d->sensordata[2];
 
+     bodyIMU->accelerometer[0] = mujoco::d->sensordata[0];
+     bodyIMU->accelerometer[1] = mujoco::d->sensordata[1];
+     bodyIMU->accelerometer[2] = mujoco::d->sensordata[2];
+
      bodyIMU->heave = mujoco::d->qvel[0] ;
      bodyIMU->heave_dt = mujoco::d->qvel[1] ;
      bodyIMU->heave_ddt = mujoco::d->qvel[2] ;
@@ -432,7 +436,11 @@ void Simulation::UpdateCan(){
      bodyIMU->gyr_x = mujoco::d->qvel[3];
      bodyIMU->gyr_y = mujoco::d->qvel[4];
      bodyIMU->gyr_z = mujoco::d->qvel[5];
-     
+
+     bodyIMU->gyro[0] = mujoco::d->qvel[3];
+     bodyIMU->gyro[1] = mujoco::d->qvel[4];
+     bodyIMU->gyro[2] = mujoco::d->qvel[5];
+
      bodyIMU->quat[0] = mujoco::d->qpos[3];
      bodyIMU->quat[1] = mujoco::d->qpos[4];
      bodyIMU->quat[2] = mujoco::d->qpos[5];

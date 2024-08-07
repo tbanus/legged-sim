@@ -55,7 +55,7 @@ void FSM_State_StandUp<T>::run()
   if (this->_data->_quadruped->_robotType == RobotType::MINI_CHEETAH)
   {
     T hMax = 0.4;
-    T progress = 2 * iter * this->_data->controlParameters->controller_dt;
+    T progress = 1 * iter * this->_data->controlParameters->controller_dt;
 
     if (progress > 1.)
     {
@@ -66,7 +66,7 @@ void FSM_State_StandUp<T>::run()
     for (int i = 0; i < 4; i++)
     {
       this->_data->_legController->commands[i].kpCartesian = Vec3<T>(1000, 1000, 1000).asDiagonal();
-      this->_data->_legController->commands[i].kdCartesian = Vec3<T>(8, 8, 8).asDiagonal();
+      this->_data->_legController->commands[i].kdCartesian = Vec3<T>(10, 10, 10).asDiagonal();
 
       this->_data->_legController->commands[i].pDes = _ini_foot_pos[i];
       this->_data->_legController->commands[i].pDes[2] =

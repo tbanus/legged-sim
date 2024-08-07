@@ -35,3 +35,5 @@ build/**
 .vscode/settings.json
 build/CMakeFiles/CMakeOutput.log
 build/CMakeCache.txt
+logs/**
+lcm-types/python/__pycache___/**

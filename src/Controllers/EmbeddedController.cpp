@@ -41,7 +41,7 @@ void EmbeddedController::runController()
   _desiredStateCommand->convertToStateCommands();
   _desiredStateCommand->gamepadCommand->start;
   
-  std::cout<<"_driverCommand->leftStickAnalog "<<_driverCommand->leftStickAnalog<<std::endl;
+  // std::cout<<"_driverCommand->leftStickAnalog "<<_driverCommand->leftStickAnalog<<std::endl;
 
   // // Run the Control FSM code
   _controlFSM->runFSM();
