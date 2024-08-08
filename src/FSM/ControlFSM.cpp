@@ -158,7 +158,7 @@ void ControlFSM<T>::runFSM() {
 
         // Complete the transition
         currentState = nextState;
-        std::cout<<"currentState"<<currentState<<std::endl;
+        std::cout<<"currentState: "<<currentState<<std::endl;
         // Enter the new current state cleanly
         currentState->onEnter();
 
@@ -258,8 +258,8 @@ FSM_State<T>* ControlFSM<T>::getNextState(FSM_StateName stateName) {
     case FSM_StateName::BALANCE_STAND:
       return statesList.balanceStand;
 
-    // case FSM_StateName::LOCOMOTION:
-    //   return statesList.locomotion;
+    case FSM_StateName::LOCOMOTION:
+      return statesList.locomotion;
 
     // case FSM_StateName::RECOVERY_STAND:
     //   return statesList.recoveryStand;

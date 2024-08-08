@@ -10,7 +10,7 @@
 #include <Simulation/Simulation.h>
 #include <stdlib.h>
 #include <glog/logging.h>
-#define DEFAULT_TIMESTEP 0.0003
+#define DEFAULT_TIMESTEP 0.002
 
 
 namespace mujoco

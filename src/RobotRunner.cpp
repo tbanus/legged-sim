@@ -92,7 +92,6 @@ void RobotRunner::init() {
  * to run each of their respective steps.
  */
 void RobotRunner::run() {
-      _Sim->RunOnce();
 
   // Run the state estimator step
   //_stateEstimator->run(cheetahMainVisualization);
@@ -171,6 +170,8 @@ void RobotRunner::run() {
 
   // // Sets the leg controller commands for the robot appropriate commands
   finalizeStep();
+  _Sim->RunOnce();
+
 }
 
 /*!

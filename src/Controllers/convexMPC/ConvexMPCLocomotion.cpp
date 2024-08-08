@@ -41,7 +41,7 @@ ConvexMPCLocomotion::ConvexMPCLocomotion(float _dt, int _iterations_between_mpc,
   dtMPC = dt * iterationsBetweenMPC;
   default_iterations_between_mpc = iterationsBetweenMPC;
   printf("[Convex MPC] dt: %.3f iterations: %d, dtMPC: %.3f\n", dt, iterationsBetweenMPC, dtMPC);
-  setup_problem(dtMPC, horizonLength, 0.4, 120);
+  setup_problem(dtMPC, horizonLength, 0.4, 500);
   //setup_problem(dtMPC, horizonLength, 0.4, 650); // DH
   rpy_comp[0] = 0;
   rpy_comp[1] = 0;
@@ -72,7 +72,7 @@ void ConvexMPCLocomotion::recompute_timing(int iterations_per_mpc) {
 
 void ConvexMPCLocomotion::_SetupCommand(ControlFSMData<float> & data){
   if(data._quadruped->_robotType == RobotType::MINI_CHEETAH){
-    _body_height = 0.29;
+    _body_height = 0.32;
   }else if(data._quadruped->_robotType == RobotType::CHEETAH_3){
     _body_height = 0.45;
   }else{
@@ -93,8 +93,12 @@ void ConvexMPCLocomotion::_SetupCommand(ControlFSMData<float> & data){
     x_vel_cmd = data._desiredStateCommand->leftAnalogStick[1];
     y_vel_cmd = data._desiredStateCommand->leftAnalogStick[0];
   }
+  x_vel_cmd=0;
+  y_vel_cmd=0;
   _x_vel_des = _x_vel_des*(1-filter) + x_vel_cmd*filter;
   _y_vel_des = _y_vel_des*(1-filter) + y_vel_cmd*filter;
+  printf("_x_vel_des %f", _x_vel_des);
+  printf("_y_vel_des %f", _y_vel_des);
 
   _yaw_des = data._stateEstimator->getResult().rpy[2] + dt * _yaw_turn_rate;
   _roll_des = 0.;
@@ -105,7 +109,7 @@ void ConvexMPCLocomotion::_SetupCommand(ControlFSMData<float> & data){
 template<>
 void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
   bool omniMode = false;
-
+  printf("cmpc->run\n");
   // Command Setup
   _SetupCommand(data);
   gaitNumber = data.userParameters->cmpc_gait;
@@ -121,7 +125,7 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
   {
     stand_traj[0] = seResult.position[0];
     stand_traj[1] = seResult.position[1];
-    stand_traj[2] = 0.21;
+    stand_traj[2] = 0.32;
     stand_traj[3] = 0;
     stand_traj[4] = 0;
     stand_traj[5] = seResult.rpy[2];
@@ -147,8 +151,10 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
     gait = &random2;
   else if(gaitNumber == 8)
     gait = &pacing;
+  else if(gaitNumber == 9)
+    gait = &trotting;
   current_gait = gaitNumber;
-
+  printf("current_gait: %d\n", current_gait);
   gait->setIterations(iterationsBetweenMPC, iterationCounter);
   jumping.setIterations(iterationsBetweenMPC, iterationCounter);
 
@@ -306,7 +312,7 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
   Kd << 7, 0, 0,
      0, 7, 0,
      0, 0, 7;
-  Kd_stance = Kd;
+  Kd_stance = 0*Kd;
   // gait
   Vec4<float> contactStates = gait->getContactState();
   Vec4<float> swingStates = gait->getSwingState();
@@ -445,12 +451,12 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
   data._stateEstimator->setContactPhase(se_contactState);
 
   // Update For WBC
-  pBody_des[0] = world_position_desired[0];
-  pBody_des[1] = world_position_desired[1];
+  // pBody_des[0] = world_position_desired[0];
+  // pBody_des[1] = world_position_desired[1];
   pBody_des[2] = _body_height;
 
-  vBody_des[0] = v_des_world[0];
-  vBody_des[1] = v_des_world[1];
+  // vBody_des[0] = v_des_world[0];
+  // vBody_des[1] = v_des_world[1];
   vBody_des[2] = 0.;
 
   aBody_des.setZero();
@@ -568,6 +574,7 @@ void ConvexMPCLocomotion::updateMPCIfNeeded(int *mpcTable, ControlFSMData<float>
 }
 
 void ConvexMPCLocomotion::solveDenseMPC(int *mpcTable, ControlFSMData<float> &data) {
+  printf("solvedensempc\n");
   auto seResult = data._stateEstimator->getResult();
 
   //float Q[12] = {0.25, 0.25, 10, 2, 2, 20, 0, 0, 0.3, 0.2, 0.2, 0.2};
@@ -603,7 +610,7 @@ void ConvexMPCLocomotion::solveDenseMPC(int *mpcTable, ControlFSMData<float> &da
 
   Timer t1;
   dtMPC = dt * iterationsBetweenMPC;
-  setup_problem(dtMPC,horizonLength,0.4,120);
+  setup_problem(dtMPC,horizonLength,0.4,650);
   //setup_problem(dtMPC,horizonLength,0.4,650); //DH
   update_x_drag(x_comp_integral);
   if(vxy[0] > 0.3 || vxy[0] < -0.3) {
@@ -634,10 +641,13 @@ void ConvexMPCLocomotion::solveDenseMPC(int *mpcTable, ControlFSMData<float> &da
     f_ff[leg] = -seResult.rBody * f;
     // Update for WBC
     Fr_des[leg] = f;
+    // pretty_print(Fr_des[leg], std::cout, "Fr_des");
   }
 }
 
 void ConvexMPCLocomotion::solveSparseMPC(int *mpcTable, ControlFSMData<float> &data) {
+  printf("solvesparsempc\n");
+
   // X0, contact trajectory, state trajectory, feet, get result!
   (void)mpcTable;
   (void)data;
@@ -682,8 +692,8 @@ void ConvexMPCLocomotion::initSparseMPC() {
   baseInertia << 0.07, 0, 0,
               0, 0.26, 0,
               0, 0, 0.242;
-  double mass = 9;
-  double maxForce = 120;
+  double mass = 30;
+  double maxForce = 650;
 
   std::vector<double> dtTraj;
   for(int i = 0; i < horizonLength; i++) {

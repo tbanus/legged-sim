@@ -8,6 +8,7 @@
 #include "Gait.h"
 
 #include <cstdio>
+#define print(variable_to_print) std::cout<<#variable_to_print<<":\n"<<variable_to_print<<std::endl
 
 using Eigen::Array4f;
 using Eigen::Array4i;

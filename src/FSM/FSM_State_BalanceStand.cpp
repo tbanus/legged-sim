@@ -80,6 +80,10 @@ template <typename T>
 FSM_StateName FSM_State_BalanceStand<T>::checkTransition() {
   // Get the next state
   _iter++;
+    if(this->_data->_desiredStateCommand->gamepadCommand->start)
+  {
+    this->_data->controlParameters->control_mode=4;
+  }
 
   // Switch FSM control mode
   switch ((int)this->_data->controlParameters->control_mode) {

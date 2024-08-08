@@ -3,6 +3,7 @@
 
 #include <Controllers/convexMPC/ConvexMPCLocomotion.h>
 #include "FSM_State.h"
+#define print(variable_to_print) std::cout<<#variable_to_print<<":\n"<<variable_to_print<<std::endl
 
 template<typename T> class WBC_Ctrl;
 template<typename T> class LocomotionCtrlData;
@@ -33,9 +34,9 @@ class FSM_State_Locomotion : public FSM_State<T> {
  private:
   // Keep track of the control iterations
   int iter = 0;
-  // ConvexMPCLocomotion* cMPCOld;
-  // WBC_Ctrl<T> * _wbc_ctrl;
-  // LocomotionCtrlData<T> * _wbc_data;
+  ConvexMPCLocomotion* cMPCOld;
+  WBC_Ctrl<T> * _wbc_ctrl;
+  LocomotionCtrlData<T> * _wbc_data;
 
   // Parses contact specific controls to the leg controller
   void LocomotionControlStep();
