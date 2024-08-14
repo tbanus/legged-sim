@@ -19,10 +19,8 @@
 //#include "rt/rt_interface_lcm.h"
 #include <ReceiveGamepadCommand.h>
 RobotRunner::RobotRunner(RobotController* robot_ctrl, 
-    PeriodicTaskManager* manager, 
-    float period, std::string name):
-  PeriodicTask(manager, period, name),
-  _lcm(getLcmUrl(255)) {
+    float period, std::string name)
+ {
 
     _robot_ctrl = robot_ctrl;
     _period = period;
@@ -33,57 +31,57 @@ RobotRunner::RobotRunner(RobotController* robot_ctrl,
  * robot data, and any control logic specific data.
  */
 void RobotRunner::init() {
-      std::string mjcf_file;
+  //     std::string mjcf_file;
     
-    mjcf_file = std::string("../resource/")+std::string("opy_v05/opy_v05.xml");
-    _Sim = new Simulation(mjcf_file); 
-    _Sim->motor_input_type_=1;
-    _Sim->SetCommand(_Command);
-    _Sim->SetFeedback(_Feedback,_ImuData);
-    _Sim->SetTimestep(_period);
-    _Sim->RunOnce();
-  // printf("[RobotRunner] initialize\n");
+  //   mjcf_file = std::string("../resource/")+std::string("opy_v05/opy_v05.xml");
+  //   // _Sim = new Simulation(mjcf_file); 
+  //   // _Sim->motor_input_type_=1;
+  //   // _Sim->SetCommand(_Command);
+  //   // _Sim->SetFeedback(_Feedback,_ImuData);
+  //   // _Sim->SetTimestep(_period);
+  //   // _Sim->RunOnce();
+  // // printf("[RobotRunner] initialize\n");
 
-  // // Build the appropriate Quadruped object
-  // if (robotType == RobotType::MINI_CHEETAH) {
-  //   _quadruped = buildMiniCheetah<float>();
-  // } else {
-  //   _quadruped = buildCheetah3<float>();
-  // }
-    _quadruped=ParseURDFtoQuadruped<float>(std::string("../resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
-  // // Initialize the model and robot data
-  _model = _quadruped.buildModel();
-  // _jpos_initializer = new JPosInitializer<float>(3., controlParameters->controller_dt);
+  // // // Build the appropriate Quadruped object
+  // // if (robotType == RobotType::MINI_CHEETAH) {
+  // //   _quadruped = buildMiniCheetah<float>();
+  // // } else {
+  // //   _quadruped = buildCheetah3<float>();
+  // // }
+  //   _quadruped=ParseURDFtoQuadruped<float>(std::string("../resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
+  // // // Initialize the model and robot data
+  // _model = _quadruped.buildModel();
+  // // _jpos_initializer = new JPosInitializer<float>(3., controlParameters->controller_dt);
 
-  // // Always initialize the leg controller and state entimator
-  _legController = new LegController<float>(_quadruped);
-  _stateEstimator = new StateEstimatorContainer<float>(
-      _ImuData, _legController->datas,
-      &_stateEstimate, controlParameters);
-  initializeStateEstimator(false);
+  // // // Always initialize the leg controller and state entimator
+  // _legController = new LegController<float>(_quadruped);
+  // _stateEstimator = new StateEstimatorContainer<float>(
+  //     _ImuData, _legController->datas,
+  //     &_stateEstimate, controlParameters);
+  // initializeStateEstimator(false);
 
-  // memset(&rc_control, 0, sizeof(rc_control_settings));
-  // // Initialize the DesiredStateCommand object
-  _desiredStateCommand =
-    new DesiredStateCommand<float>(driverCommand,
+  // // memset(&rc_control, 0, sizeof(rc_control_settings));
+  // // // Initialize the DesiredStateCommand object
+  
+  //   DesiredStateCommand<float>* _desiredStateCommand(driverCommand,
         
-        &_stateEstimate,
-        controlParameters->controller_dt);
+  //       &_stateEstimate,
+  //       controlParameters->controller_dt);
 
-  // // Controller initializations
-  _robot_ctrl->_model = &_model;
-  _robot_ctrl->_quadruped = &_quadruped;
-  _robot_ctrl->_legController = _legController;
-  _robot_ctrl->_ImuData=_ImuData;
-  _robot_ctrl->_stateEstimator = _stateEstimator;
-  _robot_ctrl->_stateEstimate = &_stateEstimate;
-  // _robot_ctrl->_visualizationData= visualizationData;
-  _robot_ctrl->_robotType = robotType;
-  _robot_ctrl->_driverCommand = driverCommand;
-  _robot_ctrl->_controlParameters = controlParameters;
-  _robot_ctrl->_desiredStateCommand = _desiredStateCommand;
+  // // // Controller initializations
+  // _robot_ctrl->_model = &_model;
+  // _robot_ctrl->_quadruped = &_quadruped;
+  // _robot_ctrl->_legController = _legController;
+  // _robot_ctrl->_ImuData=_ImuData;
+  // _robot_ctrl->_stateEstimator = _stateEstimator;
+  // _robot_ctrl->_stateEstimate = &_stateEstimate;
+  // // _robot_ctrl->_visualizationData= visualizationData;
+  // _robot_ctrl->_robotType = robotType;
+  // _robot_ctrl->_driverCommand = driverCommand;
+  // _robot_ctrl->_controlParameters = controlParameters;
+  // _robot_ctrl->_desiredStateCommand = _desiredStateCommand;
 
-  _robot_ctrl->initializeController();
+  // _robot_ctrl->initializeController();
 
 }
 
@@ -95,7 +93,7 @@ void RobotRunner::run() {
 
   // Run the state estimator step
   //_stateEstimator->run(cheetahMainVisualization);
-  _stateEstimator->run();
+  // _stateEstimator->run();
   // //cheetahMainVisualization->p = _stateEstimate.position;
   // visualizationData->clear();
 
@@ -141,9 +139,9 @@ void RobotRunner::run() {
   //       }
   //     } else {
   //       // Run Control 
-        _legController->updateData(_Feedback);
-        _robot_ctrl->runController(); 
-        _legController->updateCommand(_Command);
+        // _legController->updateData(_Feedback);
+        // _robot_ctrl->runController(); 
+        // _legController->updateCommand(_Command);
 
   //       cheetahMainVisualization->p = _stateEstimate.position;
 
@@ -169,8 +167,8 @@ void RobotRunner::run() {
   // cheetahMainVisualization->quat = _stateEstimate.orientation;
 
   // // Sets the leg controller commands for the robot appropriate commands
-  finalizeStep();
-  _Sim->RunOnce();
+  // finalizeStep();
+  // _Sim->RunOnce();
 
 }
 
@@ -180,7 +178,7 @@ void RobotRunner::run() {
 void RobotRunner::setupStep() {
   // Update the leg data
   // if (robotType == RobotType::MINI_CHEETAH) {
-    _legController->updateData(_Feedback);
+    // _legController->updateData(_Feedback);
   // } else if (robotType == RobotType::CHEETAH_3) {
   //   _legController->updateData(tiBoardData);
   // } else {
@@ -225,11 +223,11 @@ void RobotRunner::finalizeStep() {
 //   } else {
 //     assert(false);
 //   }
-  _legController->setLcm(&leg_control_data_lcm, &leg_control_command_lcm);
-  _stateEstimate.setLcm(state_estimator_lcm);
-  _lcm.publish("leg_control_command", &leg_control_command_lcm);
-  _lcm.publish("leg_control_data", &leg_control_data_lcm);
-  _lcm.publish("state_estimator", &state_estimator_lcm);
+  // _legController->setLcm(&leg_control_data_lcm, &leg_control_command_lcm);
+  // _stateEstimate.setLcm(state_estimator_lcm);
+  // _lcm.publish("leg_control_command", &leg_control_command_lcm);
+  // _lcm.publish("leg_control_data", &leg_control_data_lcm);
+  // _lcm.publish("state_estimator", &state_estimator_lcm);
 //   _iterations++;
 }
 
@@ -238,82 +236,82 @@ void RobotRunner::finalizeStep() {
  * @param cheaterMode
  */
 void RobotRunner::initializeStateEstimator(bool cheaterMode) {
-  _stateEstimator->removeAllEstimators();
-  _stateEstimator->addEstimator<ContactEstimator<float>>();
-  Vec4<float> contactDefault;
-  contactDefault << 0.5, 0.5, 0.5, 0.5;
-  _stateEstimator->setContactPhase(contactDefault);
+  // _stateEstimator->removeAllEstimators();
+  // _stateEstimator->addEstimator<ContactEstimator<float>>();
+  // Vec4<float> contactDefault;
+  // contactDefault << 0.5, 0.5, 0.5, 0.5;
+  // _stateEstimator->setContactPhase(contactDefault);
 
-    _stateEstimator->addEstimator<VectorNavOrientationEstimator<float>>();
-    _stateEstimator->addEstimator<LinearKFPositionVelocityEstimator<float>>();
+  //   _stateEstimator->addEstimator<VectorNavOrientationEstimator<float>>();
+  //   _stateEstimator->addEstimator<LinearKFPositionVelocityEstimator<float>>();
   
 }
 #define THIS_COM "~/legged-sim/"
 void RobotRunner::initializeParameters()
 {
-    bool _load_parameters_from_file =1 ;
-    std::cout<<controlParameters<<std::endl;
-     std::string robotParametersPath="../resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
-      std::string userParametersPath="../resource/opy_v05/mini-cheetah-defaults.yaml";
-  // userParameters.initializeFromYamlFile(path);
+  //   bool _load_parameters_from_file =1 ;
+  //   std::cout<<controlParameters<<std::endl;
+  //    std::string robotParametersPath="../resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
+  //     std::string userParametersPath="../resource/opy_v05/mini-cheetah-defaults.yaml";
+  // // userParameters.initializeFromYamlFile(path);
 
-   if(_load_parameters_from_file) {
-    printf("[Hardware Bridge] Loading parameters from file...\n");
-    try {
-      controlParameters->initializeFromYamlFile(userParametersPath);
-    } catch(std::exception& e) {
-      printf("Failed to initialize robot parameters from yaml file: %s\n", e.what());
-      exit(1);
-    }
+  //  if(_load_parameters_from_file) {
+  //   printf("[Hardware Bridge] Loading parameters from file...\n");
+  //   try {
+  //     controlParameters->initializeFromYamlFile(userParametersPath);
+  //   } catch(std::exception& e) {
+  //     printf("Failed to initialize robot parameters from yaml file: %s\n", e.what());
+  //     exit(1);
+  //   }
 
-    if(!controlParameters->isFullyInitialized()) {
-      printf("Failed to initialize all robot parameters\n");
-      exit(1);
-    }
+  //   if(!controlParameters->isFullyInitialized()) {
+  //     printf("Failed to initialize all robot parameters\n");
+  //     exit(1);
+  //   }
 
-    printf("Loaded robot parameters\n");
+  //   printf("Loaded robot parameters\n");
 
-    if(_robot_ctrl->getUserControlParameters()) {
-      try {
-        _robot_ctrl->getUserControlParameters()->initializeFromYamlFile( robotParametersPath);
-      } catch(std::exception& e) {
-        printf("Failed to initialize user parameters from yaml file: %s\n", e.what());
-        exit(1);
-      }
+  //   if(_robot_ctrl->getUserControlParameters()) {
+  //     try {
+  //       _robot_ctrl->getUserControlParameters()->initializeFromYamlFile( robotParametersPath);
+  //     } catch(std::exception& e) {
+  //       printf("Failed to initialize user parameters from yaml file: %s\n", e.what());
+  //       exit(1);
+  //     }
 
-      if(!_robot_ctrl->getUserControlParameters()->isFullyInitialized()) {
-        printf("Failed to initialize all user parameters\n");
-        exit(1);
-      }
+  //     if(!_robot_ctrl->getUserControlParameters()->isFullyInitialized()) {
+  //       printf("Failed to initialize all user parameters\n");
+  //       exit(1);
+  //     }
 
-      printf("Loaded user parameters\n");
-    } else {
-      printf("Did not load user parameters because there aren't any\n");
-    }
-  } else {
-    printf("[Hardware Bridge] Loading parameters over LCM...\n");
-    while (!controlParameters->isFullyInitialized()) {
-      printf("[Hardware Bridge] Waiting for robot parameters...\n");
-      usleep(1000000);
-    }
+  //     printf("Loaded user parameters\n");
+  //   } else {
+  //     printf("Did not load user parameters because there aren't any\n");
+  //   }
+  // } else {
+  //   printf("[Hardware Bridge] Loading parameters over LCM...\n");
+  //   while (!controlParameters->isFullyInitialized()) {
+  //     printf("[Hardware Bridge] Waiting for robot parameters...\n");
+  //     usleep(1000000);
+  //   }
 
-    if(_robot_ctrl->getUserControlParameters()) {
-      while (!_robot_ctrl->getUserControlParameters()->isFullyInitialized()) {
-        printf("[Hardware Bridge] Waiting for user parameters...\n");
-        usleep(1000000);
-      }
-    }
-  }
+  //   if(_robot_ctrl->getUserControlParameters()) {
+  //     while (!_robot_ctrl->getUserControlParameters()->isFullyInitialized()) {
+  //       printf("[Hardware Bridge] Waiting for user parameters...\n");
+  //       usleep(1000000);
+  //     }
+  //   }
+  // }
 
 
 
-  printf("[Hardware Bridge] Got all parameters, starting up!\n");
+  // printf("[Hardware Bridge] Got all parameters, starting up!\n");
 }
 
 void RobotRunner::ReceiveLCM()
 
 {
-RecieveGamepadCommand (driverCommand);
+// RecieveGamepadCommand (driverCommand);
 }
 RobotRunner::~RobotRunner() {
   // delete _legController;

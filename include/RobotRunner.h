@@ -33,16 +33,14 @@
 #include <lcm-cpp.hpp>
 #include  <eigen3/Eigen/Dense>
 
-class RobotRunner : public PeriodicTask {
+class RobotRunner {
  public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-  RobotRunner(RobotController* robot_ctrl , PeriodicTaskManager*, float, std::string);
-  using PeriodicTask::PeriodicTask;
-  void init() override;
-  void run() override;
-  void cleanup() override;
-
+  RobotRunner(RobotController* robot_ctrl , float, std::string);
+  void init() ;
+  void run() ;
+  void cleanup() ;
   // Initialize the state estimator with default no cheaterMode
   void initializeStateEstimator(bool cheaterMode = false);
   virtual ~RobotRunner();
