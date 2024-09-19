@@ -5,14 +5,14 @@ import os
 import sys
 sys.path.append('../')
 # from lcm_types.debug_data_lcmt import debug_data_lcmt
-from lcm_types.python.leg_control_command_lcmt import leg_control_command_lcmt
-msg_type=leg_control_command_lcmt
+from lcm_types.python.wbc_test_data_t import *
+msg_type=wbc_test_data_t
 global data_writer
 global data_f
 global attr
 global filename
-filename="leg_control_command_log"
-lcm_channel="leg_control_command"
+filename="wbc_lcm_data"
+lcm_channel="wbc_lcm_data"
 attr = []
 def HeaderGenerator():
     Headers = []
@@ -57,7 +57,7 @@ if user_input == 'y':
         os.remove (file)
         data_f = open('../logs/'+filename, 'a',newline='')
     except FileNotFoundError:
-        data_f = open('../logs/'+filename, 'x',newline='')
+        data_f = open('../logs/'+filename, 'w',newline='')
     # data_f = open('../logs/'+filename, 'a',newline='')
     data_writer = csv.writer(data_f)
     Headers = HeaderGenerator()

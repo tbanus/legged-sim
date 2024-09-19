@@ -2,7 +2,7 @@
 __collection-name__: user-parameters
 
 Kd_joint          : [2, 1.5, 1.5]
-Kp_joint          : [100,150, 150]
+Kp_joint          : [200,200, 200]
 
 #Kp_body           : [100, 100, 100]
 #Kd_body           : [10, 10, 10]

@@ -52,13 +52,13 @@ def my_handler1(channel, data):
 
 user_input = input('remove current file ? y or n')
 if user_input == 'y': 
-    file = '../opy_logs/'+filename
+    file = '../logs/'+filename
     try:
         os.remove (file)
         data_f = open('../logs/'+filename, 'a',newline='')
     except FileNotFoundError:
         data_f = open('../logs/'+filename, 'w',newline='')
-    # data_f = open('../opy_logs/'+filename, 'a',newline='')
+    # data_f = open('../logs/'+filename, 'a',newline='')
     data_writer = csv.writer(data_f)
     Headers = HeaderGenerator()
     print(Headers)
