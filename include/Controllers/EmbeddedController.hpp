@@ -22,11 +22,11 @@ public:
   virtual void runController();
   virtual void updateVisualization(){}
 
-  // SpiData* _Feedback;
-  // VectorNavData* _ImuData;
+  SpiData* _Feedback;
+  VectorNavData* _ImuData;
   
 
-  // SpiCommand* _Command;
+  SpiCommand* _Command;
   virtual ControlParameters* getUserControlParameters() {
     return &userParameters;
   }

@@ -1,6 +1,6 @@
 #include "Controllers/WBC_Ctrl/TaskSet/BodyPosTask.hpp"
 // (X, Y, Z)
-#include <Configuration.h>
+// // #include <Configuration.h>
 #include <Dynamics/FloatingBaseModel.h>
 #include <Dynamics/Quadruped.h>
 #include <Utilities/Utilities_print.h>

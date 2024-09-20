@@ -11,26 +11,25 @@
 #include "ControlParameters/ControlParameterInterface.h"
 #include "ControlParameters/RobotParameters.h"
 #include "ControlParameters/MIT_UserParameters.h"
-// #include "Controllers/StateEstimatorContainer.h"
+#include "Controllers/StateEstimatorContainer.h"
 // #include "SimUtilities/IMUTypes.h"
 // #include "rt/rt_rc_interface.h"
-// #include "Controllers/ContactEstimator.h"
-// #include "Controllers/DesiredStateCommand.h"
-// #include "Controllers/LegController.h"
-// #include "Dynamics/Quadruped.h"
+#include "Controllers/ContactEstimator.h"
+#include "Controllers/DesiredStateCommand.h"
+#include "Controllers/LegController.h"
+#include "Dynamics/Quadruped.h"
 // #include "JPosInitializer.h"
 
 // #include "SimUtilities/GamepadCommand.h"
 // #include "SimUtilities/VisualizationData.h"
-#include "Utilities/PeriodicTask.h"
 #include <Utilities/RobotCommands.h>
-#include "Utilities/utilities.h"
+#include <Utilities/utilities.h>
 #include <Simulation/Simulation.h>
 #include <Dynamics/ParseURDFtoQuadruped.h>
 // #include "cheetah_visualization_lcmt.hpp"
-#include "state_estimator_lcmt.hpp"
+// #include "state_estimator_lcmt.hpp"
 #include "RobotController.h"
-#include <lcm-cpp.hpp>
+// #include <lcm-cpp.hpp>
 #include  <eigen3/Eigen/Dense>
 
 class RobotRunner {
@@ -44,7 +43,7 @@ class RobotRunner {
   // Initialize the state estimator with default no cheaterMode
   void initializeStateEstimator(bool cheaterMode = false);
   virtual ~RobotRunner();
-  void ReceiveLCM();
+  // void ReceiveLCM();
 
   RobotController* _robot_ctrl;
 
@@ -56,7 +55,7 @@ class RobotRunner {
   VectorNavData* _ImuData;
   SpiCommand* _Command;
   
-  Simulation* _Sim;
+  // Simulation* _Sim;
   float _period;
 
   // TiBoardCommand* tiBoardCommand;
@@ -83,10 +82,10 @@ class RobotRunner {
   // bool _cheaterModeEnabled = false;
   DesiredStateCommand<float>* _desiredStateCommand;
   // rc_control_settings rc_control;
-  lcm::LCM _lcm;
-  leg_control_command_lcmt leg_control_command_lcm;
-  state_estimator_lcmt state_estimator_lcm;
-  leg_control_data_lcmt leg_control_data_lcm;
+  // lcm::LCM _lcm;
+  // leg_control_command_lcmt leg_control_command_lcm;
+  // state_estimator_lcmt state_estimator_lcm;
+  // leg_control_data_lcmt leg_control_data_lcm;
   // // Contact Estimator to calculate estimated forces and contacts
 
   FloatingBaseModel<float> _model;

@@ -17,7 +17,7 @@
 // #include "Utilities/Timer.h"
 #include "Controllers/Estimators/PositionVelocityEstimator.h"
 //#include "rt/rt_interface_lcm.h"
-#include <ReceiveGamepadCommand.h>
+// #include <ReceiveGamepadCommand.h>
 RobotRunner::RobotRunner(RobotController* robot_ctrl, 
     float period, std::string name)
  {
@@ -31,57 +31,49 @@ RobotRunner::RobotRunner(RobotController* robot_ctrl,
  * robot data, and any control logic specific data.
  */
 void RobotRunner::init() {
-  //     std::string mjcf_file;
-    
-  //   mjcf_file = std::string("../resource/")+std::string("opy_v05/opy_v05.xml");
-  //   // _Sim = new Simulation(mjcf_file); 
-  //   // _Sim->motor_input_type_=1;
-  //   // _Sim->SetCommand(_Command);
-  //   // _Sim->SetFeedback(_Feedback,_ImuData);
-  //   // _Sim->SetTimestep(_period);
-  //   // _Sim->RunOnce();
-  // // printf("[RobotRunner] initialize\n");
 
-  // // // Build the appropriate Quadruped object
-  // // if (robotType == RobotType::MINI_CHEETAH) {
-  // //   _quadruped = buildMiniCheetah<float>();
-  // // } else {
-  // //   _quadruped = buildCheetah3<float>();
-  // // }
-  //   _quadruped=ParseURDFtoQuadruped<float>(std::string("../resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
-  // // // Initialize the model and robot data
-  // _model = _quadruped.buildModel();
-  // // _jpos_initializer = new JPosInitializer<float>(3., controlParameters->controller_dt);
+  // printf("[RobotRunner] initialize\n");
 
-  // // // Always initialize the leg controller and state entimator
-  // _legController = new LegController<float>(_quadruped);
-  // _stateEstimator = new StateEstimatorContainer<float>(
-  //     _ImuData, _legController->datas,
-  //     &_stateEstimate, controlParameters);
-  // initializeStateEstimator(false);
+  // // Build the appropriate Quadruped object
+  // if (robotType == RobotType::MINI_CHEETAH) {
+  //   _quadruped = buildMiniCheetah<float>();
+  // } else {
+  //   _quadruped = buildCheetah3<float>();
+  // }
+    _quadruped=ParseURDFtoQuadruped<float>(std::string("../resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
+  // // Initialize the model and robot data
+  _model = _quadruped.buildModel();
+  // _jpos_initializer = new JPosInitializer<float>(3., controlParameters->controller_dt);
 
-  // // memset(&rc_control, 0, sizeof(rc_control_settings));
-  // // // Initialize the DesiredStateCommand object
-  
-  //   DesiredStateCommand<float>* _desiredStateCommand(driverCommand,
+  // // Always initialize the leg controller and state entimator
+  _legController = new LegController<float>(_quadruped);
+  _stateEstimator = new StateEstimatorContainer<float>(
+      _ImuData, _legController->datas,
+      &_stateEstimate, controlParameters);
+  initializeStateEstimator(false);
+
+  // memset(&rc_control, 0, sizeof(rc_control_settings));
+  // Initialize the DesiredStateCommand object
+  _desiredStateCommand =
+    new DesiredStateCommand<float>(driverCommand,
         
-  //       &_stateEstimate,
-  //       controlParameters->controller_dt);
+        &_stateEstimate,
+        controlParameters->controller_dt);
 
-  // // // Controller initializations
-  // _robot_ctrl->_model = &_model;
-  // _robot_ctrl->_quadruped = &_quadruped;
-  // _robot_ctrl->_legController = _legController;
-  // _robot_ctrl->_ImuData=_ImuData;
-  // _robot_ctrl->_stateEstimator = _stateEstimator;
-  // _robot_ctrl->_stateEstimate = &_stateEstimate;
-  // // _robot_ctrl->_visualizationData= visualizationData;
-  // _robot_ctrl->_robotType = robotType;
-  // _robot_ctrl->_driverCommand = driverCommand;
-  // _robot_ctrl->_controlParameters = controlParameters;
-  // _robot_ctrl->_desiredStateCommand = _desiredStateCommand;
+  // // Controller initializations
+  _robot_ctrl->_model = &_model;
+  _robot_ctrl->_quadruped = &_quadruped;
+  _robot_ctrl->_legController = _legController;
+  _robot_ctrl->_ImuData=_ImuData;
+  _robot_ctrl->_stateEstimator = _stateEstimator;
+  _robot_ctrl->_stateEstimate = &_stateEstimate;
+  // _robot_ctrl->_visualizationData= visualizationData;
+  _robot_ctrl->_robotType = robotType;
+  _robot_ctrl->_driverCommand = driverCommand;
+  _robot_ctrl->_controlParameters = controlParameters;
+  _robot_ctrl->_desiredStateCommand = _desiredStateCommand;
 
-  // _robot_ctrl->initializeController();
+  _robot_ctrl->initializeController();
 
 }
 
@@ -93,7 +85,7 @@ void RobotRunner::run() {
 
   // Run the state estimator step
   //_stateEstimator->run(cheetahMainVisualization);
-  // _stateEstimator->run();
+  _stateEstimator->run();
   // //cheetahMainVisualization->p = _stateEstimate.position;
   // visualizationData->clear();
 
@@ -139,9 +131,9 @@ void RobotRunner::run() {
   //       }
   //     } else {
   //       // Run Control 
-        // _legController->updateData(_Feedback);
-        // _robot_ctrl->runController(); 
-        // _legController->updateCommand(_Command);
+        _legController->updateData(_Feedback);
+        _robot_ctrl->runController(); 
+        _legController->updateCommand(_Command);
 
   //       cheetahMainVisualization->p = _stateEstimate.position;
 
@@ -167,7 +159,7 @@ void RobotRunner::run() {
   // cheetahMainVisualization->quat = _stateEstimate.orientation;
 
   // // Sets the leg controller commands for the robot appropriate commands
-  // finalizeStep();
+  finalizeStep();
   // _Sim->RunOnce();
 
 }
@@ -249,70 +241,70 @@ void RobotRunner::initializeStateEstimator(bool cheaterMode) {
 #define THIS_COM "~/legged-sim/"
 void RobotRunner::initializeParameters()
 {
-  //   bool _load_parameters_from_file =1 ;
-  //   std::cout<<controlParameters<<std::endl;
-  //    std::string robotParametersPath="../resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
-  //     std::string userParametersPath="../resource/opy_v05/mini-cheetah-defaults.yaml";
-  // // userParameters.initializeFromYamlFile(path);
+    bool _load_parameters_from_file =1 ;
+    std::cout<<controlParameters<<std::endl;
+     std::string robotParametersPath="../resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
+      std::string userParametersPath="../resource/opy_v05/mini-cheetah-defaults.yaml";
+  // userParameters.initializeFromYamlFile(path);
 
-  //  if(_load_parameters_from_file) {
-  //   printf("[Hardware Bridge] Loading parameters from file...\n");
-  //   try {
-  //     controlParameters->initializeFromYamlFile(userParametersPath);
-  //   } catch(std::exception& e) {
-  //     printf("Failed to initialize robot parameters from yaml file: %s\n", e.what());
-  //     exit(1);
-  //   }
+   if(_load_parameters_from_file) {
+    printf("[Hardware Bridge] Loading parameters from file...\n");
+    try {
+      controlParameters->initializeFromYamlFile(userParametersPath);
+    } catch(std::exception& e) {
+      printf("Failed to initialize robot parameters from yaml file: %s\n", e.what());
+      exit(1);
+    }
 
-  //   if(!controlParameters->isFullyInitialized()) {
-  //     printf("Failed to initialize all robot parameters\n");
-  //     exit(1);
-  //   }
+    if(!controlParameters->isFullyInitialized()) {
+      printf("Failed to initialize all robot parameters\n");
+      exit(1);
+    }
 
-  //   printf("Loaded robot parameters\n");
+    printf("Loaded robot parameters\n");
 
-  //   if(_robot_ctrl->getUserControlParameters()) {
-  //     try {
-  //       _robot_ctrl->getUserControlParameters()->initializeFromYamlFile( robotParametersPath);
-  //     } catch(std::exception& e) {
-  //       printf("Failed to initialize user parameters from yaml file: %s\n", e.what());
-  //       exit(1);
-  //     }
+    if(_robot_ctrl->getUserControlParameters()) {
+      try {
+        _robot_ctrl->getUserControlParameters()->initializeFromYamlFile( robotParametersPath);
+      } catch(std::exception& e) {
+        printf("Failed to initialize user parameters from yaml file: %s\n", e.what());
+        exit(1);
+      }
 
-  //     if(!_robot_ctrl->getUserControlParameters()->isFullyInitialized()) {
-  //       printf("Failed to initialize all user parameters\n");
-  //       exit(1);
-  //     }
+      if(!_robot_ctrl->getUserControlParameters()->isFullyInitialized()) {
+        printf("Failed to initialize all user parameters\n");
+        exit(1);
+      }
 
-  //     printf("Loaded user parameters\n");
-  //   } else {
-  //     printf("Did not load user parameters because there aren't any\n");
-  //   }
-  // } else {
-  //   printf("[Hardware Bridge] Loading parameters over LCM...\n");
-  //   while (!controlParameters->isFullyInitialized()) {
-  //     printf("[Hardware Bridge] Waiting for robot parameters...\n");
-  //     usleep(1000000);
-  //   }
+      printf("Loaded user parameters\n");
+    } else {
+      printf("Did not load user parameters because there aren't any\n");
+    }
+  } else {
+    printf("[Hardware Bridge] Loading parameters over LCM...\n");
+    while (!controlParameters->isFullyInitialized()) {
+      printf("[Hardware Bridge] Waiting for robot parameters...\n");
+      usleep(1000000);
+    }
 
-  //   if(_robot_ctrl->getUserControlParameters()) {
-  //     while (!_robot_ctrl->getUserControlParameters()->isFullyInitialized()) {
-  //       printf("[Hardware Bridge] Waiting for user parameters...\n");
-  //       usleep(1000000);
-  //     }
-  //   }
-  // }
+    if(_robot_ctrl->getUserControlParameters()) {
+      while (!_robot_ctrl->getUserControlParameters()->isFullyInitialized()) {
+        printf("[Hardware Bridge] Waiting for user parameters...\n");
+        usleep(1000000);
+      }
+    }
+  }
 
 
 
   // printf("[Hardware Bridge] Got all parameters, starting up!\n");
 }
 
-void RobotRunner::ReceiveLCM()
+// void RobotRunner::ReceiveLCM()
 
-{
-// RecieveGamepadCommand (driverCommand);
-}
+// {
+// // RecieveGamepadCommand (driverCommand);
+// }
 RobotRunner::~RobotRunner() {
   // delete _legController;
   // delete _stateEstimator;

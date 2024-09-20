@@ -1,5 +1,5 @@
 #include <EmbeddedController.hpp>
-// #include <FSM/ControlFSM.h>
+#include <FSM/ControlFSM.h>
 #include <iostream>
 #include <eigen3/Eigen/Dense>
 EmbeddedController::EmbeddedController() : RobotController()
@@ -13,9 +13,9 @@ EmbeddedController::EmbeddedController() : RobotController()
  */
 void EmbeddedController::initializeController()
 {
-  // OriKp << 20,20,20;
+  
   // Initialize a new GaitScheduler object
-  _gaitScheduler = new GaitScheduler<float>(&userParameters, _controlParameters->controller_dt);
+  // _gaitScheduler = new GaitScheduler<float>(&userParameters, _controlParameters->controller_dt);
 
   // // Initialize a new ContactEstimator object
   // //_contactEstimator = new ContactEstimator<double>();
@@ -23,10 +23,10 @@ void EmbeddedController::initializeController()
 
   // // Initializes the Control FSM with all the required data
   std::cout<<"ctrl params"<<_quadruped<<std::endl;
-  _controlFSM = new ControlFSM<float>(_quadruped, _stateEstimator,
-                                      _legController, _gaitScheduler,
-                                      _desiredStateCommand, _controlParameters,
-                                      &userParameters);
+  // _controlFSM = new ControlFSM<float>(_quadruped, _stateEstimator,
+  //                                     _legController, _gaitScheduler,
+  //                                     _desiredStateCommand, _controlParameters,
+  //                                     &userParameters);
 }
 
 /**
@@ -38,11 +38,11 @@ void EmbeddedController::runController()
   // _gaitScheduler->step();
 
   // // Find the desired state trajectory
-  _desiredStateCommand->convertToStateCommands();
-  _desiredStateCommand->gamepadCommand->start;
+  // _desiredStateCommand->convertToStateCommands();
+  // _desiredStateCommand->gamepadCommand->start;
   
   // std::cout<<"_driverCommand->leftStickAnalog "<<_driverCommand->leftStickAnalog<<std::endl;
 
   // // Run the Control FSM code
-  _controlFSM->runFSM();
+  // _controlFSM->runFSM();
 }
