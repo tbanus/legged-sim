@@ -16,6 +16,7 @@ public:
 
   template<typename T>
   bool getVector(const std::string &key, std::vector<T> &vec_value) {
+    printf("config_[key]");
     try {
       vec_value = config_[key].as<std::vector<T> >();
     } catch (std::exception &e) {
@@ -26,6 +27,7 @@ public:
 
   template<typename T>
   bool getVector(const std::string &category, const std::string &key, std::vector<T> &vec_value) {
+    printf("config_[keyaa]");
     try {
       vec_value = config_[category][key].as<std::vector<T>>();
     } catch (std::exception &e) {

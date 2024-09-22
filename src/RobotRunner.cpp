@@ -40,7 +40,7 @@ void RobotRunner::init() {
   // } else {
   //   _quadruped = buildCheetah3<float>();
   // }
-    _quadruped=ParseURDFtoQuadruped<float>(std::string("../resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
+    _quadruped=ParseURDFtoQuadruped<float>(std::string("/home/banus/thesis-project/envpool/envpool/mujoco/legged-sim/resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
   // // Initialize the model and robot data
   _model = _quadruped.buildModel();
   // _jpos_initializer = new JPosInitializer<float>(3., controlParameters->controller_dt);
@@ -242,20 +242,24 @@ void RobotRunner::initializeStateEstimator(bool cheaterMode) {
 void RobotRunner::initializeParameters()
 {
     bool _load_parameters_from_file =1 ;
-    std::cout<<controlParameters<<std::endl;
-     std::string robotParametersPath="../resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
-      std::string userParametersPath="../resource/opy_v05/mini-cheetah-defaults.yaml";
-  // userParameters.initializeFromYamlFile(path);
-
-   if(_load_parameters_from_file) {
+    // std::cout<<controlParameters<<std::endl;
+    
+  	std::string robotParametersPath = "/home/banus/thesis-project/legged-sim/resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
+    std::string userParametersPath = "/home/banus/thesis-project/legged-sim/resource/opy_v05/mini-cheetah-defaults.yaml";
+  	// userParameters.initializeFromYamlFile(path);
+  	printf("controlParameters: %d", controlParameters);
+   	if(_load_parameters_from_file) {
     printf("[Hardware Bridge] Loading parameters from file...\n");
     try {
+       printf("[Hardware Bridge] try..\n");
       controlParameters->initializeFromYamlFile(userParametersPath);
+      printf("[Hardware Bridge] tried..\n");
     } catch(std::exception& e) {
+      printf("[Hardware Bridge] caught..\n");
       printf("Failed to initialize robot parameters from yaml file: %s\n", e.what());
       exit(1);
     }
-
+    
     if(!controlParameters->isFullyInitialized()) {
       printf("Failed to initialize all robot parameters\n");
       exit(1);
@@ -286,7 +290,7 @@ void RobotRunner::initializeParameters()
       printf("[Hardware Bridge] Waiting for robot parameters...\n");
       usleep(1000000);
     }
-
+  printf("come again for big fudge \n");
     if(_robot_ctrl->getUserControlParameters()) {
       while (!_robot_ctrl->getUserControlParameters()->isFullyInitialized()) {
         printf("[Hardware Bridge] Waiting for user parameters...\n");
@@ -297,7 +301,7 @@ void RobotRunner::initializeParameters()
 
 
 
-  // printf("[Hardware Bridge] Got all parameters, starting up!\n");
+  printf("[Hardware Bridge] Got all parameters, starting up!\n");
 }
 
 // void RobotRunner::ReceiveLCM()

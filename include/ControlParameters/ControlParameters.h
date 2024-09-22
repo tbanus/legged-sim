@@ -19,8 +19,9 @@
 #include <mutex>
 #include <string>
 #include "Utilities/utilities.h"
-#include "cTypes.h"
+#include <cTypes.h>
 #include <ParamHandler.hpp>
+#include <eigen3/Eigen/Dense>
 
 
 #define CONTROL_PARAMETER_MAXIMUM_NAME_LENGTH 64

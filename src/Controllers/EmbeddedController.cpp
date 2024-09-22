@@ -34,15 +34,15 @@ void EmbeddedController::initializeController()
  */
 void EmbeddedController::runController()
 {
-  // // Find the current gait schedule
-  // _gaitScheduler->step();
+  // Find the current gait schedule
+  _gaitScheduler->step();
 
-  // // Find the desired state trajectory
-  // _desiredStateCommand->convertToStateCommands();
-  // _desiredStateCommand->gamepadCommand->start;
+  // Find the desired state trajectory
+  _desiredStateCommand->convertToStateCommands();
+  _desiredStateCommand->gamepadCommand->start;
   
-  // std::cout<<"_driverCommand->leftStickAnalog "<<_driverCommand->leftStickAnalog<<std::endl;
+  std::cout<<"_driverCommand->leftStickAnalog "<<_driverCommand->leftStickAnalog<<std::endl;
 
-  // // Run the Control FSM code
-  // _controlFSM->runFSM();
+  // Run the Control FSM code
+  _controlFSM->runFSM();
 }
