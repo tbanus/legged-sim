@@ -46,8 +46,8 @@ ControlFSM<T>::ControlFSM(Quadruped<T>* _quadruped,
   // statesList.jointPD = new FSM_State_JointPD<T>(&data);
   // statesList.impedanceControl = new FSM_State_ImpedanceControl<T>(&data);
   statesList.standUp = new FSM_State_StandUp<T>(&data);
-  statesList.balanceStand = new FSM_State_BalanceStand<T>(&data);
-  statesList.locomotion = new FSM_State_Locomotion<T>(&data);
+  // statesList.balanceStand = new FSM_State_BalanceStand<T>(&data);
+  // statesList.locomotion = new FSM_State_Locomotion<T>(&data);
   // statesList.recoveryStand = new FSM_State_RecoveryStand<T>(&data);
   // statesList.vision = new FSM_State_Vision<T>(&data);
   // statesList.backflip = new FSM_State_BackFlip<T>(&data);
@@ -255,11 +255,11 @@ FSM_State<T>* ControlFSM<T>::getNextState(FSM_StateName stateName) {
     case FSM_StateName::STAND_UP:
       return statesList.standUp;
 
-    case FSM_StateName::BALANCE_STAND:
-      return statesList.balanceStand;
+    // case FSM_StateName::BALANCE_STAND:
+    //   return statesList.balanceStand;
 
-    case FSM_StateName::LOCOMOTION:
-      return statesList.locomotion;
+    // case FSM_StateName::LOCOMOTION:
+    //   return statesList.locomotion;
 
     // case FSM_StateName::RECOVERY_STAND:
     //   return statesList.recoveryStand;

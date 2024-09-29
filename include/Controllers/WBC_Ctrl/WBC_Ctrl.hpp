@@ -8,7 +8,7 @@
 #include <WBC/WBIC/WBIC.hpp>
 #include <WBC/WBIC/KinWBC.hpp>
 
-#include <lcm-cpp.hpp>
+// #include <lcm-cpp.hpp>
 #include "wbc_test_data_t.hpp"
 
 #define WBCtrl WBC_Ctrl<T>
@@ -62,7 +62,7 @@ class WBC_Ctrl{
 
     unsigned long long _iter;
 
-    lcm::LCM _wbcLCM;
-    wbc_test_data_t _wbc_data_lcm;
+    // lcm::LCM _wbcLCM;
+    // wbc_test_data_t _wbc_data_lcm;
 };
 #endif

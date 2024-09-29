@@ -11,20 +11,21 @@
 #include "ControlParameters/ControlParameterInterface.h"
 #include "ControlParameters/RobotParameters.h"
 #include "ControlParameters/MIT_UserParameters.h"
-#include "Controllers/StateEstimatorContainer.h"
+// #include "Controllers/StateEstimatorContainer.h"
 // #include "SimUtilities/IMUTypes.h"
 // #include "rt/rt_rc_interface.h"
-#include "Controllers/ContactEstimator.h"
-#include "Controllers/DesiredStateCommand.h"
-#include "Controllers/LegController.h"
-#include "Dynamics/Quadruped.h"
+// #include "Controllers/ContactEstimator.h"
+// #include "Controllers/DesiredStateCommand.h"
+// #include "Controllers/LegController.h"
+// #include "Dynamics/Quadruped.h"
 // #include "JPosInitializer.h"
 
 // #include "SimUtilities/GamepadCommand.h"
 // #include "SimUtilities/VisualizationData.h"
+#include "Utilities/PeriodicTask.h"
 #include <Utilities/RobotCommands.h>
-#include <Utilities/utilities.h>
-#include <Simulation/Simulation.h>
+#include "Utilities/utilities.h"
+// #include <Simulation/Simulation.h>
 #include <Dynamics/ParseURDFtoQuadruped.h>
 // #include "cheetah_visualization_lcmt.hpp"
 // #include "state_estimator_lcmt.hpp"

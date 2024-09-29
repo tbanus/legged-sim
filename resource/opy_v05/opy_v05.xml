@@ -1,5 +1,5 @@
 <mujoco model="opy_v05">
-  <compiler angle="radian" meshdir="../opy_v05/meshes/" autolimits="true"/>
+  <compiler angle="radian" meshdir="../opy_v05/meshes/" />
   <statistic meansize="0.233652" extent="1.00882" center="0 0 -0.175588"/>
     <asset>
     <!-- <hfield name="hmap" file="my_output_image.png" size="3 3 0.3 0.07"/> -->
@@ -163,68 +163,55 @@
       <geom type="sphere"  name ="debugSphere44" contype="0" conaffinity="0" size = "0.01" rgba = "0 1 0 1" />
       <joint type="free" />
     </body>  -->
-  
+<!--   
    <body pos="1. 1 0" euler = "0 0 1.57">
       <inertial pos="0.5 .5 0" mass= "18"/>
       <geom type="mesh" mesh = "slope" name ="slope"  rgba = ".9 0 0 0.1" />
-    </body>
+    </body> -->
 
   </worldbody>
     <actuator>
     <motor name="opy_v05/abad_1_torque" joint="opy_v05/abad_1_joint" forcelimited="true" forcerange="-125 125"/>
-    <position name="opy_v05/abad_1_pos" joint="opy_v05/abad_1_joint" kp="0" />
-    <velocity name="opy_v05/abad_1_vel" joint="opy_v05/abad_1_joint" kv="0" />
+    
     <motor name="opy_v05/hip_1_joint" joint="opy_v05/hip_1_joint"  forcelimited="true" forcerange="-125 125"  />
-    <position name="opy_v05/hip_1_pos" joint="opy_v05/hip_1_joint" kp="0" />
-    <velocity name="opy_v05/hip_1_vel" joint="opy_v05/hip_1_joint" kv="0" />
+
 
 
     <motor name="opy_v05/knee_1_joint" joint="opy_v05/knee_1_joint"  forcelimited="true" forcerange="-125 125" />
-    <position name="opy_v05/knee_1_pos" joint="opy_v05/knee_1_joint" kp="0" />
-    <velocity name="opy_v05/knee_1_vel" joint="opy_v05/knee_1_joint" kv="0" />
-
+    
 
 
     <motor name="opy_v05/abad_2_torque" joint="opy_v05/abad_2_joint" forcelimited="true" forcerange="-125 125"/>
-    <position name="opy_v05/abad_2_pos" joint="opy_v05/abad_2_joint" kp="0" />
-    <velocity name="opy_v05/abad_2_vel" joint="opy_v05/abad_2_joint" kv="0" />
+
     <motor name="opy_v05/hip_2_joint" joint="opy_v05/hip_2_joint"  forcelimited="true" forcerange="-125 125"  />
-    <position name="opy_v05/hip_2_pos" joint="opy_v05/hip_2_joint" kp="0" />
-    <velocity name="opy_v05/hip_2_vel" joint="opy_v05/hip_2_joint" kv="0" />
+
 
 
     <motor name="opy_v05/knee_2_joint" joint="opy_v05/knee_2_joint"  forcelimited="true" forcerange="-125 125" />
-    <position name="opy_v05/knee_2_pos" joint="opy_v05/knee_2_joint" kp="0" />
-    <velocity name="opy_v05/knee_2_vel" joint="opy_v05/knee_2_joint" kv="0" />
+
 
 
     <motor name="opy_v05/abad_3_torque" joint="opy_v05/abad_3_joint" forcelimited="true" forcerange="-125 125"/>
-    <position name="opy_v05/abad_3_pos" joint="opy_v05/abad_3_joint" kp="0" />
-    <velocity name="opy_v05/abad_3_vel" joint="opy_v05/abad_3_joint" kv="0" />
+
 
     <motor name="opy_v05/hip_3_joint" joint="opy_v05/hip_3_joint"  forcelimited="true" forcerange="-125 125"  />
-    <position name="opy_v05/hip_3_pos" joint="opy_v05/hip_3_joint" kp="0" />
-    <velocity name="opy_v05/hip_3_vel" joint="opy_v05/hip_3_joint" kv="0" />
+
 
 
     <motor name="opy_v05/knee_3_joint" joint="opy_v05/knee_3_joint"  forcelimited="true" forcerange="-125 125" />
-    <position name="opy_v05/knee_3_pos" joint="opy_v05/knee_3_joint" kp="0" />
-    <velocity name="opy_v05/knee_3_vel" joint="opy_v05/knee_3_joint" kv="0" />
+
 
 
 
     <motor name="opy_v05/abad_4_torque" joint="opy_v05/abad_4_joint" forcelimited="true" forcerange="-125 125"/>
-    <position name="opy_v05/abad_4_pos" joint="opy_v05/abad_4_joint" kp="0" />
-    <velocity name="opy_v05/abad_4_vel" joint="opy_v05/abad_4_joint" kv="0" />
+
 
     <motor name="opy_v05/hip_4_joint" joint="opy_v05/hip_4_joint"  forcelimited="true" forcerange="-125 125"  />
-    <position name="opy_v05/hip_4_pos" joint="opy_v05/hip_4_joint" kp="0" />
-    <velocity name="opy_v05/hip_4_vel" joint="opy_v05/hip_4_joint" kv="0" />
+
 
 
     <motor name="opy_v05/knee_4_joint" joint="opy_v05/knee_4_joint"  forcelimited="true" forcerange="-125 125" />
-    <position name="opy_v05/knee_4_pos" joint="opy_v05/knee_4_joint" kp="0" />
-    <velocity name="opy_v05/knee_4_vel" joint="opy_v05/knee_4_joint" kv="0" />
+
 
 
   </actuator>
@@ -254,22 +241,10 @@
 
   </contact>
   <sensor>
-  <accelerometer name="acc" site="sensorsurf" />
-  <gyro site="sensorsurf" />
-  <framequat name="quat" objtype="body" objname="opy_v05/base_link_inertia" />
+    <accelerometer name="acc" site="sensorsurf" />
+    <gyro site="sensorsurf" />
+    <framequat name="quat" objtype="body" objname="opy_v05/base_link_inertia" />
   </sensor>
 
 
 </mujoco>
-
-
-
-
-
-
-
-
-
-
-
-

@@ -113,6 +113,7 @@ int main(int argc, char* argv[]){
   _robotRunner->_Command = &_Command;
   _robotRunner->controlParameters = &_robotParams;
   _robotRunner->initializeParameters();
+  _robotRunner->init();
   printf("initalized params\n");
   
   // // auto* param = _ctrl->getUserControlParameters();
@@ -147,11 +148,13 @@ int main(int argc, char* argv[]){
   // // KeyboardCommand.start();
   // usleep(1e6);
 
-  float i = 1 ;
+  float i = 1000 ;
   while (i) { 
     // #ifndef HW_ENABLE
     //   _robotRunner->_Sim->UpdateScene();
-      usleep(1e6/60);
+      // usleep(1e6/60);
+       _robotRunner->run();
+      i--;
   //   #else
   //      usleep(1e6);
   //   #endif

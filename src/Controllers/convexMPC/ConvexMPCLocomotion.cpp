@@ -20,7 +20,7 @@ ConvexMPCLocomotion::ConvexMPCLocomotion(float _dt, int _iterations_between_mpc,
   iterationsBetweenMPC(_iterations_between_mpc),
   horizonLength(10),
   dt(_dt),
-  trotting(horizonLength, Vec4<int>(0,5,5,0), Vec4<int>(5,5,5,5),"Trotting"),
+  trotting(horizonLength*2, Vec4<int>(0,10,10,0), Vec4<int>(10,10,10,10),"Trotting"),
   bounding(horizonLength, Vec4<int>(5,5,0,0),Vec4<int>(4,4,4,4),"Bounding"),
   //bounding(horizonLength, Vec4<int>(5,5,0,0),Vec4<int>(3,3,3,3),"Bounding"),
   pronking(horizonLength, Vec4<int>(0,0,0,0),Vec4<int>(4,4,4,4),"Pronking"),
@@ -283,11 +283,11 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
     // Using the estimated velocity is correct
     //Vec3<float> des_vel_world = seResult.rBody.transpose() * des_vel;
     float pfx_rel = seResult.vWorld[0] * (.5 + _parameters->cmpc_bonus_swing) * stance_time +
-      .03f*(seResult.vWorld[0]-v_des_world[0]) +
+      .13f*(seResult.vWorld[0]-v_des_world[0]) +
       (0.5f*seResult.position[2]/9.81f) * (seResult.vWorld[1]*_yaw_turn_rate);
 
     float pfy_rel = seResult.vWorld[1] * .5 * stance_time * dtMPC +
-      .03f*(seResult.vWorld[1]-v_des_world[1]) +
+      .13f*(seResult.vWorld[1]-v_des_world[1]) +
       (0.5f*seResult.position[2]/9.81f) * (-seResult.vWorld[0]*_yaw_turn_rate);
     pfx_rel = fminf(fmaxf(pfx_rel, -p_rel_max), p_rel_max);
     pfy_rel = fminf(fmaxf(pfy_rel, -p_rel_max), p_rel_max);

@@ -6,10 +6,10 @@
 
 #include <utility>
 
-#include <ControlParameters/ControlParameters.h>
+#include "ControlParameters/ControlParameters.h"
 // #include "INIReader.h"
 #include "Utilities/utilities.h"
-#include <cppTypes.h>
+
 
 #define YAML_COLLECTION_NAME_KEY "__collection-name__"
 
@@ -323,7 +323,6 @@ ControlParameterValueKind getControlParameterValueKindFromString(const std::stri
  * Add and initialize parameters from a YAML file
  */
 void ControlParameters::defineAndInitializeFromYamlFile(const std::string &path) {
-  printf("defineAndInitializeFromYamlFile");
   ParamHandler paramHandler(path);
 
   if (!paramHandler.fileOpenedSuccessfully()) {
@@ -413,9 +412,9 @@ void ControlParameters::defineAndInitializeFromYamlFile(const std::string &path)
  * @param path : the file name
  */
 void ControlParameters::initializeFromYamlFile(const std::string& path) {
-  printf("ControlParameters::InitializeFromYamlFile\n");
+  
   ParamHandler paramHandler(path);
- printf("ControlParameters::InitializeFromYamlFile  construct param handler \n");
+
   if (!paramHandler.fileOpenedSuccessfully()) {
     printf(
         "[ERROR] Could not open yaml file %s : not initializing control "
@@ -423,7 +422,6 @@ void ControlParameters::initializeFromYamlFile(const std::string& path) {
         path.c_str());
     throw std::runtime_error("yaml file bad");
   }
-   printf("ControlParameters::InitializeFromYamlFile file opened\n");
 
   std::string name;
   if (!paramHandler.getString(YAML_COLLECTION_NAME_KEY, name)) {
@@ -431,7 +429,6 @@ void ControlParameters::initializeFromYamlFile(const std::string& path) {
            YAML_COLLECTION_NAME_KEY);
     throw std::runtime_error("yaml file bad");
   }
-   printf("ControlParameters::InitializeFromYamlFile\n name looked");
 
   if (name != _name) {
     printf(
@@ -440,13 +437,10 @@ void ControlParameters::initializeFromYamlFile(const std::string& path) {
         path.c_str(), name.c_str(), _name.c_str());
     throw std::runtime_error("yaml file bad");
   }
-   printf("ControlParameters::InitializeFromYamlFile wrong name checked\n");
 
   std::vector<std::string> keys = paramHandler.getKeys();
-   printf("ControlParameters::InitializeFromYamlFile got keys\n");
 
   for (auto& key : keys) {
-    printf("ControlParameters::InitializeFromYamlFile key = %s\n", key.c_str());
     if (key == YAML_COLLECTION_NAME_KEY) continue;
     ControlParameter& cp = collection.lookup(key);
     switch (cp._kind) {
@@ -471,12 +465,9 @@ void ControlParameters::initializeFromYamlFile(const std::string& path) {
       case ControlParameterValueKind::VEC3_DOUBLE: {
         std::vector<double> vv;
         paramHandler.getVector(key, vv);
-        // assert();
-        if (vv.size()!=3)
-          printf("vvsize error");
+        // assert(paramHandler.getVector(key, vv));
         assert(vv.size() == 3);
         Vec3<double> v(vv[0], vv[1], vv[2]);
-        printf("acp %p", &cp);
         cp.initializeVec3d(v);
       } break;
 

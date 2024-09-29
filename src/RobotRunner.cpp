@@ -47,13 +47,13 @@ void RobotRunner::init() {
 
   // // Always initialize the leg controller and state entimator
   _legController = new LegController<float>(_quadruped);
-  _stateEstimator = new StateEstimatorContainer<float>(
-      _ImuData, _legController->datas,
-      &_stateEstimate, controlParameters);
-  initializeStateEstimator(false);
+  // _stateEstimator = new StateEstimatorContainer<float>(
+  //     _ImuData, _legController->datas,
+  //     &_stateEstimate, controlParameters);
+  // initializeStateEstimator(false);
 
   // memset(&rc_control, 0, sizeof(rc_control_settings));
-  // Initialize the DesiredStateCommand object
+  // // Initialize the DesiredStateCommand object
   _desiredStateCommand =
     new DesiredStateCommand<float>(driverCommand,
         
@@ -85,7 +85,7 @@ void RobotRunner::run() {
 
   // Run the state estimator step
   //_stateEstimator->run(cheetahMainVisualization);
-  _stateEstimator->run();
+  // _stateEstimator->run();
   // //cheetahMainVisualization->p = _stateEstimate.position;
   // visualizationData->clear();
 
@@ -131,10 +131,13 @@ void RobotRunner::run() {
   //       }
   //     } else {
   //       // Run Control 
+        printf("_Feedback %f", _Feedback->q_abad[0]);
         _legController->updateData(_Feedback);
-        _robot_ctrl->runController(); 
+        puts("updated leg controller");
+        _robot_ctrl->runController();
+        puts("ran robot ctrl") ;
         _legController->updateCommand(_Command);
-
+        puts("updated command");
   //       cheetahMainVisualization->p = _stateEstimate.position;
 
   //       // Update Visualization
@@ -209,7 +212,7 @@ void RobotRunner::setupStep() {
  */
 void RobotRunner::finalizeStep() {
 //   if (robotType == RobotType::MINI_CHEETAH) {
-//     _legController->updateCommand(Command);
+    // _legController->updateCommand(Command);
 //   } else if (robotType == RobotType::CHEETAH_3) {
 //     _legController->updateCommand(tiBoardCommand);
 //   } else {
@@ -228,14 +231,14 @@ void RobotRunner::finalizeStep() {
  * @param cheaterMode
  */
 void RobotRunner::initializeStateEstimator(bool cheaterMode) {
-  // _stateEstimator->removeAllEstimators();
-  // _stateEstimator->addEstimator<ContactEstimator<float>>();
-  // Vec4<float> contactDefault;
-  // contactDefault << 0.5, 0.5, 0.5, 0.5;
-  // _stateEstimator->setContactPhase(contactDefault);
+  _stateEstimator->removeAllEstimators();
+  _stateEstimator->addEstimator<ContactEstimator<float>>();
+  Vec4<float> contactDefault;
+  contactDefault << 0.5, 0.5, 0.5, 0.5;
+  _stateEstimator->setContactPhase(contactDefault);
 
-  //   _stateEstimator->addEstimator<VectorNavOrientationEstimator<float>>();
-  //   _stateEstimator->addEstimator<LinearKFPositionVelocityEstimator<float>>();
+    _stateEstimator->addEstimator<VectorNavOrientationEstimator<float>>();
+    _stateEstimator->addEstimator<LinearKFPositionVelocityEstimator<float>>();
   
 }
 #define THIS_COM "~/legged-sim/"
@@ -247,24 +250,23 @@ void RobotRunner::initializeParameters()
   	std::string robotParametersPath = "/home/banus/thesis-project/legged-sim/resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
     std::string userParametersPath = "/home/banus/thesis-project/legged-sim/resource/opy_v05/mini-cheetah-defaults.yaml";
   	// userParameters.initializeFromYamlFile(path);
-  	printf("controlParameters: %d", controlParameters);
+  	// printf("controlParameters: %d", controlParameters);
    	if(_load_parameters_from_file) {
     printf("[Hardware Bridge] Loading parameters from file...\n");
+    
     try {
-       printf("[Hardware Bridge] try..\n");
+      printf("initializeFromYamlFile \n");
       controlParameters->initializeFromYamlFile(userParametersPath);
-      printf("[Hardware Bridge] tried..\n");
     } catch(std::exception& e) {
-      printf("[Hardware Bridge] caught..\n");
       printf("Failed to initialize robot parameters from yaml file: %s\n", e.what());
       exit(1);
     }
-    
+
     if(!controlParameters->isFullyInitialized()) {
       printf("Failed to initialize all robot parameters\n");
       exit(1);
     }
-
+    printf("initializeFromYamlFile ");
     printf("Loaded robot parameters\n");
 
     if(_robot_ctrl->getUserControlParameters()) {
@@ -290,7 +292,7 @@ void RobotRunner::initializeParameters()
       printf("[Hardware Bridge] Waiting for robot parameters...\n");
       usleep(1000000);
     }
-  printf("come again for big fudge \n");
+
     if(_robot_ctrl->getUserControlParameters()) {
       while (!_robot_ctrl->getUserControlParameters()->isFullyInitialized()) {
         printf("[Hardware Bridge] Waiting for user parameters...\n");

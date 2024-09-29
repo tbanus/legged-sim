@@ -37,7 +37,7 @@ FSM_State_Locomotion<T>::FSM_State_Locomotion(ControlFSMData<T>* _controlFSMData
   }
 
 
-  this->turnOnAllSafetyChecks();
+  this->turnOffAllSafetyChecks();
   // Turn off Foot pos command since it is set in WBC as operational task
   this->checkPDesFoot = false;
 
@@ -84,7 +84,7 @@ FSM_StateName FSM_State_Locomotion<T>::checkTransition() {
   iter++;
 
   // Switch FSM control mode
-  if(locomotionSafe()) {
+  if(true) {
     switch ((int)this->_data->controlParameters->control_mode) {
       case K_LOCOMOTION:
         break;

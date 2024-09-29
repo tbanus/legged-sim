@@ -11,10 +11,10 @@
 
 // FSM States
 #include <FSM/FSM_State.h>
-#include "FSM/FSM_State_BalanceStand.h"
+// #include "FSM/FSM_State_BalanceStand.h"
 // #include "FSM/FSM_State_ImpedanceControl.h"
 // #include "FSM/FSM_State_JointPD.h"
-#include "FSM/FSM_State_Locomotion.h"
+// #include "FSM/FSM_State_Locomotion.h"
 #include "FSM/FSM_State_Passive.h"
 #include "FSM/FSM_State_StandUp.h"
 // #include "FSM/FSM_State_RecoveryStand.h"
@@ -38,8 +38,8 @@ struct FSM_StatesList {
   // FSM_State_JointPD<T>* jointPD;
   // FSM_State_ImpedanceControl<T>* impedanceControl;
   FSM_State_StandUp<T>* standUp;
-  FSM_State_BalanceStand<T>* balanceStand;
-  FSM_State_Locomotion<T>* locomotion;
+  // FSM_State_BalanceStand<T>* balanceStand;
+  // FSM_State_Locomotion<T>* locomotion;
   // FSM_State_RecoveryStand<T>* recoveryStand;
   // FSM_State_Vision<T>* vision;
   // FSM_State_BackFlip<T>* backflip;

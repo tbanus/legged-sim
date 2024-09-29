@@ -54,13 +54,16 @@ void FSM_State_StandUp<T>::run()
 
   if (this->_data->_quadruped->_robotType == RobotType::MINI_CHEETAH)
   {
+    std::cout<<"stand up run"<<std::endl;
     T hMax = 0.4;
-    T progress = 1 * iter * this->_data->controlParameters->controller_dt;
-
+    // T progress = 1 * iter * this->_data->controlParameters->controller_dt;
+    T progress = 1 * iter * 0.002;
+    printf("progress is %f, iter %d\n", progress, iter);
     if (progress > 1.)
     {
       progress = 1.;
-      this->_data->controlParameters->control_mode=K_BALANCE_STAND;
+      std::cout<<"end stand up"<<std::endl;
+      // this->_data->controlParameters->control_mode=K_BALANCE_STAND;
     }
 
     for (int i = 0; i < 4; i++)
@@ -71,7 +74,10 @@ void FSM_State_StandUp<T>::run()
       this->_data->_legController->commands[i].pDes = _ini_foot_pos[i];
       this->_data->_legController->commands[i].pDes[2] =
           progress * (-hMax) + (1. - progress) * _ini_foot_pos[i][2];
+    
     }
+    printf("desired leg pos 2 is %f", this->_data->_legController->commands[0].pDes[2]);
+    printf(" _ini_foot_pos[i]; %f",  _ini_foot_pos[0][2]);
   }
   
 }
@@ -90,7 +96,7 @@ FSM_StateName FSM_State_StandUp<T>::checkTransition()
 
   // Switch FSM control mode
 
-  std::cout<<"Switch FSM control mode"<<(int)this->_data->controlParameters->control_mode<<std::endl;
+  // std::cout<<"Switch FSM control mode"<<(int)this->_data->controlParameters->control_mode<<std::endl;
   switch ((int)this->_data->controlParameters->control_mode)
   {
   case K_STAND_UP:
@@ -116,7 +122,7 @@ FSM_StateName FSM_State_StandUp<T>::checkTransition()
               << K_PASSIVE << " to "
               << this->_data->controlParameters->control_mode << std::endl;
   }
-
+  
   // Get the next state
   return this->nextStateName;
 }

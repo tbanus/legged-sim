@@ -67,10 +67,10 @@ FSM_StateName FSM_State_Passive<T>::checkTransition() {
   this->nextStateName = this->stateName;
   iter++;
 
-  if(this->_data->_desiredStateCommand->gamepadCommand->start)
-  {
+  // if(this->_data->_desiredStateCommand->gamepadCommand->start)
+  // {
     this->_data->controlParameters->control_mode=1;
-  }
+  // }
   // Switch FSM control mode
   switch ((int)this->_data->controlParameters->control_mode) {
 
@@ -102,6 +102,7 @@ FSM_StateName FSM_State_Passive<T>::checkTransition() {
                 << K_PASSIVE << " to "
                 << this->_data->controlParameters->control_mode << std::endl;
       int i = 0;
+      this->nextStateName=FSM_StateName::STAND_UP;
   }
 
   // Get the next state
