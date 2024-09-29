@@ -19,8 +19,10 @@
 //#include "rt/rt_interface_lcm.h"
 // #include <ReceiveGamepadCommand.h>
 RobotRunner::RobotRunner(RobotController* robot_ctrl, 
-    float period, std::string name)
- {
+    PeriodicTaskManager* manager, 
+    float period, std::string name):
+  PeriodicTask(manager, period, name)
+   {
 
     _robot_ctrl = robot_ctrl;
     _period = period;
@@ -31,7 +33,17 @@ RobotRunner::RobotRunner(RobotController* robot_ctrl,
  * robot data, and any control logic specific data.
  */
 void RobotRunner::init() {
+  #ifdef MANUAL
 
+    std::string mjcf_file;
+    mjcf_file = std::string("../resource/")+std::string("opy_v05/opy_v05.xml");
+    _Sim = new Simulation(mjcf_file); 
+    _Sim->motor_input_type_=1;
+    _Sim->SetCommand(_Command);
+    _Sim->SetFeedback(_Feedback,_ImuData);
+    _Sim->SetTimestep(_period);
+    _Sim->RunOnce();
+    #endif
   // printf("[RobotRunner] initialize\n");
 
   // // Build the appropriate Quadruped object
@@ -163,8 +175,10 @@ void RobotRunner::run() {
 
   // // Sets the leg controller commands for the robot appropriate commands
   finalizeStep();
-  // _Sim->RunOnce();
-
+  #ifdef MANUAL
+  _Sim->RunOnce();
+  #endif
+  
 }
 
 /*!

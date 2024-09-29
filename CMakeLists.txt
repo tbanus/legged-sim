@@ -76,7 +76,7 @@ file(GLOB_RECURSE sources
 
 )
 
-
+add_compile_definitions(MANUAL)
 # add_subdirectory(user)
 
 SET (THIS_COM "../" )

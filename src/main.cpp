@@ -98,7 +98,7 @@ int main(int argc, char* argv[]){
   //   LOG(INFO)<<"[Init] Initializing in Sim Mode"; 
   // #endif
 
-  RobotRunner* _robotRunner = new RobotRunner(_ctrl, 0.002, "robot-control");
+  RobotRunner* _robotRunner = new RobotRunner(_ctrl, &taskManager, 0.002, "robot-control");
   if (!_robotRunner){
     LOG(FATAL)<<"Cannot initalize RobotRunner";
     }
@@ -123,6 +123,7 @@ int main(int argc, char* argv[]){
   
   // std::thread bridgeLcmThread= std::thread(&Bridge::LcmThread,_bridge);
 
+  LOG(INFO)<<"[Init] "<<"Start Periodic tasks.";
   // //GamePad Command periodic task to listen related LCM channel
   // PeriodicMemberFunction<RobotRunner> RR_Gamepad(&taskManager,0.0125,"RR-GamePad",&RobotRunner::ReceiveLCM,_robotRunner);
   // //Check Connection Periodic tast to ping upper computer periodicaly
@@ -143,18 +144,19 @@ int main(int argc, char* argv[]){
   //   //CheckConnection.start();
   // #endif
   
-  _robotRunner->run();
-//   RR_Gamepad.start();
+  _robotRunner->start();
+  // RR_Gamepad.start();
   // // KeyboardCommand.start();
   // usleep(1e6);
 
   float i = 1000 ;
-  while (i) { 
+  while (1) { 
     // #ifndef HW_ENABLE
-    //   _robotRunner->_Sim->UpdateScene();
-      // usleep(1e6/60);
-       _robotRunner->run();
-      i--;
+    #ifdef MANUAL
+      _robotRunner->_Sim->UpdateScene();
+    #endif
+      usleep(1e6/60);
+      //  _robotRunner->run();
   //   #else
   //      usleep(1e6);
   //   #endif

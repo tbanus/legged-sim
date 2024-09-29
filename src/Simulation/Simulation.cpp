@@ -352,7 +352,7 @@ void Simulation::UpdateCan(){
 
         
     
-        mujoco::d->ctrl[(leg)*9+  kAbad_ *3   + 0 ] =cmd_->tau_abad_ff[leg]+cmd_->kp_abad[leg]*(cmd_->q_des_abad[leg] - feedback_->q_abad[leg]) +
+        mujoco::d->ctrl[(leg)*3+  kAbad_] =cmd_->tau_abad_ff[leg]+cmd_->kp_abad[leg]*(cmd_->q_des_abad[leg] - feedback_->q_abad[leg]) +
         cmd_->kd_abad[leg]* (cmd_->qd_des_abad[leg] - feedback_->qd_abad[leg]);    //Torque
         // mujoco::d->ctrl[(leg)*9+  kAbad_  *3  + 1] =cmd_->q_des_abad[leg];     //Position
         // mujoco::d->ctrl[(leg)*9+  kAbad_  *3  + 2] =cmd_->qd_des_abad[leg];     //Velocity
@@ -365,7 +365,7 @@ void Simulation::UpdateCan(){
         // mujoco::m->actuator_gainprm[(leg*9+kAbad_*3+2)*10]=cmd_->kd_abad[leg];
 
 
-        mujoco::d->ctrl[(leg)*9+  kHip_   *3 + 0 ] =cmd_->tau_hip_ff[leg]+cmd_->kp_hip[leg]* (cmd_->q_des_hip[leg] - feedback_->q_hip[leg]) +
+        mujoco::d->ctrl[(leg)*3+  kHip_   ] =cmd_->tau_hip_ff[leg]+cmd_->kp_hip[leg]* (cmd_->q_des_hip[leg] - feedback_->q_hip[leg]) +
         cmd_->kd_hip[leg]* (cmd_->qd_des_hip[leg] - feedback_->qd_hip[leg]) ;   //Torque
 
         // mujoco::d->ctrl[(leg)*9+  kHip_    *3+ 1] =cmd_->q_des_hip[leg];     //Position
@@ -375,7 +375,7 @@ void Simulation::UpdateCan(){
         // mujoco::m->actuator_gainprm[(leg*9+kHip_*3+2)*10]=cmd_->kd_hip[leg];
 
 
-        mujoco::d->ctrl[(leg)*9+  kKnee_    *3+ 0 ] =cmd_->tau_knee_ff[leg]+cmd_->kp_knee[leg]* (cmd_->q_des_knee[leg] - feedback_->q_knee[leg]) +
+        mujoco::d->ctrl[(leg)*3+  kKnee_   ] =cmd_->tau_knee_ff[leg]+cmd_->kp_knee[leg]* (cmd_->q_des_knee[leg] - feedback_->q_knee[leg]) +
         cmd_->kd_knee[leg]* (cmd_->qd_des_knee[leg] - feedback_->qd_knee[leg]) ;;    //Torque
         // mujoco::d->ctrl[(leg)*9+  kKnee_    *3+ 1] =cmd_->q_des_knee[leg];     //Position
         // mujoco::d->ctrl[(leg)*9+  kKnee_    *3+ 2] =cmd_->qd_des_knee[leg];     //Velocity
