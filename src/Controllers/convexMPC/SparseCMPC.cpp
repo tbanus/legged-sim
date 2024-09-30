@@ -1,6 +1,8 @@
 #include "Controllers/convexMPC/SparseCMPC.h"
 #include "Math/orientation_tools.h"
 #include <Utilities/Timer.h>
+
+#ifdef MANUAL
 #include "../../../third-party/JCQP/QpProblem.h"
 
 
@@ -69,7 +71,7 @@ void SparseCMPC::run() {
 
   // Solve!
   //runSolver();
-  runSolverOSQP();
+  // runSolverOSQP();
 }
 
 /*!
@@ -349,6 +351,8 @@ void SparseCMPC::runSolver() {
   assert(_constraintCount == _lb.size());
   assert(varCount == _linearCost.size());
 
+#ifdef MANUAL
+
 
   QpProblem<double> solver(varCount, _constraintCount, false);
   solver.A_triples = std::move(_constraintTriples);
@@ -372,6 +376,7 @@ void SparseCMPC::runSolver() {
 
   solver.runFromTriples(-1, true);
   _result = solver.getSolution().cast<float>();
+  #endif
 }
 
 //static const char* names[] = {"roll", "pitch", "yaw", "x", "y", "z", "roll-rate", "pitch-rate", "yaw-rate", "xv", "yv", "zv"};
@@ -405,3 +410,4 @@ Vec12<float> SparseCMPC::getResult() {
 
   return result;
 }
+#endif

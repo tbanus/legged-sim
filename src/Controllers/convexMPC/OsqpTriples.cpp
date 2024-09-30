@@ -1,3 +1,4 @@
+#ifdef MANUAL
 #include "Controllers/convexMPC/SparseCMPC.h"
 #include "osqp.h"
 #include <Utilities/Timer.h>
@@ -140,3 +141,4 @@ void SparseCMPC::runSolverOSQP() {
   quadraticCostMatrix.freeAll();
   constraintMatrix.freeAll();
 }
+#endif

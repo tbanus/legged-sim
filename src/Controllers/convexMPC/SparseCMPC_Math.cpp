@@ -2,7 +2,7 @@
 #include <eigen3/Eigen/Dense>
 #include <eigen3/unsupported/Eigen/MatrixFunctions>
 
-
+#ifdef MANUAL
 void SparseCMPC::c2d(u32 trajIdx, u32 bBlockStartIdx, u32 block_count) {
 
   Eigen::Matrix<double, 24, 24> AB, expmm;
@@ -26,3 +26,4 @@ void SparseCMPC::c2d(u32 trajIdx, u32 bBlockStartIdx, u32 block_count) {
     _bBlocks[i] *= _dtTrajectory[trajIdx];
   }
 }
+#endif

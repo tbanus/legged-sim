@@ -2,7 +2,9 @@
 #define CONTROLFSM_H
 
 #include <iostream>
-
+#ifdef MANUAL
+#include <lcm-cpp.hpp>
+#endif
 // Contains all of the control related data
 #include "ControlFSMData.h"
 #include <ControlParameters/RobotParameters.h>
@@ -11,10 +13,10 @@
 
 // FSM States
 #include <FSM/FSM_State.h>
-// #include "FSM/FSM_State_BalanceStand.h"
+#include "FSM/FSM_State_BalanceStand.h"
 // #include "FSM/FSM_State_ImpedanceControl.h"
 // #include "FSM/FSM_State_JointPD.h"
-// #include "FSM/FSM_State_Locomotion.h"
+#include "FSM/FSM_State_Locomotion.h"
 #include "FSM/FSM_State_Passive.h"
 #include "FSM/FSM_State_StandUp.h"
 // #include "FSM/FSM_State_RecoveryStand.h"
@@ -38,8 +40,8 @@ struct FSM_StatesList {
   // FSM_State_JointPD<T>* jointPD;
   // FSM_State_ImpedanceControl<T>* impedanceControl;
   FSM_State_StandUp<T>* standUp;
-  // FSM_State_BalanceStand<T>* balanceStand;
-  // FSM_State_Locomotion<T>* locomotion;
+  FSM_State_BalanceStand<T>* balanceStand;
+  FSM_State_Locomotion<T>* locomotion;
   // FSM_State_RecoveryStand<T>* recoveryStand;
   // FSM_State_Vision<T>* vision;
   // FSM_State_BackFlip<T>* backflip;
@@ -113,9 +115,10 @@ class ControlFSM {
   int printIter = 0;  // make larger than printNum to not print
 
   int iter = 0;
-
-  //lcm::LCM state_estimator_lcm;
-  //state_estimator_lcmt _state_estimator;
+  #ifdef MANUAL
+  lcm::LCM state_estimator_lcm;
+  state_estimator_lcmt _state_estimator;
+  #endif
 };
 
 #endif  // CONTROLFSM_H

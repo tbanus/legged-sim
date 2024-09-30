@@ -41,7 +41,7 @@ ConvexMPCLocomotion::ConvexMPCLocomotion(float _dt, int _iterations_between_mpc,
   dtMPC = dt * iterationsBetweenMPC;
   default_iterations_between_mpc = iterationsBetweenMPC;
   printf("[Convex MPC] dt: %.3f iterations: %d, dtMPC: %.3f\n", dt, iterationsBetweenMPC, dtMPC);
-  setup_problem(dtMPC, horizonLength, 0.4, 500);
+  setup_problem(dtMPC, horizonLength, 0.1, 250);
   //setup_problem(dtMPC, horizonLength, 0.4, 650); // DH
   rpy_comp[0] = 0;
   rpy_comp[1] = 0;
@@ -52,9 +52,9 @@ ConvexMPCLocomotion::ConvexMPCLocomotion(float _dt, int _iterations_between_mpc,
 
   for(int i = 0; i < 4; i++)
     firstSwing[i] = true;
-
+#ifdef MANUAL
   initSparseMPC();
-
+#endif
    pBody_des.setZero();
    vBody_des.setZero();
    aBody_des.setZero();
@@ -243,7 +243,7 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
   float side_sign[4] = {-1, 1, -1, 1};
   float interleave_y[4] = {-0.08, 0.08, 0.02, -0.02};
   //float interleave_gain = -0.13;
-  float interleave_gain = -0.2;
+  float interleave_gain = 0;
   //float v_abs = std::fabs(seResult.vBody[0]);
   float v_abs = std::fabs(v_des_robot[0]);
   for(int i = 0; i < 4; i++)
@@ -278,7 +278,7 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
     //+ seResult.vWorld * swingTimeRemaining[i];
 
     //float p_rel_max = 0.35f;
-    float p_rel_max = 0.3f;
+    float p_rel_max = 0.5f;
 
     // Using the estimated velocity is correct
     //Vec3<float> des_vel_world = seResult.rBody.transpose() * des_vel;
@@ -564,7 +564,9 @@ void ConvexMPCLocomotion::updateMPCIfNeeded(int *mpcTable, ControlFSMData<float>
     Timer solveTimer;
 
     if(_parameters->cmpc_use_sparse > 0.5) {
+      #ifdef MANUAL
       solveSparseMPC(mpcTable, data);
+      #endif
     } else {
       solveDenseMPC(mpcTable, data);
     }
@@ -610,7 +612,7 @@ void ConvexMPCLocomotion::solveDenseMPC(int *mpcTable, ControlFSMData<float> &da
 
   Timer t1;
   dtMPC = dt * iterationsBetweenMPC;
-  setup_problem(dtMPC,horizonLength,0.4,650);
+  setup_problem(dtMPC,horizonLength,0.1, 250);
   //setup_problem(dtMPC,horizonLength,0.4,650); //DH
   update_x_drag(x_comp_integral);
   if(vxy[0] > 0.3 || vxy[0] < -0.3) {
@@ -644,7 +646,7 @@ void ConvexMPCLocomotion::solveDenseMPC(int *mpcTable, ControlFSMData<float> &da
     // pretty_print(Fr_des[leg], std::cout, "Fr_des");
   }
 }
-
+#ifdef MANUAL
 void ConvexMPCLocomotion::solveSparseMPC(int *mpcTable, ControlFSMData<float> &data) {
   printf("solvesparsempc\n");
 
@@ -711,4 +713,5 @@ void ConvexMPCLocomotion::initSparseMPC() {
 
   _sparseTrajectory.resize(horizonLength);
 }
+#endif
 

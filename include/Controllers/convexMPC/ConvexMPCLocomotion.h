@@ -159,11 +159,11 @@ private:
 
   MIT_UserParameters* _parameters = nullptr;
   CMPC_Jump jump_state;
+    vectorAligned<Vec12<double>> _sparseTrajectory;
 
-  vectorAligned<Vec12<double>> _sparseTrajectory;
-
+#ifdef MANUAL
   SparseCMPC _sparseCMPC;
-
+#endif
 };
 
 

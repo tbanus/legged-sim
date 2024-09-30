@@ -3,8 +3,8 @@
 
 #include "GraphSearch.h"
 #include "cppTypes.h"
-#include "../../../third-party/JCQP/SparseMatrixMath.h"
-
+  #ifdef MANUAL
+  #include "../../../third-party/JCQP/SparseMatrixMath.h"
 struct BblockID {
   u32 foot;
   u32 timestep;
@@ -127,5 +127,6 @@ private:
   u32 _bBlockCount;
   u32 _constraintCount;
 };
+  #endif
 
 #endif //CHEETAH_SOFTWARE_SPARSECMPC_H

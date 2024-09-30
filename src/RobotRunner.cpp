@@ -59,10 +59,10 @@ void RobotRunner::init() {
 
   // // Always initialize the leg controller and state entimator
   _legController = new LegController<float>(_quadruped);
-  // _stateEstimator = new StateEstimatorContainer<float>(
-  //     _ImuData, _legController->datas,
-  //     &_stateEstimate, controlParameters);
-  // initializeStateEstimator(false);
+  _stateEstimator = new StateEstimatorContainer<float>(
+      _ImuData, _legController->datas,
+      &_stateEstimate, controlParameters);
+  initializeStateEstimator(false);
 
   // memset(&rc_control, 0, sizeof(rc_control_settings));
   // // Initialize the DesiredStateCommand object
@@ -97,7 +97,7 @@ void RobotRunner::run() {
 
   // Run the state estimator step
   //_stateEstimator->run(cheetahMainVisualization);
-  // _stateEstimator->run();
+  _stateEstimator->run();
   // //cheetahMainVisualization->p = _stateEstimate.position;
   // visualizationData->clear();
 
@@ -232,12 +232,14 @@ void RobotRunner::finalizeStep() {
 //   } else {
 //     assert(false);
 //   }
-  // _legController->setLcm(&leg_control_data_lcm, &leg_control_command_lcm);
-  // _stateEstimate.setLcm(state_estimator_lcm);
-  // _lcm.publish("leg_control_command", &leg_control_command_lcm);
-  // _lcm.publish("leg_control_data", &leg_control_data_lcm);
-  // _lcm.publish("state_estimator", &state_estimator_lcm);
+#ifdef MANUAL
+  _legController->setLcm(&leg_control_data_lcm, &leg_control_command_lcm);
+  _stateEstimate.setLcm(state_estimator_lcm);
+  _lcm.publish("leg_control_command", &leg_control_command_lcm);
+  _lcm.publish("leg_control_data", &leg_control_data_lcm);
+  _lcm.publish("state_estimator", &state_estimator_lcm);
 //   _iterations++;
+#endif
 }
 
 /*!

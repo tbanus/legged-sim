@@ -2,7 +2,7 @@
 #include "Controllers/convexMPC/common_types.h"
 #include "Controllers/convexMPC/SolverMPC.h"
 #include <eigen3/Eigen/Dense>
-#include <pthread.h>
+// #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -12,21 +12,21 @@
 
 problem_setup problem_configuration;
 u8 gait_data[K_MAX_GAIT_SEGMENTS];
-pthread_mutex_t problem_cfg_mt;
-pthread_mutex_t update_mt;
+// pthread_mutex_t problem_cfg_mt;
+// pthread_mutex_t update_mt;
 update_data_t update;
-pthread_t solve_thread;
+// pthread_t solve_thread;
 
 u8 first_run = 1;
 
 void initialize_mpc()
 {
   //printf("Initializing MPC!\n");
-  if(pthread_mutex_init(&problem_cfg_mt,NULL)!=0)
-    printf("[MPC ERROR] Failed to initialize problem configuration mutex.\n");
+  // if(pthread_mutex_init(&problem_cfg_mt,NULL)!=0)
+  //   printf("[MPC ERROR] Failed to initialize problem configuration mutex.\n");
 
-  if(pthread_mutex_init(&update_mt,NULL)!=0)
-    printf("[MPC ERROR] Failed to initialize update data mutex.\n");
+  // if(pthread_mutex_init(&update_mt,NULL)!=0)
+  //   printf("[MPC ERROR] Failed to initialize update data mutex.\n");
 
 #ifdef K_DEBUG
   printf("[MPC] Debugging enabled.\n");
@@ -124,6 +124,7 @@ void update_problem_data_floats(float* p, float* v, float* q, float* w,
 {
   update.alpha = alpha;
   update.yaw = yaw;
+  printf("selamlar\n");
   mint_to_u8(update.gait,gait,4*problem_configuration.horizon);
   memcpy((void*)update.p,(void*)p,sizeof(float)*3);
   memcpy((void*)update.v,(void*)v,sizeof(float)*3);
@@ -132,7 +133,9 @@ void update_problem_data_floats(float* p, float* v, float* q, float* w,
   memcpy((void*)update.r,(void*)r,sizeof(float)*12);
   memcpy((void*)update.weights,(void*)weights,sizeof(float)*12);
   memcpy((void*)update.traj,(void*)state_trajectory, sizeof(float) * 12 * problem_configuration.horizon);
+  printf("solve kardes \n");
   solve_mpc(&update, &problem_configuration);
+  printf("ciao \n");
   has_solved = 1;
 
 }

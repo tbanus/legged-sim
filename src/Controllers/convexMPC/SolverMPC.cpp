@@ -10,8 +10,9 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <Utilities/Timer.h>
+#ifdef MANUAL
 #include <JCQP/QpProblem.h>
-
+#endif
 //#define K_PRINT_EVERYTHING
 #define BIG_NUMBER 5e10
 //big enough to act like infinity, small enough to avoid numerical weirdness.
@@ -171,52 +172,65 @@ void resize_qp_mats(s16 horizon)
 
   //TODO: use realloc instead of free/malloc on size changes
 
-  if(real_allocated)
-  {
+  // if(real_allocated)
+  // {
 
-    free(H_qpoases);
-    free(g_qpoases);
-    free(A_qpoases);
-    free(lb_qpoases);
-    free(ub_qpoases);
-    free(q_soln);
-    free(H_red);
-    free(g_red);
-    free(A_red);
-    free(lb_red);
-    free(ub_red);
-    free(q_red);
-  }
+  //   free(H_qpoases);
+  //   free(g_qpoases);
+  //   free(A_qpoases);
+  //   free(lb_qpoases);
+  //   free(ub_qpoases);
+  //   free(q_soln);
+  //   free(H_red);
+  //   free(g_red);
+  //   free(A_red);
+  //   free(lb_red);
+  //   free(ub_red);
+  //   free(q_red);
+  // }
 
-  H_qpoases = (qpOASES::real_t*)malloc(12*12*horizon*horizon*sizeof(qpOASES::real_t));
-  mcount += 12*12*h2;
-  g_qpoases = (qpOASES::real_t*)malloc(12*1*horizon*sizeof(qpOASES::real_t));
-  mcount += 12*horizon;
-  A_qpoases = (qpOASES::real_t*)malloc(12*20*horizon*horizon*sizeof(qpOASES::real_t));
-  mcount += 12*20*h2;
-  lb_qpoases = (qpOASES::real_t*)malloc(20*1*horizon*sizeof(qpOASES::real_t));
-  mcount += 20*horizon;
-  ub_qpoases = (qpOASES::real_t*)malloc(20*1*horizon*sizeof(qpOASES::real_t));
-  mcount += 20*horizon;
-  q_soln = (qpOASES::real_t*)malloc(12*horizon*sizeof(qpOASES::real_t));
-  mcount += 12*horizon;
+  // H_qpoases = (qpOASES::real_t*)malloc(12*12*horizon*horizon*sizeof(qpOASES::real_t));
+  // mcount += 12*12*h2;
+  // g_qpoases = (qpOASES::real_t*)malloc(12*1*horizon*sizeof(qpOASES::real_t));
+  // mcount += 12*horizon;
+  // A_qpoases = (qpOASES::real_t*)malloc(12*20*horizon*horizon*sizeof(qpOASES::real_t));
+  // mcount += 12*20*h2;
+  // lb_qpoases = (qpOASES::real_t*)malloc(20*1*horizon*sizeof(qpOASES::real_t));
+  // mcount += 20*horizon;
+  // ub_qpoases = (qpOASES::real_t*)malloc(20*1*horizon*sizeof(qpOASES::real_t));
+  // mcount += 20*horizon;
+  // q_soln = (qpOASES::real_t*)malloc(12*horizon*sizeof(qpOASES::real_t));
+  // mcount += 12*horizon;
 
-  H_red = (qpOASES::real_t*)malloc(12*12*horizon*horizon*sizeof(qpOASES::real_t));
-  mcount += 12*12*h2;
-  g_red = (qpOASES::real_t*)malloc(12*1*horizon*sizeof(qpOASES::real_t));
-  mcount += 12*horizon;
-  A_red = (qpOASES::real_t*)malloc(12*20*horizon*horizon*sizeof(qpOASES::real_t));
-  mcount += 12*20*h2;
-  lb_red = (qpOASES::real_t*)malloc(20*1*horizon*sizeof(qpOASES::real_t));
-  mcount += 20*horizon;
-  ub_red = (qpOASES::real_t*)malloc(20*1*horizon*sizeof(qpOASES::real_t));
-  mcount += 20*horizon;
-  q_red = (qpOASES::real_t*)malloc(12*horizon*sizeof(qpOASES::real_t));
-  mcount += 12*horizon;
-  real_allocated = 1;
+  // H_red = (qpOASES::real_t*)malloc(12*12*horizon*horizon*sizeof(qpOASES::real_t));
+  // mcount += 12*12*h2;
+  // g_red = (qpOASES::real_t*)malloc(12*1*horizon*sizeof(qpOASES::real_t));
+  // mcount += 12*horizon;
+  // A_red = (qpOASES::real_t*)malloc(12*20*horizon*horizon*sizeof(qpOASES::real_t));
+  // mcount += 12*20*h2;
+  // lb_red = (qpOASES::real_t*)malloc(20*1*horizon*sizeof(qpOASES::real_t));
+  // mcount += 20*horizon;
+  // ub_red = (qpOASES::real_t*)malloc(20*1*horizon*sizeof(qpOASES::real_t));
+  // mcount += 20*horizon;
+  // q_red = (qpOASES::real_t*)malloc(12*horizon*sizeof(qpOASES::real_t));
+  // mcount += 12*horizon;
+  // real_allocated = 1;
 
   //printf("malloc'd %d floating point numbers.\n",mcount);
+//TODO: use realloc instead of free/malloc on size changes
 
+H_qpoases = (qpOASES::real_t*)realloc(H_qpoases, 12 * 12 * horizon * horizon * sizeof(qpOASES::real_t));
+g_qpoases = (qpOASES::real_t*)realloc(g_qpoases, 12 * 1 * horizon * sizeof(qpOASES::real_t));
+A_qpoases = (qpOASES::real_t*)realloc(A_qpoases, 12 * 20 * horizon * horizon * sizeof(qpOASES::real_t));
+lb_qpoases = (qpOASES::real_t*)realloc(lb_qpoases, 20 * 1 * horizon * sizeof(qpOASES::real_t));
+ub_qpoases = (qpOASES::real_t*)realloc(ub_qpoases, 20 * 1 * horizon * sizeof(qpOASES::real_t));
+q_soln = (qpOASES::real_t*)realloc(q_soln, 12 * horizon * sizeof(qpOASES::real_t));
+H_red = (qpOASES::real_t*)realloc(H_red, 12 * 12 * horizon * horizon * sizeof(qpOASES::real_t));
+g_red = (qpOASES::real_t*)realloc(g_red, 12 * 1 * horizon * sizeof(qpOASES::real_t));
+A_red = (qpOASES::real_t*)realloc(A_red, 12 * 20 * horizon * horizon * sizeof(qpOASES::real_t));
+lb_red = (qpOASES::real_t*)realloc(lb_red, 20 * 1 * horizon * sizeof(qpOASES::real_t));
+ub_red = (qpOASES::real_t*)realloc(ub_red, 20 * 1 * horizon * sizeof(qpOASES::real_t));
+q_red = (qpOASES::real_t*)realloc(q_red, 12 * horizon * sizeof(qpOASES::real_t));
 
 
 #ifdef K_DEBUG
@@ -385,7 +399,7 @@ void solve_mpc(update_data_t* update, problem_setup* setup)
 
   qH = 2*(B_qp.transpose()*S*B_qp + update->alpha*eye_12h);
   qg = 2*B_qp.transpose()*S*(A_qp*x_0 - X_d);
-
+#ifdef MANUAL
   QpProblem<double> jcqp(setup->horizon*12, setup->horizon*20);
   if(update->use_jcqp == 1) {
     jcqp.A = fmat.cast<double>();
@@ -401,7 +415,10 @@ void solve_mpc(update_data_t* update, problem_setup* setup)
     jcqp.settings.rho = update->rho;
     jcqp.settings.maxIterations = update->max_iterations;
     jcqp.runFromDense(update->max_iterations, true, false);
-  } else {
+  }
+     else {
+  #endif
+
 
 
 
@@ -510,7 +527,7 @@ void solve_mpc(update_data_t* update, problem_setup* setup)
       }
 
       if(update->use_jcqp == 0) {
-        Timer solve_timer;
+        // Timer solve_timer;
         qpOASES::QProblem problem_red (new_vars, new_cons);
         qpOASES::Options op;
         op.setToMPC();
@@ -541,7 +558,9 @@ void solve_mpc(update_data_t* update, problem_setup* setup)
             vc++;
           }
         }
-      } else { // use jcqp == 2
+      }
+      #ifdef MANUAL 
+      else { // use jcqp == 2
         QpProblem<double> reducedProblem(new_vars, new_cons);
 
         reducedProblem.A = DenseMatrix<double>(new_cons, new_vars);
@@ -603,19 +622,21 @@ void solve_mpc(update_data_t* update, problem_setup* setup)
           }
         }
       }
+    #endif
 
     }
-  }
+  
 
 
 
-
+#ifdef MANUAL
+}
   if(update->use_jcqp == 1) {
     for(int i = 0; i < 12 * setup->horizon; i++) {
       q_soln[i] = jcqp.getSolution()[i];
     }
   }
-
+#endif
 
 
 #ifdef K_PRINT_EVERYTHING
