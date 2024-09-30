@@ -412,9 +412,9 @@ void ControlParameters::defineAndInitializeFromYamlFile(const std::string &path)
  * @param path : the file name
  */
 void ControlParameters::initializeFromYamlFile(const std::string& path) {
-  
+  printf("ControlParameters::InitializeFromYamlFile\n");
   ParamHandler paramHandler(path);
-
+ printf("ControlParameters::InitializeFromYamlFile  construct param handler \n");
   if (!paramHandler.fileOpenedSuccessfully()) {
     printf(
         "[ERROR] Could not open yaml file %s : not initializing control "
@@ -422,6 +422,7 @@ void ControlParameters::initializeFromYamlFile(const std::string& path) {
         path.c_str());
     throw std::runtime_error("yaml file bad");
   }
+   printf("ControlParameters::InitializeFromYamlFile file opened\n");
 
   std::string name;
   if (!paramHandler.getString(YAML_COLLECTION_NAME_KEY, name)) {
@@ -441,24 +442,27 @@ void ControlParameters::initializeFromYamlFile(const std::string& path) {
   std::vector<std::string> keys = paramHandler.getKeys();
 
   for (auto& key : keys) {
+    // printf("ControlParameters::InitializeFromYamlFile key = %s\n", key.c_str());
     if (key == YAML_COLLECTION_NAME_KEY) continue;
     ControlParameter& cp = collection.lookup(key);
     switch (cp._kind) {
       case ControlParameterValueKind::DOUBLE: {
         double d;
-        assert(paramHandler.getValue(key, d));
+        paramHandler.getValue(key, d);
+        printf("key: %s, value: %f\n",key.c_str(), d);
         cp.initializeDouble(d);
       } break;
 
       case ControlParameterValueKind::FLOAT: {
         float f;
-        assert(paramHandler.getValue(key, f));
+        paramHandler.getValue(key, f);
+        printf("key: %s, value: %f\n", key.c_str(),f);
         cp.initializeFloat(f);
       } break;
 
       case ControlParameterValueKind::S64: {
         s64 f;
-        assert(paramHandler.getValue(key, f));
+        paramHandler.getValue(key, f);
         cp.initializeInteger(f);
       } break;
 
@@ -466,16 +470,19 @@ void ControlParameters::initializeFromYamlFile(const std::string& path) {
         std::vector<double> vv;
         paramHandler.getVector(key, vv);
         // assert(paramHandler.getVector(key, vv));
-        assert(vv.size() == 3);
+        vv.size() == 3;
         Vec3<double> v(vv[0], vv[1], vv[2]);
+        printf("key: %s, value: %f\n",key.c_str(), v[0]);
         cp.initializeVec3d(v);
       } break;
 
       case ControlParameterValueKind::VEC3_FLOAT: {
         std::vector<float> vv;
-        assert(paramHandler.getVector(key, vv));
-        assert(vv.size() == 3);
+        paramHandler.getVector(key, vv);
+        vv.size() == 3;
         Vec3<float> v(vv[0], vv[1], vv[2]);
+          printf("key: %s, value: %f\n",key.c_str(), v[0]);
+
         cp.initializeVec3f(v);
       } break;
 

@@ -104,15 +104,15 @@ FSM_StateName FSM_State_BalanceStand<T>::checkTransition() {
       }*/
 
       // TEST: in place to show automatic non user requested transitions
-      /*if (_iter >= 5458) {
+      if (_iter >= 500) {
         this->nextStateName = FSM_StateName::LOCOMOTION;
         this->_data->controlParameters->control_mode = K_LOCOMOTION;
         this->transitionDuration = 0.0;
         this->_data->_gaitScheduler->gaitData._nextGait =
-            GaitType::AMBLE;  // TROT; // Or get whatever is in
+            GaitType::TROT;  // TROT; // Or get whatever is in
                               // main_control_settings
         _iter = 0;
-      }*/
+      }
       break;
 
     case K_LOCOMOTION:
@@ -221,7 +221,7 @@ void FSM_State_BalanceStand<T>::onExit() {
  */
 template <typename T>
 void FSM_State_BalanceStand<T>::BalanceStandStep() {
-  // printf("BalanceStandStep\n");
+  printf("BalanceStandStep\n");
   _wbc_data->pBody_des = _ini_body_pos;
   _wbc_data->vBody_des.setZero();
   _wbc_data->aBody_des.setZero();
