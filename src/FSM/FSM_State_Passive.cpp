@@ -26,7 +26,7 @@ FSM_State_Passive<T>::FSM_State_Passive(ControlFSMData<T>* _controlFSMData)
 
 template <typename T>
 void FSM_State_Passive<T>::onEnter() {
-  printf("[FSM] onEnter %s","FSM_State_Passive");
+  DEBUG_MSG(".");
   // Default is to not transition
   this->nextStateName = this->stateName;
 

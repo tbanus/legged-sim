@@ -9,7 +9,7 @@
 #include <string.h>
 #include <Simulation/Simulation.h>
 #include <stdlib.h>
-#include <glog/logging.h>
+// #include <glog/logging.h>
 #define DEFAULT_TIMESTEP 0.002
 
 
@@ -47,7 +47,7 @@ namespace mujoco
     //glfw error callback
 static void glfwError(int id, const char* description)
 {
-    LOG(ERROR)<<"[GLFW] "<<description;
+    std::cout <<"[GLFW] "<<description;
 }
 double gain=10;
     // keyboard callback
@@ -199,7 +199,7 @@ Simulation::Simulation(std::string filename)
     
     
     
-    DLOG(INFO)<<"[SIM] "<< "Begin Simulation";
+   std::cout <<"[SIM] "<< "Begin Simulation";
     // load and compile model
     char error[100] = "Could not load binary model";
     mujoco::m = mj_loadXML(filename.c_str(), 0, error, 1000);
@@ -226,7 +226,7 @@ Simulation::Simulation(std::string filename)
         mju_error("Could not initialize GLFW");
     }
     // create window_, make OpenGL context current, request v-sync
-    DLOG(INFO)<<"[SIM]"<<"Create Sim Window";
+    std::cout <<"[SIM]"<<"Create Sim Window";
     window_=glfwCreateWindow(1244, 700, " MuJoCo Simulation", NULL, NULL);
     glfwMakeContextCurrent(window_);
     glfwSwapInterval(1);
@@ -470,7 +470,7 @@ bool Simulation::CheckWindowShouldClose(){
 void Simulation::UpdateScene(){
 
     //  #TODO do this at 60hz for efficiency.
-    if(glfwWindowShouldClose(window_)){LOG(WARNING)<<"WARNING: The Simulation window was closed. The program will terminate"; 
+    if(glfwWindowShouldClose(window_)){std::cout <<"WARNING: The Simulation window was closed. The program will terminate"; 
     exit(0)
     ;} 
     
@@ -596,7 +596,7 @@ void Simulation::ShowContactForce(bool enable){
  */
 Simulation::~Simulation()
 {
-      LOG(WARNING)<<"[EXIT]"<<"SIM Closing";
+     std::cout <<"[EXIT]"<<"SIM Closing";
 
     // free visualization storage
     mjv_freeScene(&mujoco::scn);

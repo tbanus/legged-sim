@@ -22,7 +22,6 @@ void EmbeddedController::initializeController()
   // ////_contactEstimator->initialize();
 
   // // Initializes the Control FSM with all the required data
-  std::cout<<"ctrl params"<<_quadruped<<std::endl;
   _controlFSM = new ControlFSM<float>(_quadruped, _stateEstimator,
                                       _legController, _gaitScheduler,
                                       _desiredStateCommand, _controlParameters,

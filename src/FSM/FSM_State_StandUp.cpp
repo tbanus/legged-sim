@@ -5,7 +5,7 @@
  */
 
 #include "FSM/FSM_State_StandUp.h"
-
+#include "Debugger.h"
 /**
  * Constructor for the FSM State that passes in state specific info to
  * the generic FSM State constructor.
@@ -29,7 +29,7 @@ FSM_State_StandUp<T>::FSM_State_StandUp(ControlFSMData<T> *_controlFSMData)
 template <typename T>
 void FSM_State_StandUp<T>::onEnter()
 {
-  printf("[FSM] onEnter %s","FSM_State_StandUp");
+  DEBUG_MSG(".");
   // Default is to not transition
   this->nextStateName = this->stateName;
 
@@ -54,10 +54,8 @@ void FSM_State_StandUp<T>::run()
 
   if (this->_data->_quadruped->_robotType == RobotType::MINI_CHEETAH)
   {
-    std::cout<<"stand up run"<<std::endl;
     T hMax = 0.4;
     T progress = 1 * iter * this->_data->controlParameters->controller_dt;
-    printf("progress is %f, iter %d, param %f\n", progress, iter, this->_data->controlParameters->controller_dt);
     if (progress > 1.)
     {
       progress = 1.;

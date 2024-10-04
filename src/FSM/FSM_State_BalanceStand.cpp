@@ -34,7 +34,8 @@ FSM_State_BalanceStand<T>::FSM_State_BalanceStand(
 
 template <typename T>
 void FSM_State_BalanceStand<T>::onEnter() {
-  printf("[FSM] onEnter %s","FSM_State_BalanceStand");
+    DEBUG_MSG(".");
+
 
   // Default is to not transition
   this->nextStateName = this->stateName;
@@ -46,7 +47,6 @@ void FSM_State_BalanceStand<T>::onEnter() {
   this->_data->_gaitScheduler->gaitData._nextGait = GaitType::STAND;
   
   _ini_body_pos = (this->_data->_stateEstimator->getResult()).position;
-  std::cout<<"_ini_body_pos:\n"<<_ini_body_pos<<std::endl;
   // if(_ini_body_pos[2] < 0.2) {
   //   _ini_body_pos[2] = 0.3;
   // }
@@ -104,15 +104,15 @@ FSM_StateName FSM_State_BalanceStand<T>::checkTransition() {
       }*/
 
       // TEST: in place to show automatic non user requested transitions
-      if (_iter >= 500) {
-        this->nextStateName = FSM_StateName::LOCOMOTION;
-        this->_data->controlParameters->control_mode = K_LOCOMOTION;
-        this->transitionDuration = 0.0;
-        this->_data->_gaitScheduler->gaitData._nextGait =
-            GaitType::TROT;  // TROT; // Or get whatever is in
-                              // main_control_settings
-        _iter = 0;
-      }
+      // if (_iter >= 500) {
+      //   this->nextStateName = FSM_StateName::LOCOMOTION;
+      //   this->_data->controlParameters->control_mode = K_LOCOMOTION;
+      //   this->transitionDuration = 0.0;
+      //   this->_data->_gaitScheduler->gaitData._nextGait =
+      //       GaitType::TROT;  // TROT; // Or get whatever is in
+      //                         // main_control_settings
+      //   _iter = 0;
+      // }
       break;
 
     case K_LOCOMOTION:
@@ -221,7 +221,6 @@ void FSM_State_BalanceStand<T>::onExit() {
  */
 template <typename T>
 void FSM_State_BalanceStand<T>::BalanceStandStep() {
-  printf("BalanceStandStep\n");
   _wbc_data->pBody_des = _ini_body_pos;
   _wbc_data->vBody_des.setZero();
   _wbc_data->aBody_des.setZero();

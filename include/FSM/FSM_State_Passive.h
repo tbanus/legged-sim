@@ -2,7 +2,7 @@
 #define FSM_STATE_PASSIVE_H
 
 #include "FSM_State.h"
-
+#include "Debugger.h"
 /**
  *
  */

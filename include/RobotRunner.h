@@ -45,6 +45,7 @@ class RobotRunner : public PeriodicTask {
   void init() override;
   void run() override;
   void cleanup() override;
+  void reset();
 
   // Initialize the state estimator with default no cheaterMode
   void initializeStateEstimator(bool cheaterMode = false);

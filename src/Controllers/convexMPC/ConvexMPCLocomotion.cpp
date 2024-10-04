@@ -3,7 +3,7 @@
 #include <Utilities/Utilities_print.h>
 
 #include "Controllers/convexMPC/ConvexMPCLocomotion.h"
-#include "Controllers/convexMPC/convexMPC_interface.h"
+// #include "Controllers/convexMPC/convexMPC_interface.h"
 #include "Controllers/convexMPC/GraphSearch.h"
 
 #include "Controllers/convexMPC/Gait.h"
@@ -40,8 +40,8 @@ ConvexMPCLocomotion::ConvexMPCLocomotion(float _dt, int _iterations_between_mpc,
   _parameters = parameters;
   dtMPC = dt * iterationsBetweenMPC;
   default_iterations_between_mpc = iterationsBetweenMPC;
-  printf("[Convex MPC] dt: %.3f iterations: %d, dtMPC: %.3f\n", dt, iterationsBetweenMPC, dtMPC);
-  setup_problem(dtMPC, horizonLength, 0.1, 250);
+  // printf("[Convex MPC] dt: %.3f iterations: %d, dtMPC: %.3f\n", dt, iterationsBetweenMPC, dtMPC);
+  // setup_problem(dtMPC, horizonLength, 0.1, 250);
   //setup_problem(dtMPC, horizonLength, 0.4, 650); // DH
   rpy_comp[0] = 0;
   rpy_comp[1] = 0;
@@ -97,8 +97,7 @@ void ConvexMPCLocomotion::_SetupCommand(ControlFSMData<float> & data){
   y_vel_cmd=0;
   _x_vel_des = _x_vel_des*(1-filter) + x_vel_cmd*filter;
   _y_vel_des = _y_vel_des*(1-filter) + y_vel_cmd*filter;
-  printf("_x_vel_des %f", _x_vel_des);
-  printf("_y_vel_des %f", _y_vel_des);
+
 
   _yaw_des = data._stateEstimator->getResult().rpy[2] + dt * _yaw_turn_rate;
   _roll_des = 0.;
@@ -109,7 +108,6 @@ void ConvexMPCLocomotion::_SetupCommand(ControlFSMData<float> & data){
 template<>
 void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
   bool omniMode = false;
-  printf("cmpc->run\n");
   // Command Setup
   _SetupCommand(data);
   gaitNumber = data.userParameters->cmpc_gait;
@@ -154,7 +152,6 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
   else if(gaitNumber == 9)
     gait = &trotting;
   current_gait = gaitNumber;
-  printf("current_gait: %d\n", current_gait);
   gait->setIterations(iterationsBetweenMPC, iterationCounter);
   jumping.setIterations(iterationsBetweenMPC, iterationCounter);
 
@@ -576,7 +573,7 @@ void ConvexMPCLocomotion::updateMPCIfNeeded(int *mpcTable, ControlFSMData<float>
 }
 
 void ConvexMPCLocomotion::solveDenseMPC(int *mpcTable, ControlFSMData<float> &data) {
-  printf("solvedensempc\n");
+  // printf("solvedensempc\n");
   auto seResult = data._stateEstimator->getResult();
 
   //float Q[12] = {0.25, 0.25, 10, 2, 2, 20, 0, 0, 0.3, 0.2, 0.2, 0.2};
@@ -612,9 +609,9 @@ void ConvexMPCLocomotion::solveDenseMPC(int *mpcTable, ControlFSMData<float> &da
 
   Timer t1;
   dtMPC = dt * iterationsBetweenMPC;
-  setup_problem(dtMPC,horizonLength,0.1, 250);
+  // setup_problem(dtMPC,horizonLength,0.1, 250);
   //setup_problem(dtMPC,horizonLength,0.4,650); //DH
-  update_x_drag(x_comp_integral);
+  // update_x_drag(x_comp_integral);
   if(vxy[0] > 0.3 || vxy[0] < -0.3) {
     //x_comp_integral += _parameters->cmpc_x_drag * pxy_err[0] * dtMPC / vxy[0];
     x_comp_integral += _parameters->cmpc_x_drag * pz_err * dtMPC / vxy[0];
@@ -622,21 +619,27 @@ void ConvexMPCLocomotion::solveDenseMPC(int *mpcTable, ControlFSMData<float> &da
 
   //printf("pz err: %.3f, pz int: %.3f\n", pz_err, x_comp_integral);
 
-  update_solver_settings(_parameters->jcqp_max_iter, _parameters->jcqp_rho,
-      _parameters->jcqp_sigma, _parameters->jcqp_alpha, _parameters->jcqp_terminate, _parameters->use_jcqp);
+  // update_solver_settings(_parameters->jcqp_max_iter, _parameters->jcqp_rho,
+  //     _parameters->jcqp_sigma, _parameters->jcqp_alpha, _parameters->jcqp_terminate, _parameters->use_jcqp);
   //t1.stopPrint("Setup MPC");
 
   Timer t2;
   //cout << "dtMPC: " << dtMPC << "\n";
-  update_problem_data_floats(p,v,q,w,r,yaw,weights,trajAll,alpha,mpcTable);
+  // update_problem_data_floats(p,v,q,w,r,yaw,weights,trajAll,alpha,mpcTable);
   //t2.stopPrint("Run MPC");
   //printf("MPC Solve time %f ms\n", t2.getMs());
 
   for(int leg = 0; leg < 4; leg++)
   {
     Vec3<float> f;
-    for(int axis = 0; axis < 3; axis++)
-      f[axis] = get_solution(leg*3 + axis);
+    
+    f.setZero();
+    f[0]=140*mpcTable[leg];
+    f[1]=140*mpcTable[leg];
+    f[2]=140*mpcTable[leg];
+    
+    // for(int axis = 0; axis < 3; axis++)
+    //   f[axis] = get_solution(leg*3 + axis);
 
     //printf("[%d] %7.3f %7.3f %7.3f\n", leg, f[0], f[1], f[2]);
 
@@ -673,20 +676,20 @@ void ConvexMPCLocomotion::solveSparseMPC(int *mpcTable, ControlFSMData<float> &d
     }
   }
 
-  _sparseCMPC.setX0(seResult.position, seResult.vWorld, seResult.orientation, seResult.omegaWorld);
-  _sparseCMPC.setContactTrajectory(contactStates.data(), contactStates.size());
-  _sparseCMPC.setStateTrajectory(_sparseTrajectory);
-  _sparseCMPC.setFeet(feet);
-  _sparseCMPC.run();
+  // _sparseCMPC.setX0(seResult.position, seResult.vWorld, seResult.orientation, seResult.omegaWorld);
+  // _sparseCMPC.setContactTrajectory(contactStates.data(), contactStates.size());
+  // _sparseCMPC.setStateTrajectory(_sparseTrajectory);
+  // _sparseCMPC.setFeet(feet);
+  // _sparseCMPC.run();
 
-  Vec12<float> resultForce = _sparseCMPC.getResult();
+  // Vec12<float> resultForce = _sparseCMPC.getResult();
 
-  for(u32 foot = 0; foot < 4; foot++) {
-    Vec3<float> force(resultForce[foot*3], resultForce[foot*3 + 1], resultForce[foot*3 + 2]);
-    //printf("[%d] %7.3f %7.3f %7.3f\n", foot, force[0], force[1], force[2]);
-    f_ff[foot] = -seResult.rBody * force;
-    Fr_des[foot] = force;
-  }
+  // for(u32 foot = 0; foot < 4; foot++) {
+  //   Vec3<float> force(resultForce[foot*3], resultForce[foot*3 + 1], resultForce[foot*3 + 2]);
+  //   //printf("[%d] %7.3f %7.3f %7.3f\n", foot, force[0], force[1], force[2]);
+  //   f_ff[foot] = -seResult.rBody * force;
+  //   Fr_des[foot] = force;
+  // }
 }
 
 void ConvexMPCLocomotion::initSparseMPC() {
@@ -706,10 +709,10 @@ void ConvexMPCLocomotion::initSparseMPC() {
   weights << 0.25, 0.25, 10, 2, 2, 20, 0, 0, 0.3, 0.2, 0.2, 0.2;
   //weights << 0,0,0,1,1,10,0,0,0,0.2,0.2,0;
 
-  _sparseCMPC.setRobotParameters(baseInertia, mass, maxForce);
-  _sparseCMPC.setFriction(0.4);
-  _sparseCMPC.setWeights(weights, 4e-5);
-  _sparseCMPC.setDtTrajectory(dtTraj);
+  // _sparseCMPC.setRobotParameters(baseInertia, mass, maxForce);
+  // _sparseCMPC.setFriction(0.4);
+  // _sparseCMPC.setWeights(weights, 4e-5);
+  // _sparseCMPC.setDtTrajectory(dtTraj);
 
   _sparseTrajectory.resize(horizonLength);
 }

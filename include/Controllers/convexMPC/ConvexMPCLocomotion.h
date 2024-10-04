@@ -3,7 +3,7 @@
 
 #include <Controllers/FootSwingTrajectory.h>
 #include <FSM/ControlFSMData.h>
-#include <Controllers/convexMPC/SparseCMPC.h>
+// #include <Controllers/convexMPC/SparseCMPC.h>
 #include "cppTypes.h"
 #include "Gait.h"
 
@@ -162,7 +162,7 @@ private:
     vectorAligned<Vec12<double>> _sparseTrajectory;
 
 #ifdef MANUAL
-  SparseCMPC _sparseCMPC;
+  // SparseCMPC _sparseCMPC;
 #endif
 };
 

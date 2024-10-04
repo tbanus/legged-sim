@@ -30,10 +30,8 @@
 *.exe
 *.out
 *.app
+
+
 build
-.vscode/c_cpp_properties.json
-.vscode/settings.json
-build/CMakeFiles/CMakeOutput.log
-build/CMakeCache.txt
-logs/**
-lcm-types/python/__pycache___/**
+.vscode
+logs

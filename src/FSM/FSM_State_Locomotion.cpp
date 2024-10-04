@@ -8,6 +8,7 @@
 #include "FSM/FSM_State_Locomotion.h"
 #include <Utilities/Timer.h>
 #include <Controllers/WBC_Ctrl/LocomotionCtrl/LocomotionCtrl.hpp>
+#include "Debugger.h"
 //#include <rt/rt_interface_lcm.h>
 
 /**
@@ -50,7 +51,8 @@ FSM_State_Locomotion<T>::FSM_State_Locomotion(ControlFSMData<T>* _controlFSMData
 
 template <typename T>
 void FSM_State_Locomotion<T>::onEnter() {
-  printf("[FSM] onEnter %s","FSM_State_Locomotion");
+    DEBUG_MSG(".");
+
   // Default is to not transition
   this->nextStateName = this->stateName;
 

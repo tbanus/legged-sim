@@ -13,7 +13,7 @@
 #include <math.h>
 
 #include <tinyxml2.h>
-#include <glog/logging.h>
+// #include <glog/logging.h>
 using namespace std;
 
 template <typename T>
@@ -38,7 +38,7 @@ Quadruped<T> ParseURDFtoQuadruped(std::string fname, RobotType robotType)
     tinyxml2::XMLElement *robot = doc.FirstChildElement("robot");
     if (!robot)
     {
-        LOG(FATAL) << "[URDF Parser] Unable to find robot element. Make sure your urdf is properly formed";
+        std::cout << "[URDF Parser] Unable to find robot element. Make sure your urdf is properly formed";
     }
 
     double rotorRadius, rotorHeight, rotorMass;
@@ -48,13 +48,13 @@ Quadruped<T> ParseURDFtoQuadruped(std::string fname, RobotType robotType)
     quadruped._robotName = std::string(robot_name);
     if (!robot_name)
     {
-        LOG(FATAL) << "[URDF Parser] Unable to find robot name element. Make sure your urdf is properly formed";
+        std::cout << "[URDF Parser] Unable to find robot name element. Make sure your urdf is properly formed";
     }
 
     tinyxml2::XMLElement *custom_attributes = robot->FirstChildElement("custom");
     if (!custom_attributes)
     {
-        LOG(ERROR) << "[URDF Parser] Could not find the 'custom_attributes' element in the xml file.";
+        std::cout << "[URDF Parser] Could not find the 'custom_attributes' element in the xml file.";
     }
     else
     {
@@ -115,7 +115,7 @@ Quadruped<T> ParseURDFtoQuadruped(std::string fname, RobotType robotType)
 
     if ((!abadLink) || (!hipLink) || (!kneeLink) || (!footLink))
     {
-        LOG(FATAL) << "[URDF Parser] Cannot find one of the main links. Make sure your URDF is formed right and you follow the needed name convention.";
+        std::cout << "[URDF Parser] Cannot find one of the main links. Make sure your URDF is formed right and you follow the needed name convention.";
     }
 
     tinyxml2::XMLElement *base_joint, *abad_2_joint, *hip_2_joint, *knee_2_joint, *foot_2_joint;
@@ -153,7 +153,7 @@ Quadruped<T> ParseURDFtoQuadruped(std::string fname, RobotType robotType)
 
     if ((!abad_2_joint) || (!hip_2_joint) || (!knee_2_joint) || (!foot_2_joint))
     {
-        LOG(FATAL) << "[URDF Parser] Cannot find one of the main joints. Make sure your URDF is formed right and you follow the needed name convention.";
+        std::cout << "[URDF Parser] Cannot find one of the main joints. Make sure your URDF is formed right and you follow the needed name convention.";
     }
 
     // set quadruped prooerties from urdf link properties
@@ -163,7 +163,7 @@ Quadruped<T> ParseURDFtoQuadruped(std::string fname, RobotType robotType)
     }
     else
     {
-        LOG(FATAL) << "[URDF Parser] Cannot find base link inertial. Make sure your URDF is formed right and you follow the needed name convention.";
+        std::cout << "[URDF Parser] Cannot find base link inertial. Make sure your URDF is formed right and you follow the needed name convention.";
     }
 
     std::string abad_2_joint_origin[3];
@@ -218,7 +218,7 @@ Quadruped<T> ParseURDFtoQuadruped(std::string fname, RobotType robotType)
     float upper_limit = stof(hip_2_joint->FirstChildElement("limit")->Attribute("upper"));
     if (!upper_limit)
     {
-        LOG(ERROR) << "[URDF Parser] Cannot find upper limit for the leg. Defaulting to Pi";
+        std::cout << "[URDF Parser] Cannot find upper limit for the leg. Defaulting to Pi";
         upper_limit = M_PI;
     }
     quadruped._maxLegLength = cos(upper_limit) * (quadruped._hipLinkLength + cos(upper_limit) * quadruped._kneeLinkLength);

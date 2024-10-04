@@ -158,7 +158,6 @@ void ControlFSM<T>::runFSM() {
 
         // Complete the transition
         currentState = nextState;
-        std::cout<<"currentState: "<<currentState<<std::endl;
         // Enter the new current state cleanly
         currentState->onEnter();
 

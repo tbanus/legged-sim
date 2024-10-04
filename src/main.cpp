@@ -1,5 +1,6 @@
 #include <sys/mman.h>
-#include <glog/logging.h>
+#include <unistd.h>
+// #include <glog/logging.h>
 #include <RobotRunner.h>
 // #include <Controllers/SingleLegController.h>
 // #include <send_message.h>
@@ -23,7 +24,8 @@
 // #include <Bridge.h>
 // #include "Simulation/SimPeriodicTask.h"
 
-//#include "Utilities/utilities.h"
+#include "Utilities/utilities.h"
+
 // #include "dma_latency_trick.h"
 
 #define MAX_STACK_SIZE 24576 // 16KB  of stack
@@ -33,10 +35,7 @@
 
 int main(int argc, char* argv[]){
   // google::SetStderrLogging(0);
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-  // google::SetLogDestination(0,"~/LOG_TRY");
-  LOG(INFO) << "[Init] "<<"Prefault stack.......";
+
 
   // volatile char stack[MAX_STACK_SIZE];
   // memset(const_cast<char*>(stack), 0, MAX_STACK_SIZE);
@@ -60,22 +59,16 @@ int main(int argc, char* argv[]){
 
 
   PeriodicTaskManager taskManager;
-  if (! &taskManager){LOG(FATAL)<<"Cannot initalize taskManager";}
 
   SpiCommand _Command;
-  if (! &_Command){LOG(FATAL)<<"Cannot initalize _Command";}
 
   SpiData _Feedback;
-  if (! &_Feedback){LOG(FATAL)<<"Cannot initalize _Feedback";}
 
   GamepadCommand _GamepadCommand;
-  if (! &_GamepadCommand){LOG(FATAL)<<"Cannot initalize _GamepadCommand";}
 
   VectorNavData _ImuData;
-  if (! &_ImuData){LOG(FATAL)<<"Cannot initalize ImuData";}
 
   RobotControlParameters _robotParams;
-  if (! &_robotParams){LOG(FATAL)<<"Cannot initalize _robotParams";}
 
 
   // usleep(1e6);
@@ -86,8 +79,6 @@ int main(int argc, char* argv[]){
 
   // // Create Ori_Controller instance
   RobotController* _ctrl = new EmbeddedController();
-  LOG(INFO)<<"Lez GOOO!!!!";
-  if (!_ctrl){LOG(FATAL)<<"Cannot initalize RobotController";}
   // _ctrl->_Command=_Command;
   // #ifdef HW_ENABLE
    
@@ -100,7 +91,6 @@ int main(int argc, char* argv[]){
 
   RobotRunner* _robotRunner = new RobotRunner(_ctrl, &taskManager, 0.002, "robot-control");
   if (!_robotRunner){
-    LOG(FATAL)<<"Cannot initalize RobotRunner";
     }
 //   PeriodicMemberFunction<RobotRunner> RR_Gamepad(&taskManager,0.00125,"RR-GamePad",&RobotRunner::ReceiveLCM,_robotRunner);
 
@@ -123,7 +113,6 @@ int main(int argc, char* argv[]){
   
   // std::thread bridgeLcmThread= std::thread(&Bridge::LcmThread,_bridge);
 
-  LOG(INFO)<<"[Init] "<<"Start Periodic tasks.";
   // //GamePad Command periodic task to listen related LCM channel
   // PeriodicMemberFunction<RobotRunner> RR_Gamepad(&taskManager,0.0125,"RR-GamePad",&RobotRunner::ReceiveLCM,_robotRunner);
   // //Check Connection Periodic tast to ping upper computer periodicaly

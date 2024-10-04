@@ -2,6 +2,8 @@
 #define FSM_STATE_BALANCESTAND_H
 
 #include "FSM_State.h"
+#include "Debugger.h"
+
 
 template<typename T> class WBC_Ctrl;
 template<typename T> class LocomotionCtrlData;

@@ -274,8 +274,6 @@ void GaitScheduler<T>::modifyGait() {
 template <typename T>
 void GaitScheduler<T>::createGait() {
 
-  std::cout << "[GAIT] Transitioning gait from " << gaitData.gaitName
-            << " to ";
 
   // Case structure gets the appropriate parameters
   switch (gaitData._nextGait) {
