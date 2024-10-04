@@ -30,7 +30,7 @@
 *.exe
 *.out
 *.app
-# build
+build
 .vscode/c_cpp_properties.json
 .vscode/settings.json
 build/CMakeFiles/CMakeOutput.log
