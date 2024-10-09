@@ -10,11 +10,11 @@ except ImportError:
 import struct
 
 class leg_control_data_lcmt(object):
-    __slots__ = ["q", "qd", "p", "v", "tau_est"]
+    __slots__ = ["q", "qd", "p", "v", "tau_est", "foot_pos", "grf", "ForceEstimate"]
 
-    __typenames__ = ["float", "float", "float", "float", "float"]
+    __typenames__ = ["float", "float", "float", "float", "float", "float", "float", "float"]
 
-    __dimensions__ = [[12], [12], [12], [12], [12]]
+    __dimensions__ = [[12], [12], [12], [12], [12], [12], [12], [15]]
 
     def __init__(self):
         self.q = [ 0.0 for dim0 in range(12) ]
@@ -22,6 +22,9 @@ class leg_control_data_lcmt(object):
         self.p = [ 0.0 for dim0 in range(12) ]
         self.v = [ 0.0 for dim0 in range(12) ]
         self.tau_est = [ 0.0 for dim0 in range(12) ]
+        self.foot_pos = [ 0.0 for dim0 in range(12) ]
+        self.grf = [ 0.0 for dim0 in range(12) ]
+        self.ForceEstimate = [ 0.0 for dim0 in range(15) ]
 
     def encode(self):
         buf = BytesIO()
@@ -35,6 +38,9 @@ class leg_control_data_lcmt(object):
         buf.write(struct.pack('>12f', *self.p[:12]))
         buf.write(struct.pack('>12f', *self.v[:12]))
         buf.write(struct.pack('>12f', *self.tau_est[:12]))
+        buf.write(struct.pack('>12f', *self.foot_pos[:12]))
+        buf.write(struct.pack('>12f', *self.grf[:12]))
+        buf.write(struct.pack('>15f', *self.ForceEstimate[:15]))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -53,12 +59,15 @@ class leg_control_data_lcmt(object):
         self.p = struct.unpack('>12f', buf.read(48))
         self.v = struct.unpack('>12f', buf.read(48))
         self.tau_est = struct.unpack('>12f', buf.read(48))
+        self.foot_pos = struct.unpack('>12f', buf.read(48))
+        self.grf = struct.unpack('>12f', buf.read(48))
+        self.ForceEstimate = struct.unpack('>15f', buf.read(60))
         return self
     _decode_one = staticmethod(_decode_one)
 
     def _get_hash_recursive(parents):
         if leg_control_data_lcmt in parents: return 0
-        tmphash = (0xa7d2775a407deca7) & 0xffffffffffffffff
+        tmphash = (0x4963155395dafa42) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

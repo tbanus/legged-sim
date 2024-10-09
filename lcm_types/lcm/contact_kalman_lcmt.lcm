@@ -1,0 +1,14 @@
+struct contact_kalman_lcmt {
+
+    float pc_f[4];
+    float pc_z[4];
+    float pc_phi[4];
+    float x_est[4];
+    float z_force_est[4];
+    float z_force_sim[4];
+
+
+
+    
+
+}

@@ -10,11 +10,11 @@ except ImportError:
 import struct
 
 class state_estimator_lcmt(object):
-    __slots__ = ["p", "vWorld", "vBody", "rpy", "omegaBody", "omegaWorld", "quat"]
+    __slots__ = ["p", "vWorld", "vBody", "rpy", "omegaBody", "omegaWorld", "quat", "aBody", "aWorld", "groundPlane"]
 
-    __typenames__ = ["float", "float", "float", "float", "float", "float", "float"]
+    __typenames__ = ["float", "float", "float", "float", "float", "float", "float", "float", "float", "float"]
 
-    __dimensions__ = [[3], [3], [3], [3], [3], [3], [4]]
+    __dimensions__ = [[3], [3], [3], [3], [3], [3], [4], [3], [3], [4]]
 
     def __init__(self):
         self.p = [ 0.0 for dim0 in range(3) ]
@@ -24,6 +24,9 @@ class state_estimator_lcmt(object):
         self.omegaBody = [ 0.0 for dim0 in range(3) ]
         self.omegaWorld = [ 0.0 for dim0 in range(3) ]
         self.quat = [ 0.0 for dim0 in range(4) ]
+        self.aBody = [ 0.0 for dim0 in range(3) ]
+        self.aWorld = [ 0.0 for dim0 in range(3) ]
+        self.groundPlane = [ 0.0 for dim0 in range(4) ]
 
     def encode(self):
         buf = BytesIO()
@@ -39,6 +42,9 @@ class state_estimator_lcmt(object):
         buf.write(struct.pack('>3f', *self.omegaBody[:3]))
         buf.write(struct.pack('>3f', *self.omegaWorld[:3]))
         buf.write(struct.pack('>4f', *self.quat[:4]))
+        buf.write(struct.pack('>3f', *self.aBody[:3]))
+        buf.write(struct.pack('>3f', *self.aWorld[:3]))
+        buf.write(struct.pack('>4f', *self.groundPlane[:4]))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -59,12 +65,15 @@ class state_estimator_lcmt(object):
         self.omegaBody = struct.unpack('>3f', buf.read(12))
         self.omegaWorld = struct.unpack('>3f', buf.read(12))
         self.quat = struct.unpack('>4f', buf.read(16))
+        self.aBody = struct.unpack('>3f', buf.read(12))
+        self.aWorld = struct.unpack('>3f', buf.read(12))
+        self.groundPlane = struct.unpack('>4f', buf.read(16))
         return self
     _decode_one = staticmethod(_decode_one)
 
     def _get_hash_recursive(parents):
         if state_estimator_lcmt in parents: return 0
-        tmphash = (0xc329843a643aae5b) & 0xffffffffffffffff
+        tmphash = (0xa0b8a64f8f4e9b7f) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

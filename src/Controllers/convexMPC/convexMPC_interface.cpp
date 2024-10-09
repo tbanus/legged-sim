@@ -133,9 +133,7 @@ void update_problem_data_floats(float* p, float* v, float* q, float* w,
   memcpy((void*)update.r,(void*)r,sizeof(float)*12);
   memcpy((void*)update.weights,(void*)weights,sizeof(float)*12);
   memcpy((void*)update.traj,(void*)state_trajectory, sizeof(float) * 12 * problem_configuration.horizon);
-  printf("solve kardes \n");
   solve_mpc(&update, &problem_configuration);
-  printf("ciao \n");
   has_solved = 1;
 
 }

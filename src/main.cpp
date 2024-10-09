@@ -65,7 +65,6 @@ int main(int argc, char* argv[]){
   SpiData _Feedback;
 
   GamepadCommand _GamepadCommand;
-
   VectorNavData _ImuData;
 
   RobotControlParameters _robotParams;
@@ -79,6 +78,8 @@ int main(int argc, char* argv[]){
 
   // // Create Ori_Controller instance
   RobotController* _ctrl = new EmbeddedController();
+  // begin with stand up
+
   // _ctrl->_Command=_Command;
   // #ifdef HW_ENABLE
    
@@ -103,7 +104,8 @@ int main(int argc, char* argv[]){
   _robotRunner->_Command = &_Command;
   _robotRunner->controlParameters = &_robotParams;
   _robotRunner->initializeParameters();
-  _robotRunner->init();
+
+  // _robotRunner->init();
   printf("initalized params\n");
   
   // // auto* param = _ctrl->getUserControlParameters();
@@ -114,7 +116,7 @@ int main(int argc, char* argv[]){
   // std::thread bridgeLcmThread= std::thread(&Bridge::LcmThread,_bridge);
 
   // //GamePad Command periodic task to listen related LCM channel
-  // PeriodicMemberFunction<RobotRunner> RR_Gamepad(&taskManager,0.0125,"RR-GamePad",&RobotRunner::ReceiveLCM,_robotRunner);
+  PeriodicMemberFunction<RobotRunner> RR_Gamepad(&taskManager,0.0125,"RR-GamePad",&RobotRunner::ReceiveLCM,_robotRunner);
   // //Check Connection Periodic tast to ping upper computer periodicaly
   // //PeriodicMemberFunction<RobotRunner> CheckConnection(&taskManager,0.1,"Check Connection",&RobotRunner::CheckConnection,_robotRunner);
   // //PeriodicMemberFunction<RobotRunner> KeyboardCommand(&taskManager,0.1,"Keyboard Command",&RobotRunner::KeyboardCallBack,_robotRunner);
@@ -134,11 +136,15 @@ int main(int argc, char* argv[]){
   // #endif
   
   _robotRunner->start();
-  // RR_Gamepad.start();
+  _ctrl->_controlFSM->data.controlParameters->control_mode=1;
+
+  RR_Gamepad.start();
   // // KeyboardCommand.start();
-  // usleep(1e6);
+  usleep(1e6);
+
 
   float i = 1000 ;
+
   while (1) { 
     // #ifndef HW_ENABLE
     #ifdef MANUAL

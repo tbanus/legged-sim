@@ -17,7 +17,9 @@
 // #include "Utilities/Timer.h"
 #include "Controllers/Estimators/PositionVelocityEstimator.h"
 //#include "rt/rt_interface_lcm.h"
-// #include <ReceiveGamepadCommand.h>
+#ifdef MANUAL
+#include <ReceiveLCMMessage.h>
+#endif
 RobotRunner::RobotRunner(RobotController* robot_ctrl, 
     PeriodicTaskManager* manager, 
     float period, std::string name):
@@ -26,6 +28,8 @@ RobotRunner::RobotRunner(RobotController* robot_ctrl,
 
     _robot_ctrl = robot_ctrl;
     _period = period;
+    // _robot_ctrl->_controlFSM->currentState->onEnter();
+
   }
 
 /**
@@ -34,6 +38,7 @@ RobotRunner::RobotRunner(RobotController* robot_ctrl,
  */
 void RobotRunner::init() {
   #ifdef MANUAL
+    printf("ROBOT_RUNNER INIT");
 
     std::string mjcf_file;
     mjcf_file = std::string("../resource/")+std::string("opy_v05/opy_v05.xml");
@@ -52,7 +57,7 @@ void RobotRunner::init() {
   // } else {
   //   _quadruped = buildCheetah3<float>();
   // }
-    _quadruped=ParseURDFtoQuadruped<float>(std::string("/home/tarik/thesis-project/legged-sim/resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
+    _quadruped=ParseURDFtoQuadruped<float>(std::string("/home/banus/thesis-project/legged-sim/resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
   // // Initialize the model and robot data
   _model = _quadruped.buildModel();
   // _jpos_initializer = new JPosInitializer<float>(3., controlParameters->controller_dt);
@@ -87,6 +92,7 @@ void RobotRunner::init() {
 
   _robot_ctrl->initializeController();
 
+
 }
 
 /**
@@ -98,6 +104,7 @@ void RobotRunner::run() {
   // Run the state estimator step
   //_stateEstimator->run(cheetahMainVisualization);
   _stateEstimator->run();
+  std::cout<<_desiredStateCommand->gamepadCommand->leftStickAnalog[0]<<std::endl;
   // //cheetahMainVisualization->p = _stateEstimate.position;
   // visualizationData->clear();
 
@@ -253,14 +260,14 @@ void RobotRunner::initializeStateEstimator(bool cheaterMode) {
     _stateEstimator->addEstimator<LinearKFPositionVelocityEstimator<float>>();
   
 }
-#define THIS_COM "/home/tarik/legged-sim/"
+// #define THIS_COM "/home/banuslegged-sim/"
 void RobotRunner::initializeParameters()
 {
     bool _load_parameters_from_file =1 ;
     // std::cout<<controlParameters<<std::endl;
     
-  	std::string robotParametersPath = "/home/tarik/thesis-project/legged-sim/resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
-    std::string userParametersPath = "/home/tarik/thesis-project/legged-sim/resource/opy_v05/mini-cheetah-defaults.yaml";
+  	std::string robotParametersPath = "/home/banus/thesis-project/legged-sim/resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
+    std::string userParametersPath = "/home/banus/thesis-project/legged-sim/resource/opy_v05/mini-cheetah-defaults.yaml";
   	// userParameters.initializeFromYamlFile(path);
   	// printf("controlParameters: %d", controlParameters);
    	if(_load_parameters_from_file) {
@@ -314,12 +321,13 @@ void RobotRunner::initializeParameters()
 
   printf("[Hardware Bridge] Got all parameters, starting up!\n");
 }
+#ifdef MANUAL
+void RobotRunner::ReceiveLCM()
 
-// void RobotRunner::ReceiveLCM()
-
-// {
-// // RecieveGamepadCommand (driverCommand);
-// }
+{
+RecieveLCMGamepadCommand (driverCommand);
+}
+#endif
 RobotRunner::~RobotRunner() {
   // delete _legController;
   // delete _stateEstimator;

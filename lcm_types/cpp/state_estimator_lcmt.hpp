@@ -28,6 +28,12 @@ class state_estimator_lcmt
 
         float      quat[4];
 
+        float      aBody[3];
+
+        float      aWorld[3];
+
+        float      groundPlane[4];
+
     public:
         /**
          * Encode a message into binary form.
@@ -145,6 +151,15 @@ int state_estimator_lcmt::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __float_encode_array(buf, offset + pos, maxlen - pos, &this->quat[0], 4);
     if(tlen < 0) return tlen; else pos += tlen;
 
+    tlen = __float_encode_array(buf, offset + pos, maxlen - pos, &this->aBody[0], 3);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __float_encode_array(buf, offset + pos, maxlen - pos, &this->aWorld[0], 3);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __float_encode_array(buf, offset + pos, maxlen - pos, &this->groundPlane[0], 4);
+    if(tlen < 0) return tlen; else pos += tlen;
+
     return pos;
 }
 
@@ -173,6 +188,15 @@ int state_estimator_lcmt::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __float_decode_array(buf, offset + pos, maxlen - pos, &this->quat[0], 4);
     if(tlen < 0) return tlen; else pos += tlen;
 
+    tlen = __float_decode_array(buf, offset + pos, maxlen - pos, &this->aBody[0], 3);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __float_decode_array(buf, offset + pos, maxlen - pos, &this->aWorld[0], 3);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __float_decode_array(buf, offset + pos, maxlen - pos, &this->groundPlane[0], 4);
+    if(tlen < 0) return tlen; else pos += tlen;
+
     return pos;
 }
 
@@ -186,12 +210,15 @@ int state_estimator_lcmt::_getEncodedSizeNoHash() const
     enc_size += __float_encoded_array_size(NULL, 3);
     enc_size += __float_encoded_array_size(NULL, 3);
     enc_size += __float_encoded_array_size(NULL, 4);
+    enc_size += __float_encoded_array_size(NULL, 3);
+    enc_size += __float_encoded_array_size(NULL, 3);
+    enc_size += __float_encoded_array_size(NULL, 4);
     return enc_size;
 }
 
 uint64_t state_estimator_lcmt::_computeHash(const __lcm_hash_ptr *)
 {
-    uint64_t hash = 0xc329843a643aae5bLL;
+    uint64_t hash = 0xa0b8a64f8f4e9b7fLL;
     return (hash<<1) + ((hash>>63)&1);
 }
 

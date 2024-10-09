@@ -27,7 +27,7 @@ def PeriodicLCM():
         time.sleep(0.0125)
         #if msg.start==0:
             # print(msg.start)
-        lc.publish("Gamepad Command", msg.encode())
+        lc.publish("command", msg.encode())
 
 
 def PeriodicLCM():
@@ -35,7 +35,7 @@ def PeriodicLCM():
     while PeriodicENABLE:
         time.sleep(0.1)
        # print(msg.leftStickAnalog[1])
-        lc.publish("Gamepad Command", msg.encode())
+        lc.publish("asd", msg.encode())
 lc=lcm.LCM("udpm://239.255.76.67:7667?ttl=255")
 PeriodicENABLE=True
 
@@ -98,7 +98,7 @@ while True:
         #     msg.y = event.state 
         # if event.code == "BTN_WEST" :
         #     msg.y = event.state  
-    lc.publish("Gamepad Command", msg.encode())
+    lc.publish("command", msg.encode())
 PeriodicENABLE=False
 x.join()
 x.stop()

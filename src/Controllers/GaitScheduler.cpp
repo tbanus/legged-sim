@@ -461,7 +461,6 @@ void GaitScheduler<T>::createGait() {
   // Gait has switched
   gaitData._currentGait = gaitData._nextGait;
 
-  std::cout << gaitData.gaitName << "\n" << std::endl;
 
   // Calculate the auxilliary gait information
   calcAuxiliaryGaitData();

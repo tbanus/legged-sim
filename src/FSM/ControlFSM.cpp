@@ -38,7 +38,6 @@ ControlFSM<T>::ControlFSM(Quadruped<T>* _quadruped,
   data.controlParameters = controlParameters;
   // data.visualizationData = visualizationData;
   data.userParameters = userParameters;
-  std::cout<< data.controlParameters<<std::endl;
 
   // Initialize and add all of the FSM States to the state list
   statesList.invalid = nullptr;

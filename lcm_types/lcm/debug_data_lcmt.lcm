@@ -1,0 +1,31 @@
+struct debug_data_lcmt {
+    //CMPC Run Gait Params
+    int8_t swing_spheres_enabled;
+    float swing_sphere_pos[2]; 
+    int64_t swing_num_spheres ;
+    int8_t traj_spheres_enabled;
+    //float traj_sphere_pos[2];
+    int64_t traj_num_spheres ;
+    int64_t gaitNumber;
+    int64_t horizonLength;
+    int64_t iterationCounter;
+    int64_t gaitIterations;
+    float  swingTimeRemaining[4];
+    float swingTimes[4];
+    float stance_time;
+    float Pf[3];
+    float contactStates[4];
+    float swingStates[4];
+    float pFoot[12];
+    float PlaneSlope;
+    float pBody_des[3];
+    float pBody_est[3];
+    float pDesLeg[3];
+    float vDesLeg[3];
+    float PlaneHeight[3];
+    float sim_applied_force[3];
+    float estimated_body_forces[3];
+    float sim_joint_acc[12];
+    float estimated_joint_acc[12];
+    float footSwingTrajectoriesPosition[12];
+}

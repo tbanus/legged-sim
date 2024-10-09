@@ -32,7 +32,7 @@ public:
   }
   // virtual void Estop(){ _controlFSM->initialize(); }
 
-  ControlFSM<float>* _controlFSM;
+  // ControlFSM<float>* _controlFSM;
 
 protected:
   // // Gait Scheduler controls the nominal contact schedule for the feet

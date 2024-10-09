@@ -8,7 +8,10 @@ WBC_Ctrl<T>::WBC_Ctrl(FloatingBaseModel<T> model):
   _tau_ff(cheetah::num_act_joint),
   _des_jpos(cheetah::num_act_joint),
   _des_jvel(cheetah::num_act_joint)
-  // _wbcLCM(getLcmUrl(255))
+  #ifdef MANUAL
+  ,
+  _wbcLCM(getLcmUrl(255))
+  #endif
 {
   _iter = 0;
   _full_config.setZero();
@@ -19,7 +22,7 @@ WBC_Ctrl<T>::WBC_Ctrl(FloatingBaseModel<T> model):
   _wbic = new WBIC<T>(cheetah::dim_config, &(_contact_list), &(_task_list));
   _wbic_data = new WBIC_ExtraData<T>();
 
-  _wbic_data->_W_floating = DVec<T>::Constant(6, 0.1);
+  _wbic_data->_W_floating = DVec<T>::Constant(6, 50);
   //_wbic_data->_W_floating = DVec<T>::Constant(6, 50.);
   //_wbic_data->_W_floating[5] = 0.1;
   _wbic_data->_W_rf = DVec<T>::Constant(12, 1.);

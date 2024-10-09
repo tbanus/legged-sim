@@ -7,9 +7,10 @@
 #include "cppTypes.h"
 #include <WBC/WBIC/WBIC.hpp>
 #include <WBC/WBIC/KinWBC.hpp>
-
-// #include <lcm-cpp.hpp>
-#include "wbc_test_data_t.hpp"
+#ifdef MANUAL
+#include <lcm-cpp.hpp>
+#include "wbc_data_lcmt.hpp"
+#endif
 
 #define WBCtrl WBC_Ctrl<T>
 
@@ -61,8 +62,9 @@ class WBC_Ctrl{
     //std::vector<T> _Kp_joint_swing, _Kd_joint_swing;
 
     unsigned long long _iter;
-
-    // lcm::LCM _wbcLCM;
-    // wbc_test_data_t _wbc_data_lcm;
+#ifdef MANUAL
+    lcm::LCM _wbcLCM;
+    wbc_data_lcmt _wbc_data_lcm;
+#endif
 };
 #endif

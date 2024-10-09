@@ -104,15 +104,15 @@ FSM_StateName FSM_State_BalanceStand<T>::checkTransition() {
       }*/
 
       // TEST: in place to show automatic non user requested transitions
-      // if (_iter >= 500) {
-      //   this->nextStateName = FSM_StateName::LOCOMOTION;
-      //   this->_data->controlParameters->control_mode = K_LOCOMOTION;
-      //   this->transitionDuration = 0.0;
-      //   this->_data->_gaitScheduler->gaitData._nextGait =
-      //       GaitType::TROT;  // TROT; // Or get whatever is in
-      //                         // main_control_settings
-      //   _iter = 0;
-      // }
+       if (_iter >= 500) {
+         this->nextStateName = FSM_StateName::LOCOMOTION;
+         this->_data->controlParameters->control_mode = K_LOCOMOTION;
+         this->transitionDuration = 0.0;
+         this->_data->_gaitScheduler->gaitData._nextGait =
+             GaitType::TROT;  // TROT; // Or get whatever is in
+                               // main_control_settings
+         _iter = 0;
+       }
       break;
 
     case K_LOCOMOTION:
@@ -238,11 +238,11 @@ void FSM_State_BalanceStand<T>::BalanceStandStep() {
   // }else{
     // Orientation
     _wbc_data->pBody_RPY_des[0] = 
-     0.6* this->_data->_desiredStateCommand->gamepadCommand->leftStickAnalog[0];
+    (0.2/32768)* this->_data->_desiredStateCommand->gamepadCommand->leftStickAnalog[0];
      _wbc_data->pBody_RPY_des[1] = 
-      0.6*this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[0];
+     (0.2/32768)*this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[0];
     _wbc_data->pBody_RPY_des[2] -= 
-      this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[1];
+     (0.2/32768)* this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[1];
     
     // Height
     // _wbc_data->pBody_des[2] += 
@@ -256,7 +256,7 @@ void FSM_State_BalanceStand<T>::BalanceStandStep() {
     _wbc_data->aFoot_des[i].setZero();
     _wbc_data->Fr_des[i].setZero();
     // printf("_body_weight %f ", _body_weight);
-    _wbc_data->Fr_des[i][2] = 80;
+    _wbc_data->Fr_des[i][2] = 82;
     _wbc_data->contact_state[i] = true;
   }
   
@@ -268,7 +268,7 @@ void FSM_State_BalanceStand<T>::BalanceStandStep() {
     }
   }
   last_height_command = _wbc_data->pBody_des[2];
-  _wbc_data->pBody_RPY_des.setZero();
+  // _wbc_data->pBody_RPY_des.setZero();
   // std::cout<<"_wbc_data->pBody_RPY_des: "<< _wbc_data->pBody_RPY_des<<std::endl;
   // std::cout<<"_wbc_data->pBody_des: "<< _wbc_data->pBody_des<<std::endl;
   // std::cout<<"this->_data->_stateEstimator->getResult()).position"<<this->_data->_stateEstimator->getResult().position<<std::endl;

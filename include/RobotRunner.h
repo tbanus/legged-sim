@@ -28,7 +28,7 @@
 #ifdef MANUAL
 #include <lcm-cpp.hpp>
 #include <Simulation/Simulation.h>
-#include "cheetah_visualization_lcmt.hpp"
+// #include "cheetah_visualization_lcmt.hpp"
 #include "state_estimator_lcmt.hpp"
 #endif
 #include <Dynamics/ParseURDFtoQuadruped.h>
@@ -78,6 +78,7 @@ class RobotRunner : public PeriodicTask {
   // VisualizationData* visualizationData;
   // CheetahVisualization* cheetahMainVisualization;
   void initializeParameters();
+  void ReceiveLCM();
 
  private:
   float _ini_yaw;
@@ -86,7 +87,6 @@ class RobotRunner : public PeriodicTask {
 
   void setupStep();
   void finalizeStep();
-
   // JPosInitializer<float>* _jpos_initializer;
   Quadruped<float> _quadruped;
   LegController<float>* _legController = nullptr;

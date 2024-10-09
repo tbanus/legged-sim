@@ -86,6 +86,7 @@ FSM_StateName FSM_State_Locomotion<T>::checkTransition() {
   iter++;
 
   // Switch FSM control mode
+  // if(1) {
   if(locomotionSafe()) {
     switch ((int)this->_data->controlParameters->control_mode) {
       case K_LOCOMOTION:
@@ -130,6 +131,7 @@ FSM_StateName FSM_State_Locomotion<T>::checkTransition() {
                   << this->_data->controlParameters->control_mode << std::endl;
     }
   } else {
+    this->_data->controlParameters->control_mode = K_PASSIVE;
     this->nextStateName = FSM_StateName::PASSIVE;
     this->transitionDuration = 0.;
     // rc_control.mode = RC_mode::RECOVERY_STAND;
@@ -215,13 +217,13 @@ bool FSM_State_Locomotion<T>::locomotionSafe() {
       return false;
     }
 
-    if(std::fabs(p_leg[1] > 0.18)) {
+    if(std::fabs(p_leg[1] > 0.30)) {
       printf("Unsafe locomotion: leg %d's y-position is bad (%.3f m)\n", leg, p_leg[1]);
       return false;
     }
 
     auto v_leg = this->_data->_legController->datas[leg].v.norm();
-    if(std::fabs(v_leg) > 9.) {
+    if(std::fabs(v_leg) > 15.) {
       printf("Unsafe locomotion: leg %d is moving too quickly (%.3f m/s)\n", leg, v_leg);
       return false;
     }

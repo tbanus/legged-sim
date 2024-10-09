@@ -16,6 +16,7 @@
 #include "ControlParameters/ControlParameters.h"
 #include "ControlParameters/RobotParameters.h"
 #include <ControlParameters/MIT_UserParameters.h>
+#include <FSM/ControlFSM.h>
 
 /*!
  * Parent class of user robot controllers
@@ -34,6 +35,7 @@ public:
   virtual void updateVisualization() = 0;
   virtual ControlParameters* getUserControlParameters() = 0;
   virtual void Estop() {}
+  ControlFSM<float>* _controlFSM;
 
 protected:
   Quadruped<float>* _quadruped = nullptr;

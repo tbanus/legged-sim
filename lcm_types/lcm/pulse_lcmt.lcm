@@ -1,0 +1,14 @@
+struct pulse_lcmt {
+
+    int8_t hearbeat;
+    int8_t can_interface[4];
+    int8_t imu_status;
+    int8_t leg_status;
+    
+    int8_t update_param_response;
+
+    
+    // bool ros_status;
+
+
+}

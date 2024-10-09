@@ -69,7 +69,7 @@ FSM_StateName FSM_State_Passive<T>::checkTransition() {
 
   // if(this->_data->_desiredStateCommand->gamepadCommand->start)
   // {
-    this->_data->controlParameters->control_mode=1;
+  //   this->_data->controlParameters->control_mode=1;
   // }
   // Switch FSM control mode
   switch ((int)this->_data->controlParameters->control_mode) {

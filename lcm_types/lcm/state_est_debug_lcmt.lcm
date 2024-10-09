@@ -1,0 +1,13 @@
+struct state_est_debug_lcmt {
+
+    float p_f[12];
+    float y[28];
+    float y_model[28];
+    float ey[28];
+    float xhat[18];
+    float a[4];
+    float trusts[4];
+
+   
+
+}

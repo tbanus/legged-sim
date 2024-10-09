@@ -1,9 +1,12 @@
 #include <iostream>
 #include <Utilities/Timer.h>
 #include <Utilities/Utilities_print.h>
-
+#define MPC_ENABLE
 #include "Controllers/convexMPC/ConvexMPCLocomotion.h"
-// #include "Controllers/convexMPC/convexMPC_interface.h"
+#ifdef MPC_ENABLE
+
+#include "Controllers/convexMPC/convexMPC_interface.h"
+#endif
 #include "Controllers/convexMPC/GraphSearch.h"
 
 #include "Controllers/convexMPC/Gait.h"
@@ -20,7 +23,7 @@ ConvexMPCLocomotion::ConvexMPCLocomotion(float _dt, int _iterations_between_mpc,
   iterationsBetweenMPC(_iterations_between_mpc),
   horizonLength(10),
   dt(_dt),
-  trotting(horizonLength*2, Vec4<int>(0,10,10,0), Vec4<int>(10,10,10,10),"Trotting"),
+  trotting(20, Vec4<int>(0,10,10,0), Vec4<int>(10,10,10,10),"Trotting"),
   bounding(horizonLength, Vec4<int>(5,5,0,0),Vec4<int>(4,4,4,4),"Bounding"),
   //bounding(horizonLength, Vec4<int>(5,5,0,0),Vec4<int>(3,3,3,3),"Bounding"),
   pronking(horizonLength, Vec4<int>(0,0,0,0),Vec4<int>(4,4,4,4),"Pronking"),
@@ -41,8 +44,10 @@ ConvexMPCLocomotion::ConvexMPCLocomotion(float _dt, int _iterations_between_mpc,
   dtMPC = dt * iterationsBetweenMPC;
   default_iterations_between_mpc = iterationsBetweenMPC;
   // printf("[Convex MPC] dt: %.3f iterations: %d, dtMPC: %.3f\n", dt, iterationsBetweenMPC, dtMPC);
-  // setup_problem(dtMPC, horizonLength, 0.1, 250);
+  #ifdef MPC_ENABLE
+  setup_problem(dtMPC, horizonLength, 0.4, 250);
   //setup_problem(dtMPC, horizonLength, 0.4, 650); // DH
+  #endif
   rpy_comp[0] = 0;
   rpy_comp[1] = 0;
   rpy_comp[2] = 0;
@@ -72,7 +77,7 @@ void ConvexMPCLocomotion::recompute_timing(int iterations_per_mpc) {
 
 void ConvexMPCLocomotion::_SetupCommand(ControlFSMData<float> & data){
   if(data._quadruped->_robotType == RobotType::MINI_CHEETAH){
-    _body_height = 0.32;
+    _body_height = 0.35;
   }else if(data._quadruped->_robotType == RobotType::CHEETAH_3){
     _body_height = 0.45;
   }else{
@@ -110,6 +115,7 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
   bool omniMode = false;
   // Command Setup
   _SetupCommand(data);
+  data.userParameters->cmpc_gait=9;
   gaitNumber = data.userParameters->cmpc_gait;
   if(gaitNumber >= 10) {
     gaitNumber -= 10;
@@ -238,6 +244,7 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
     swingTimes[l] = gait->getCurrentSwingTime(dtMPC, l);
 
   float side_sign[4] = {-1, 1, -1, 1};
+  float dir_sign[4] = {1, 1, -1, -1};
   float interleave_y[4] = {-0.08, 0.08, 0.02, -0.02};
   //float interleave_gain = -0.13;
   float interleave_gain = 0;
@@ -253,12 +260,13 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
     }
     //if(firstSwing[i]) {
     //footSwingTrajectories[i].setHeight(.05);
-    footSwingTrajectories[i].setHeight(.06);
-    Vec3<float> offset(0, side_sign[i] * .065, 0);
+    footSwingTrajectories[i].setHeight(.10);
+
+    Vec3<float> offset(data._quadruped->_hipLocation(0) * dir_sign[i], side_sign[i] * (data._quadruped->_abadLinkLength+data._quadruped->_kneeLinkY_offset), 0);
 
     Vec3<float> pRobotFrame = (data._quadruped->getHipLocation(i) + offset);
 
-    pRobotFrame[1] += interleave_y[i] * v_abs * interleave_gain;
+    // pRobotFrame[1] += interleave_y[i] * v_abs * interleave_gain;
     float stance_time = gait->getCurrentStanceTime(dtMPC, i);
     Vec3<float> pYawCorrected = 
       coordinateRotation(CoordinateAxis::Z, -_yaw_turn_rate* stance_time / 2) * pRobotFrame;
@@ -274,8 +282,7 @@ void ConvexMPCLocomotion::run(ControlFSMData<float>& data) {
 
     //+ seResult.vWorld * swingTimeRemaining[i];
 
-    //float p_rel_max = 0.35f;
-    float p_rel_max = 0.5f;
+    float p_rel_max = 0.35f;
 
     // Using the estimated velocity is correct
     //Vec3<float> des_vel_world = seResult.rBody.transpose() * des_vel;
@@ -578,12 +585,11 @@ void ConvexMPCLocomotion::solveDenseMPC(int *mpcTable, ControlFSMData<float> &da
 
   //float Q[12] = {0.25, 0.25, 10, 2, 2, 20, 0, 0, 0.3, 0.2, 0.2, 0.2};
 
-  float Q[12] = {0.25, 0.25, 10, 2, 2, 50, 0, 0, 0.3, 0.2, 0.2, 0.1};
-
+  float Q[12] = {0.25, 0.25, 10, 2, 2, 10, 0, 0, 0.3, 0.2, 0.2, 0.2};
   //float Q[12] = {0.25, 0.25, 10, 2, 2, 40, 0, 0, 0.3, 0.2, 0.2, 0.2};
   float yaw = seResult.rpy[2];
   float* weights = Q;
-  float alpha = 4e-5; // make setting eventually
+  float alpha = 1e-5; // make setting eventually
   //float alpha = 4e-7; // make setting eventually: DH
   float* p = seResult.position.data();
   float* v = seResult.vWorld.data();
@@ -609,38 +615,42 @@ void ConvexMPCLocomotion::solveDenseMPC(int *mpcTable, ControlFSMData<float> &da
 
   Timer t1;
   dtMPC = dt * iterationsBetweenMPC;
+    #ifdef MPC_ENABLE
+
   // setup_problem(dtMPC,horizonLength,0.1, 250);
-  //setup_problem(dtMPC,horizonLength,0.4,650); //DH
-  // update_x_drag(x_comp_integral);
+  setup_problem(dtMPC,horizonLength,0.4,225); //DH
+  update_x_drag(x_comp_integral);
+  #endif
   if(vxy[0] > 0.3 || vxy[0] < -0.3) {
     //x_comp_integral += _parameters->cmpc_x_drag * pxy_err[0] * dtMPC / vxy[0];
     x_comp_integral += _parameters->cmpc_x_drag * pz_err * dtMPC / vxy[0];
   }
 
   //printf("pz err: %.3f, pz int: %.3f\n", pz_err, x_comp_integral);
-
-  // update_solver_settings(_parameters->jcqp_max_iter, _parameters->jcqp_rho,
-  //     _parameters->jcqp_sigma, _parameters->jcqp_alpha, _parameters->jcqp_terminate, _parameters->use_jcqp);
-  //t1.stopPrint("Setup MPC");
-
+ #ifdef MPC_ENABLE
+  update_solver_settings(_parameters->jcqp_max_iter, _parameters->jcqp_rho,
+      _parameters->jcqp_sigma, _parameters->jcqp_alpha, _parameters->jcqp_terminate, _parameters->use_jcqp);
+  // t1.stopPrint("Setup MPC");
+#endif
   Timer t2;
   //cout << "dtMPC: " << dtMPC << "\n";
-  // update_problem_data_floats(p,v,q,w,r,yaw,weights,trajAll,alpha,mpcTable);
+  #ifdef MPC_ENABLE
+  update_problem_data_floats(p,v,q,w,r,yaw,weights,trajAll,alpha,mpcTable);
+  #endif
   //t2.stopPrint("Run MPC");
   //printf("MPC Solve time %f ms\n", t2.getMs());
 
   for(int leg = 0; leg < 4; leg++)
   {
     Vec3<float> f;
-    
-    f.setZero();
-    f[0]=140*mpcTable[leg];
-    f[1]=140*mpcTable[leg];
-    f[2]=140*mpcTable[leg];
-    
-    // for(int axis = 0; axis < 3; axis++)
-    //   f[axis] = get_solution(leg*3 + axis);
-
+     f.setZero();
+    // f[0]=0*mpcTable[leg];
+    // f[1]=0*mpcTable[leg];
+    // f[2]=200*mpcTable[leg];
+    #ifdef MPC_ENABLE
+    for(int axis = 0; axis < 3; axis++)
+      f[axis] = get_solution(leg*3 + axis);
+    #endif
     //printf("[%d] %7.3f %7.3f %7.3f\n", leg, f[0], f[1], f[2]);
 
     f_ff[leg] = -seResult.rBody * f;

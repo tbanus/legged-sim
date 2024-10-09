@@ -24,6 +24,12 @@ class leg_control_data_lcmt
 
         float      tau_est[12];
 
+        float      foot_pos[12];
+
+        float      grf[12];
+
+        float      ForceEstimate[15];
+
     public:
         /**
          * Encode a message into binary form.
@@ -135,6 +141,15 @@ int leg_control_data_lcmt::_encodeNoHash(void *buf, int offset, int maxlen) cons
     tlen = __float_encode_array(buf, offset + pos, maxlen - pos, &this->tau_est[0], 12);
     if(tlen < 0) return tlen; else pos += tlen;
 
+    tlen = __float_encode_array(buf, offset + pos, maxlen - pos, &this->foot_pos[0], 12);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __float_encode_array(buf, offset + pos, maxlen - pos, &this->grf[0], 12);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __float_encode_array(buf, offset + pos, maxlen - pos, &this->ForceEstimate[0], 15);
+    if(tlen < 0) return tlen; else pos += tlen;
+
     return pos;
 }
 
@@ -157,6 +172,15 @@ int leg_control_data_lcmt::_decodeNoHash(const void *buf, int offset, int maxlen
     tlen = __float_decode_array(buf, offset + pos, maxlen - pos, &this->tau_est[0], 12);
     if(tlen < 0) return tlen; else pos += tlen;
 
+    tlen = __float_decode_array(buf, offset + pos, maxlen - pos, &this->foot_pos[0], 12);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __float_decode_array(buf, offset + pos, maxlen - pos, &this->grf[0], 12);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __float_decode_array(buf, offset + pos, maxlen - pos, &this->ForceEstimate[0], 15);
+    if(tlen < 0) return tlen; else pos += tlen;
+
     return pos;
 }
 
@@ -168,12 +192,15 @@ int leg_control_data_lcmt::_getEncodedSizeNoHash() const
     enc_size += __float_encoded_array_size(NULL, 12);
     enc_size += __float_encoded_array_size(NULL, 12);
     enc_size += __float_encoded_array_size(NULL, 12);
+    enc_size += __float_encoded_array_size(NULL, 12);
+    enc_size += __float_encoded_array_size(NULL, 12);
+    enc_size += __float_encoded_array_size(NULL, 15);
     return enc_size;
 }
 
 uint64_t leg_control_data_lcmt::_computeHash(const __lcm_hash_ptr *)
 {
-    uint64_t hash = 0xa7d2775a407deca7LL;
+    uint64_t hash = 0x4963155395dafa42LL;
     return (hash<<1) + ((hash>>63)&1);
 }
 
