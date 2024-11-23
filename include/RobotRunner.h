@@ -51,7 +51,7 @@ class RobotRunner : public PeriodicTask {
   void initializeStateEstimator(bool cheaterMode = false);
   virtual ~RobotRunner();
   #ifdef MANUAL
-  void ReceiveLCM();
+  // void ReceiveLCM();
   #endif
   RobotController* _robot_ctrl;
 
