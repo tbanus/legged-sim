@@ -29,8 +29,9 @@ include_directories("./third-party/GoldFarb_Optimizer")
 include_directories("./third-party/ParamHandler")
 include_directories("./third-party/JCQP")
 include_directories("./third-party/JCQP/amd/include")
+include_directories("/usr/local/include")   # lcm includes
 
-include_directories("/usr/local/include/lcm/")   # lcm includes
+include_directories("/usr/include/lcm/")   # lcm includes
 include_directories("./lcm_types/cpp")
 
 
