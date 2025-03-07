@@ -6,6 +6,7 @@
 
 #include "FSM/FSM_State_BalanceStand.h"
 #include <Controllers/WBC_Ctrl/LocomotionCtrl/LocomotionCtrl.hpp>
+#include <FSM/ControlFSMData.h>
 
 /**
  * Constructor for the FSM State that passes in state specific info to
@@ -25,8 +26,8 @@ FSM_State_BalanceStand<T>::FSM_State_BalanceStand(
 
   // Initialize GRF to 0s
   this->footFeedForwardForces = Mat34<T>::Zero();
-
-  _wbc_ctrl = new LocomotionCtrl<T>(_controlFSMData->_quadruped->buildModel());
+  auto model = _controlFSMData->_quadruped->buildModel();
+  _wbc_ctrl = new LocomotionCtrl<T>(model);
   _wbc_data = new LocomotionCtrlData<T>();
 
   _wbc_ctrl->setFloatingBaseWeight(1000.);

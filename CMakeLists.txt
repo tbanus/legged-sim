@@ -10,6 +10,8 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/ParamHandler)
 add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/inih)
 add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/JCQP)
 add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/osqp)
+add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/mujoco)
+
 # add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/vn100)
 
 include_directories("./include")
@@ -29,6 +31,8 @@ include_directories("./third-party/GoldFarb_Optimizer")
 include_directories("./third-party/ParamHandler")
 include_directories("./third-party/JCQP")
 include_directories("./third-party/JCQP/amd/include")
+include_directories("./third-party/mujoco/include")
+
 include_directories("/usr/local/include")   # lcm includes
 
 include_directories("/usr/include/lcm/")   # lcm includes

@@ -22,6 +22,7 @@
 
 // #include "SimUtilities/GamepadCommand.h"
 // #include "SimUtilities/VisualizationData.h"
+#include <memory>
 #include "Utilities/PeriodicTask.h"
 #include <Utilities/RobotCommands.h>
 #include "Utilities/utilities.h"

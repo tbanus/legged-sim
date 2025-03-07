@@ -7,6 +7,8 @@
 
 #include "FSM/FSM_State_Locomotion.h"
 #include <Utilities/Timer.h>
+#include <FSM/ControlFSMData.h>
+
 #include <Controllers/WBC_Ctrl/LocomotionCtrl/LocomotionCtrl.hpp>
 #include "Debugger.h"
 //#include <rt/rt_interface_lcm.h>
@@ -19,12 +21,12 @@
  */
 template <typename T>
 FSM_State_Locomotion<T>::FSM_State_Locomotion(ControlFSMData<T>* _controlFSMData)
-    :  FSM_State<T>(_controlFSMData, FSM_StateName::LOCOMOTION, "LOCOMOTION"), 
-        cMPCOld(_controlFSMData->controlParameters->controller_dt,
-        // 30 / (1000. * _controlFSMData->controlParameters->controller_dt),
-        // 22 / (1000. * _controlFSMData->controlParameters->controller_dt),
-        27 / (1000. * _controlFSMData->controlParameters->controller_dt),
-        _controlFSMData->userParameters)
+    :  FSM_State<T>(_controlFSMData, FSM_StateName::LOCOMOTION, "LOCOMOTION")
+        // cMPCOld(_controlFSMData->controlParameters->controller_dt,
+        // // 30 / (1000. * _controlFSMData->controlParameters->controller_dt),
+        // // 22 / (1000. * _controlFSMData->controlParameters->controller_dt),
+        // 27 / (1000. * _controlFSMData->controlParameters->controller_dt),
+        // _controlFSMData->userParameters)
         
      {   
   // if(_controlFSMData->_quadruped->_robotType == RobotType::MINI_CHEETAH){
@@ -256,7 +258,7 @@ void FSM_State_Locomotion<T>::LocomotionControlStep() {
   // Contact state logic
   // estimateContact();
 
-  cMPCOld.run<T>(*this->_data);
+  // cMPCOld.run<T>(*this->_data);
   Vec3<T> pDes_backup[4];
   Vec3<T> vDes_backup[4];
   Mat3<T> Kp_backup[4];
@@ -268,7 +270,45 @@ void FSM_State_Locomotion<T>::LocomotionControlStep() {
     Kp_backup[leg] = this->_data->_legController->commands[leg].kpCartesian;
     Kd_backup[leg] = this->_data->_legController->commands[leg].kdCartesian;
   }
+  //print this->_data->locomotionCtrlData attributees
+  std::cout<<"pBody_des: "<<_wbc_data->pBody_des<<std::endl;
+  std::cout<<"vBody_des: "<<_wbc_data->vBody_des<<std::endl;
+  std::cout<<"aBody_des: "<<_wbc_data->aBody_des<<std::endl;
+  std::cout<<"pBody_RPY_des: "<<_wbc_data->pBody_RPY_des<<std::endl;
+  std::cout<<"vBody_Ori_des: "<<_wbc_data->vBody_Ori_des<<std::endl;
+  for(size_t i(0); i<4; ++i){
+    std::cout<<"pFoot_des["<<i<<"]: "<<_wbc_data->pFoot_des[i]<<std::endl;
+    std::cout<<"vFoot_des["<<i<<"]: "<<_wbc_data->vFoot_des[i]<<std::endl;
+    std::cout<<"aFoot_des["<<i<<"]: "<<_wbc_data->aFoot_des[i]<<std::endl;
+    std::cout<<"Fr_des["<<i<<"]: "<<_wbc_data->Fr_des[i]<<std::endl;
+  }
+  std::cout<<"contact_state: "<<_wbc_data->contact_state<<std::endl;
+    _wbc_data->pBody_des = stateEstimate.position + this->_data->locomotionCtrlData.vBody_des * this->_data->controlParameters->controller_dt;
+     
+    _wbc_data->vBody_des = this->_data->locomotionCtrlData.vBody_des;
+    _wbc_data->aBody_des = Eigen::Matrix<T, 3, 1>::Zero();
+    auto OriEuler=ori::quatToRPY(stateEstimate.orientation);
 
+    _wbc_data->pBody_RPY_des =  ori::quatToRPY(stateEstimate.orientation) + this->_data->locomotionCtrlData.vBody_Ori_des * this->_data->controlParameters->controller_dt;
+    _wbc_data->vBody_Ori_des = this->_data->locomotionCtrlData.vBody_Ori_des;
+
+    for (size_t i(0); i < 4; ++i) {
+      if (this->_data->locomotionCtrlData.contact_state[i] > 0.9) {
+        _wbc_data->pFoot_des[i] = this->_data->_legController->datas[i].p;
+        _wbc_data->vFoot_des[i] = Eigen::Matrix<T, 3, 1>::Zero();
+        _wbc_data->aFoot_des[i] = Eigen::Matrix<T, 3, 1>::Zero();
+        _wbc_data->Fr_des[i] = this->_data->locomotionCtrlData.vFoot_des[i];
+      } else {
+        _wbc_data->pFoot_des[i] =
+            this->_data->_legController->datas[i].p +
+            this->_data->locomotionCtrlData.vFoot_des[i] *
+                this->_data->controlParameters->controller_dt;
+        _wbc_data->vFoot_des[i] = this->_data->locomotionCtrlData.vFoot_des[i];
+        _wbc_data->aFoot_des[i] = Eigen::Matrix<T, 3, 1>::Zero();
+        _wbc_data->Fr_des[i] = Eigen::Matrix<T, 3, 1>::Zero();
+      }
+    }
+    // _wbc_data->contact_state = cMPCOld.contact_state;
   if(this->_data->userParameters->use_wbc > 0.9){
     // _wbc_data->pBody_des = cMPCOld.pBody_des;
     // _wbc_data->vBody_des = cMPCOld.vBody_des;
@@ -290,6 +330,7 @@ void FSM_State_Locomotion<T>::LocomotionControlStep() {
     // _wbc_data->contact_state = cMPCOld.contact_state;
     _wbc_ctrl->run(_wbc_data, *this->_data);
   }
+
   for(int leg(0); leg<4; ++leg){
     //this->_data->_legController->commands[leg].pDes = pDes_backup[leg];
     this->_data->_legController->commands[leg].vDes = vDes_backup[leg];

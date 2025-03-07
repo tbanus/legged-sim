@@ -57,7 +57,7 @@ void RobotRunner::init() {
   // } else {
   //   _quadruped = buildCheetah3<float>();
   // }
-    _quadruped=ParseURDFtoQuadruped<float>(std::string("/app/envpool/mujoco/legged-sim/resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
+    _quadruped=ParseURDFtoQuadruped<float>(std::string("/app/legged-sim/resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
   // // Initialize the model and robot data
   _model = _quadruped.buildModel();
   // _jpos_initializer = new JPosInitializer<float>(3., controlParameters->controller_dt);
@@ -104,7 +104,6 @@ void RobotRunner::run() {
   // Run the state estimator step
   //_stateEstimator->run(cheetahMainVisualization);
   _stateEstimator->run();
-  std::cout<<_desiredStateCommand->gamepadCommand->leftStickAnalog[0]<<std::endl;
   // //cheetahMainVisualization->p = _stateEstimate.position;
   // visualizationData->clear();
 
@@ -151,14 +150,12 @@ void RobotRunner::run() {
   //     } else {
   //       // Run Control 
         _legController->updateData(_Feedback);
-        std::cout << "[DEBUG] [RobotRunner.cpp] [RobotRunner::run] Updating leg data" << std::endl;
 
 
 
         _robot_ctrl->runController();
-        std::cout << "[DEBUG] [RobotRunner.cpp] [RobotRunner::run] Running controller" << std::endl;
         _legController->updateCommand(_Command);
-        std::cout << "[DEBUG] [RobotRunner.cpp] [RobotRunner::run] Updating command" << std::endl;
+        // std::cout << "[DEBUG] [RobotRunner.cpp] [RobotRunner::run] Updating command" << std::endl;
   //       cheetahMainVisualization->p = _stateEstimate.position;
 
   //       // Update Visualization
@@ -272,8 +269,8 @@ void RobotRunner::initializeParameters()
     bool _load_parameters_from_file =1 ;
     // std::cout<<controlParameters<<std::endl;
     
-  	std::string robotParametersPath = "/app/envpool/mujoco/legged-sim/resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
-    std::string userParametersPath = "/app/envpool/mujoco/legged-sim/resource/opy_v05/mini-cheetah-defaults.yaml";
+  	std::string robotParametersPath = "/app/legged-sim/resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
+    std::string userParametersPath = "/app/legged-sim/resource/opy_v05/mini-cheetah-defaults.yaml";
   	// userParameters.initializeFromYamlFile(path);
   	// printf("controlParameters: %d", controlParameters);
    	if(_load_parameters_from_file) {

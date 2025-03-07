@@ -4,7 +4,7 @@
 #include <Controllers/WBC_Ctrl/TaskSet/BodyPosTask.hpp>
 //#include <WBC_Ctrl/TaskSet/BodyPostureTask.hpp>
 #include <Controllers/WBC_Ctrl/TaskSet/LinkPosTask.hpp>
-
+#include <FSM/ControlFSMData.h>
 template<typename T>
 LocomotionCtrl<T>::LocomotionCtrl(FloatingBaseModel<T> model):
   WBC_Ctrl<T>(model)
