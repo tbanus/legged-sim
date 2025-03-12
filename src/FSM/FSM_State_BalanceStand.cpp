@@ -35,7 +35,7 @@ FSM_State_BalanceStand<T>::FSM_State_BalanceStand(
 
 template <typename T>
 void FSM_State_BalanceStand<T>::onEnter() {
-    DEBUG_MSG(".");
+    // DEBUG_MSG(".");
 
 
   // Default is to not transition

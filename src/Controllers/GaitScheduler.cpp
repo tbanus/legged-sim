@@ -70,7 +70,7 @@ GaitScheduler<T>::GaitScheduler(MIT_UserParameters* _userParameters, float _dt) 
  */
 template <typename T>
 void GaitScheduler<T>::initialize() {
-  std::cout << "[GAIT] Initialize Gait Scheduler" << std::endl;
+  // std::cout << "[GAIT] Initialize Gait Scheduler" << std::endl;
 
   // Start the gait in a trot since we use this the most
   gaitData._currentGait = GaitType::STAND;

@@ -29,7 +29,7 @@ FSM_State_StandUp<T>::FSM_State_StandUp(ControlFSMData<T> *_controlFSMData)
 template <typename T>
 void FSM_State_StandUp<T>::onEnter()
 {
-  DEBUG_MSG(".");
+  // DEBUG_MSG(".");
   // Default is to not transition
   this->nextStateName = this->stateName;
 

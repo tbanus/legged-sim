@@ -274,7 +274,7 @@ void RobotRunner::initializeParameters()
   	// userParameters.initializeFromYamlFile(path);
   	// printf("controlParameters: %d", controlParameters);
    	if(_load_parameters_from_file) {
-    printf("[Hardware Bridge] Loading parameters from file...\n");
+    // printf("[Hardware Bridge] Loading parameters from file...\n");
     
     try {
       controlParameters->initializeFromYamlFile(userParametersPath);
@@ -301,7 +301,7 @@ void RobotRunner::initializeParameters()
         exit(1);
       }
 
-      printf("Loaded user parameters\n");
+      // printf("Loaded user parameters\n");
     } else {
       printf("Did not load user parameters because there aren't any\n");
     }
@@ -322,7 +322,7 @@ void RobotRunner::initializeParameters()
 
 
 
-  printf("[Hardware Bridge] Got all parameters, starting up!\n");
+  // printf("[Hardware Bridge] Got all parameters, starting up!\n");
 }
 #ifdef MANUAL
 void RobotRunner::ReceiveLCM()

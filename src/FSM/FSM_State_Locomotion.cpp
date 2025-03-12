@@ -55,7 +55,7 @@ FSM_State_Locomotion<T>::FSM_State_Locomotion(ControlFSMData<T>* _controlFSMData
 
 template <typename T>
 void FSM_State_Locomotion<T>::onEnter() {
-    DEBUG_MSG(".");
+    // DEBUG_MSG(".");
 
   // Default is to not transition
   this->nextStateName = this->stateName;
@@ -64,7 +64,6 @@ void FSM_State_Locomotion<T>::onEnter() {
   this->transitionData.zero();
   // cMPCOld.initialize();
   this->_data->_gaitScheduler->gaitData._nextGait = GaitType::TROT;
-  printf("[FSM LOCOMOTION] On Enter\n");
 }
 
 /**
@@ -271,18 +270,18 @@ void FSM_State_Locomotion<T>::LocomotionControlStep() {
     Kd_backup[leg] = this->_data->_legController->commands[leg].kdCartesian;
   }
   //print this->_data->locomotionCtrlData attributees
-  std::cout<<"pBody_des: "<<_wbc_data->pBody_des<<std::endl;
-  std::cout<<"vBody_des: "<<_wbc_data->vBody_des<<std::endl;
-  std::cout<<"aBody_des: "<<_wbc_data->aBody_des<<std::endl;
-  std::cout<<"pBody_RPY_des: "<<_wbc_data->pBody_RPY_des<<std::endl;
-  std::cout<<"vBody_Ori_des: "<<_wbc_data->vBody_Ori_des<<std::endl;
-  for(size_t i(0); i<4; ++i){
-    std::cout<<"pFoot_des["<<i<<"]: "<<_wbc_data->pFoot_des[i]<<std::endl;
-    std::cout<<"vFoot_des["<<i<<"]: "<<_wbc_data->vFoot_des[i]<<std::endl;
-    std::cout<<"aFoot_des["<<i<<"]: "<<_wbc_data->aFoot_des[i]<<std::endl;
-    std::cout<<"Fr_des["<<i<<"]: "<<_wbc_data->Fr_des[i]<<std::endl;
-  }
-  std::cout<<"contact_state: "<<_wbc_data->contact_state<<std::endl;
+  // std::cout<<"pBody_des: "<<_wbc_data->pBody_des<<std::endl;
+  // std::cout<<"vBody_des: "<<_wbc_data->vBody_des<<std::endl;
+  // std::cout<<"aBody_des: "<<_wbc_data->aBody_des<<std::endl;
+  // std::cout<<"pBody_RPY_des: "<<_wbc_data->pBody_RPY_des<<std::endl;
+  // std::cout<<"vBody_Ori_des: "<<_wbc_data->vBody_Ori_des<<std::endl;
+  // for(size_t i(0); i<4; ++i){
+  //   std::cout<<"pFoot_des["<<i<<"]: "<<_wbc_data->pFoot_des[i]<<std::endl;
+  //   std::cout<<"vFoot_des["<<i<<"]: "<<_wbc_data->vFoot_des[i]<<std::endl;
+  //   std::cout<<"aFoot_des["<<i<<"]: "<<_wbc_data->aFoot_des[i]<<std::endl;
+  //   std::cout<<"Fr_des["<<i<<"]: "<<_wbc_data->Fr_des[i]<<std::endl;
+  // }
+  // std::cout<<"contact_state: "<<_wbc_data->contact_state<<std::endl;
     _wbc_data->pBody_des = stateEstimate.position + this->_data->locomotionCtrlData.vBody_des * this->_data->controlParameters->controller_dt;
      
     _wbc_data->vBody_des = this->_data->locomotionCtrlData.vBody_des;
