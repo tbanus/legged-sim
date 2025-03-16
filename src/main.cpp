@@ -140,7 +140,6 @@ int main(int argc, char* argv[]){
 
   RR_Gamepad.start();
   // // KeyboardCommand.start();
-  usleep(1e6);
 
 
   float i = 1000 ;

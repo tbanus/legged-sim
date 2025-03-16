@@ -29,7 +29,7 @@ FSM_State_StandUp<T>::FSM_State_StandUp(ControlFSMData<T> *_controlFSMData)
 template <typename T>
 void FSM_State_StandUp<T>::onEnter()
 {
-  // DEBUG_MSG(".");
+  DEBUG_MSG(".");
   // Default is to not transition
   this->nextStateName = this->stateName;
 
@@ -59,7 +59,7 @@ void FSM_State_StandUp<T>::run()
     if (progress > 1.)
     {
       progress = 1.;
-      this->_data->controlParameters->control_mode=K_BALANCE_STAND;
+      // this->_data->controlParameters->control_mode=K_BALANCE_STAND;
     }
 
     for (int i = 0; i < 4; i++)
@@ -86,10 +86,22 @@ FSM_StateName FSM_State_StandUp<T>::checkTransition()
 {
   this->nextStateName = this->stateName;
   iter++;
+  T progress = 1 * iter * this->_data->controlParameters->controller_dt;
+
+  auto _ini_body_pos = (this->_data->_stateEstimator->getResult()).position;
+
 
   // Switch FSM control mode
 
   // std::cout<<"Switch FSM control mode"<<(int)this->_data->controlParameters->control_mode<<std::endl;
+
+  if(_ini_body_pos[2]>0.35 || progress>2.0){
+    this->_data->controlParameters->control_mode = K_BALANCE_STAND;
+    std::cout<<"ini_body_pos"<<_ini_body_pos<<std::endl;
+  }
+  else
+    this->_data->controlParameters->control_mode = K_STAND_UP;
+
   switch ((int)this->_data->controlParameters->control_mode)
   {
   case K_STAND_UP:

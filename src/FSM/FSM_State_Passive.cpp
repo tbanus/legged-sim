@@ -26,7 +26,7 @@ FSM_State_Passive<T>::FSM_State_Passive(ControlFSMData<T>* _controlFSMData)
 
 template <typename T>
 void FSM_State_Passive<T>::onEnter() {
-  // DEBUG_MSG(".");
+  DEBUG_MSG(".");
   // Default is to not transition
   this->nextStateName = this->stateName;
 
@@ -72,6 +72,7 @@ FSM_StateName FSM_State_Passive<T>::checkTransition() {
   //   this->_data->controlParameters->control_mode=1;
   // }
   // Switch FSM control mode
+  this->_data->controlParameters->control_mode = 1;
   switch ((int)this->_data->controlParameters->control_mode) {
 
     case K_PASSIVE:  // normal c (0)

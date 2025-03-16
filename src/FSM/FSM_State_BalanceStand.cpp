@@ -35,7 +35,7 @@ FSM_State_BalanceStand<T>::FSM_State_BalanceStand(
 
 template <typename T>
 void FSM_State_BalanceStand<T>::onEnter() {
-    // DEBUG_MSG(".");
+    DEBUG_MSG(".");
 
 
   // Default is to not transition
@@ -85,7 +85,16 @@ FSM_StateName FSM_State_BalanceStand<T>::checkTransition() {
   {
     this->_data->controlParameters->control_mode=4;
   }
-
+  // TEST: in place to show automatic non user requested transitions
+  if (_iter >= 500) {
+    this->nextStateName = FSM_StateName::LOCOMOTION;
+    this->_data->controlParameters->control_mode = K_LOCOMOTION;
+    this->transitionDuration = 0.0;
+    this->_data->_gaitScheduler->gaitData._nextGait =
+        GaitType::TROT;  // TROT; // Or get whatever is in
+                          // main_control_settings
+    _iter = 0;
+  }
   // Switch FSM control mode
   switch ((int)this->_data->controlParameters->control_mode) {
     case K_BALANCE_STAND:
@@ -104,16 +113,7 @@ FSM_StateName FSM_State_BalanceStand<T>::checkTransition() {
 
       }*/
 
-      // TEST: in place to show automatic non user requested transitions
-       if (_iter >= 500) {
-         this->nextStateName = FSM_StateName::LOCOMOTION;
-         this->_data->controlParameters->control_mode = K_LOCOMOTION;
-         this->transitionDuration = 0.0;
-         this->_data->_gaitScheduler->gaitData._nextGait =
-             GaitType::TROT;  // TROT; // Or get whatever is in
-                               // main_control_settings
-         _iter = 0;
-       }
+
       break;
 
     case K_LOCOMOTION:

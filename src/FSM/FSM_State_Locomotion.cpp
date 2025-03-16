@@ -55,7 +55,7 @@ FSM_State_Locomotion<T>::FSM_State_Locomotion(ControlFSMData<T>* _controlFSMData
 
 template <typename T>
 void FSM_State_Locomotion<T>::onEnter() {
-    // DEBUG_MSG(".");
+    DEBUG_MSG(".");
 
   // Default is to not transition
   this->nextStateName = this->stateName;
@@ -200,8 +200,8 @@ template<typename T>
 bool FSM_State_Locomotion<T>::locomotionSafe() {
   auto& seResult = this->_data->_stateEstimator->getResult();
 
-  const T max_roll = 40;
-  const T max_pitch = 40;
+  const T max_roll = 45;
+  const T max_pitch = 45;
 
   if(std::fabs(seResult.rpy[0]) > ori::deg2rad(max_roll)) {
     printf("Unsafe locomotion: roll is %.3f degrees (max %.3f)\n", ori::rad2deg(seResult.rpy[0]), max_roll);
@@ -220,13 +220,13 @@ bool FSM_State_Locomotion<T>::locomotionSafe() {
       return false;
     }
 
-    if(std::fabs(p_leg[1] > 0.30)) {
+    if(std::fabs(p_leg[1] > 0.90)) {
       printf("Unsafe locomotion: leg %d's y-position is bad (%.3f m)\n", leg, p_leg[1]);
       return false;
     }
 
     auto v_leg = this->_data->_legController->datas[leg].v.norm();
-    if(std::fabs(v_leg) > 15.) {
+    if(std::fabs(v_leg) > 30.) {
       printf("Unsafe locomotion: leg %d is moving too quickly (%.3f m/s)\n", leg, v_leg);
       return false;
     }
