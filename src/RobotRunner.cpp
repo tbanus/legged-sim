@@ -57,7 +57,11 @@ void RobotRunner::init() {
   // } else {
   //   _quadruped = buildCheetah3<float>();
   // }
+  #ifndef MANUAL
     _quadruped=ParseURDFtoQuadruped<float>(std::string("/app/legged-sim/resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
+  #else 
+    _quadruped=ParseURDFtoQuadruped<float>(std::string("../resource/opy_v05/opy_v05.urdf"),RobotType::MINI_CHEETAH);
+  #endif
   // // Initialize the model and robot data
   _model = _quadruped.buildModel();
   // _jpos_initializer = new JPosInitializer<float>(3., controlParameters->controller_dt);
@@ -268,9 +272,13 @@ void RobotRunner::initializeParameters()
 {
     bool _load_parameters_from_file =1 ;
     // std::cout<<controlParameters<<std::endl;
-    
+    #ifndef MANUAL
   	std::string robotParametersPath = "/app/legged-sim/resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
     std::string userParametersPath = "/app/legged-sim/resource/opy_v05/mini-cheetah-defaults.yaml";
+    #else
+  	std::string robotParametersPath = "../resource/opy_v05/mc-mit-ctrl-user-parameters.yaml";
+    std::string userParametersPath = "../resource/opy_v05/mini-cheetah-defaults.yaml";
+    #endif
   	// userParameters.initializeFromYamlFile(path);
   	// printf("controlParameters: %d", controlParameters);
    	if(_load_parameters_from_file) {

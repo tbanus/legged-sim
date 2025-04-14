@@ -26,12 +26,12 @@ class LcmListener():
         self.enable=1
         user_input = input('remove current file ? y or n')
         if user_input == 'y': 
-            file = '../lcm_logs/'+filename+".log"
+            file = '../lcm_logs/'+filename+".csv"
             try:
                 os.remove (file)
-                self.data_f = open('../lcm_logs/'+filename+".log", 'a',newline='')
+                self.data_f = open('../lcm_logs/'+filename+".csv", 'a',newline='')
             except FileNotFoundError:
-                self.data_f = open('../lcm_logs/'+filename+".log", 'x',newline='')
+                self.data_f = open('../lcm_logs/'+filename+".csv", 'x',newline='')
             # data_f = open('../lcm_logs/'+filename+".log", 'a',newline='')
             self.data_writer = csv.writer(self.data_f)
             Headers = self.generate_header(self.msg_type)
@@ -39,7 +39,7 @@ class LcmListener():
             print(Headers)
             self.data_writer.writerow(Headers) 
         else:
-            self.data_f = open('../lcm_logs/'+filename+".log", 'a',newline='')
+            self.data_f = open('../lcm_logs/'+filename+".csv", 'a',newline='')
             self.data_writer = csv.writer(self.data_f)
 
         for i in range(len(self.msg_type.__slots__)):
@@ -60,12 +60,12 @@ class LcmListener():
         self.enable=1
         user_input = input('remove current file ? y or n')
         if user_input == 'y': 
-            file = '../lcm_logs/'+filename+".log"
+            file = '../lcm_logs/'+filename+".csv"
             try:
                 os.remove (file)
-                self.data_f = open('../lcm_logs/'+filename+".log", 'a',newline='')
+                self.data_f = open('../lcm_logs/'+filename+".csv", 'a',newline='')
             except FileNotFoundError:
-                self.data_f = open('../lcm_logs/'+filename+".log", 'x',newline='')
+                self.data_f = open('../lcm_logs/'+filename+".csv", 'x',newline='')
             # data_f = open('../lcm_logs/'+filename+".log", 'a',newline='')
             self.data_writer = csv.writer(self.data_f)
             Headers = self.generate_header(self.msg_type2)
@@ -76,7 +76,7 @@ class LcmListener():
            
             self.data_writer.writerow(Headers) 
         else:
-            self.data_f = open('../lcm_logs/'+filename+".log", 'a',newline='')
+            self.data_f = open('../lcm_logs/'+filename+".csv", 'a',newline='')
             self.data_writer = csv.writer(self.data_f)
 
         for i in range(len(self.msg_type2.__slots__)):

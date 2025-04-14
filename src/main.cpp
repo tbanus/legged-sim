@@ -31,7 +31,7 @@
 #define MAX_STACK_SIZE 24576 // 16KB  of stack
 #define TASK_PRIORITY 99 // linux priority, this is not the nice value
 
-
+// #define MANUAL
 
 int main(int argc, char* argv[]){
   // google::SetStderrLogging(0);
@@ -116,7 +116,7 @@ int main(int argc, char* argv[]){
   // std::thread bridgeLcmThread= std::thread(&Bridge::LcmThread,_bridge);
 
   // //GamePad Command periodic task to listen related LCM channel
-  PeriodicMemberFunction<RobotRunner> RR_Gamepad(&taskManager,0.0125,"RR-GamePad",&RobotRunner::ReceiveLCM,_robotRunner);
+  // PeriodicMemberFunction<RobotRunner> RR_Gamepad(&taskManager,0.0125,"RR-GamePad",&RobotRunner::ReceiveLCM,_robotRunner);
   // //Check Connection Periodic tast to ping upper computer periodicaly
   // //PeriodicMemberFunction<RobotRunner> CheckConnection(&taskManager,0.1,"Check Connection",&RobotRunner::CheckConnection,_robotRunner);
   // //PeriodicMemberFunction<RobotRunner> KeyboardCommand(&taskManager,0.1,"Keyboard Command",&RobotRunner::KeyboardCallBack,_robotRunner);
@@ -142,7 +142,7 @@ int main(int argc, char* argv[]){
   // // KeyboardCommand.start();
 
 
-  float i = 1000 ;
+  float i = 0 ;
 
   while (1) { 
     // #ifndef HW_ENABLE
@@ -157,6 +157,10 @@ int main(int argc, char* argv[]){
 
     
     // taskManager.printStatus();
+    i++;
+    if (i>1000){
+      _ctrl->_controlFSM->data.controlParameters->control_mode=1;
+    }
   };
 
   // LOG(WARNING)<<"[EXIT]"<<"Exited main loop. Stopping all tasks";

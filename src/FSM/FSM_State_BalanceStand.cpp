@@ -238,12 +238,12 @@ void FSM_State_BalanceStand<T>::BalanceStandStep() {
     // _wbc_data->pBody_des[2] += 0.12 * rc_cmd->height_variation;
   // }else{
     // Orientation
-    _wbc_data->pBody_RPY_des[0] = 
-    (0.2/32768)* this->_data->_desiredStateCommand->gamepadCommand->leftStickAnalog[0];
-     _wbc_data->pBody_RPY_des[1] = 
-     (0.2/32768)*this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[0];
-    _wbc_data->pBody_RPY_des[2] -= 
-     (0.2/32768)* this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[1];
+    // _wbc_data->pBody_RPY_des[0] = 
+    // (0.2/32768)* this->_data->_desiredStateCommand->gamepadCommand->leftStickAnalog[0];
+    //  _wbc_data->pBody_RPY_des[1] = 
+    //  (0.2/32768)*this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[0];
+    // _wbc_data->pBody_RPY_des[2] -= 
+    //  (0.2/32768)* this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[1];
     
     // Height
     // _wbc_data->pBody_des[2] += 
@@ -257,7 +257,7 @@ void FSM_State_BalanceStand<T>::BalanceStandStep() {
     _wbc_data->aFoot_des[i].setZero();
     _wbc_data->Fr_des[i].setZero();
     // printf("_body_weight %f ", _body_weight);
-    _wbc_data->Fr_des[i][2] = 82;
+    _wbc_data->Fr_des[i][2] =  _body_weight / 4.0;
     _wbc_data->contact_state[i] = true;
   }
   
