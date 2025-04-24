@@ -33,5 +33,6 @@
 
 
 build
+bin
 .vscode
 logs

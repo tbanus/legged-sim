@@ -138,7 +138,7 @@ int main(int argc, char* argv[]){
   _robotRunner->start();
   _ctrl->_controlFSM->data.controlParameters->control_mode=1;
 
-  RR_Gamepad.start();
+  // RR_Gamepad.start();
   // // KeyboardCommand.start();
 
 
