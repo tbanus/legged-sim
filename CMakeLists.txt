@@ -10,7 +10,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/ParamHandler)
 add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/inih)
 add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/JCQP)
 add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/osqp)
-add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/mujoco)
+# add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/mujoco)
 
 # add_subdirectory(${PROJECT_SOURCE_DIR}/third-party/vn100)
 
