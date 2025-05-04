@@ -86,7 +86,7 @@ FSM_StateName FSM_State_BalanceStand<T>::checkTransition() {
     this->_data->controlParameters->control_mode=4;
   }
   // TEST: in place to show automatic non user requested transitions
-  if (_iter >= 1000) {
+  if (_iter >= 10) {
     this->nextStateName = FSM_StateName::LOCOMOTION;
     this->_data->controlParameters->control_mode = K_LOCOMOTION;
     this->transitionDuration = 0.0;

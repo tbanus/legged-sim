@@ -92,7 +92,7 @@ FSM_StateName FSM_State_StandUp<T>::checkTransition()
 
 
   // Switch FSM control mode
-  if(body_pos[2]>0.35 || progress>2.0){
+  if(body_pos[2]>0.340 || progress>1.0){
     this->_data->controlParameters->control_mode = K_BALANCE_STAND;
     // std::cout<<"body_pos"<<body_pos<<std::endl;
   }

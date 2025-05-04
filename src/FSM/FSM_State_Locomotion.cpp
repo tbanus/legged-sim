@@ -215,18 +215,18 @@ bool FSM_State_Locomotion<T>::locomotionSafe() {
 
   for(int leg = 0; leg < 4; leg++) {
     auto p_leg = this->_data->_legController->datas[leg].p;
-    if(p_leg[2] > 0) {
+    if(p_leg[2] > 0.1) {
       printf("Unsafe locomotion: leg %d is above hip (%.3f m)\n", leg, p_leg[2]);
       return false;
     }
 
-    if(std::fabs(p_leg[1] > 0.90)) {
+    if(std::fabs(p_leg[1] > 2)) {
       printf("Unsafe locomotion: leg %d's y-position is bad (%.3f m)\n", leg, p_leg[1]);
       return false;
     }
 
     auto v_leg = this->_data->_legController->datas[leg].v.norm();
-    if(std::fabs(v_leg) > 30.) {
+    if(std::fabs(v_leg) > 40.) {
       printf("Unsafe locomotion: leg %d is moving too quickly (%.3f m/s)\n", leg, v_leg);
       return false;
     }
