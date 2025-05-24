@@ -282,31 +282,24 @@ void FSM_State_Locomotion<T>::LocomotionControlStep() {
   //   std::cout<<"Fr_des["<<i<<"]: "<<_wbc_data->Fr_des[i]<<std::endl;
   // }
   // std::cout<<"contact_state: "<<_wbc_data->contact_state<<std::endl;
-    _wbc_data->pBody_des = stateEstimate.position + this->_data->locomotionCtrlData.vBody_des * this->_data->controlParameters->controller_dt;
-     
+    // _wbc_data->pBody_des = stateEstimate.position + this->_data->locomotionCtrlData.vBody_des * this->_data->controlParameters->controller_dt;
+    _wbc_data->pBody_des = this->_data->locomotionCtrlData.pBody_des;     
     _wbc_data->vBody_des = this->_data->locomotionCtrlData.vBody_des;
     _wbc_data->aBody_des = Eigen::Matrix<T, 3, 1>::Zero();
     auto OriEuler=ori::quatToRPY(stateEstimate.orientation);
 
-    _wbc_data->pBody_RPY_des =  ori::quatToRPY(stateEstimate.orientation) + this->_data->locomotionCtrlData.vBody_Ori_des * this->_data->controlParameters->controller_dt;
+    _wbc_data->pBody_RPY_des = this->_data->locomotionCtrlData.pBody_RPY_des ;
+    //  ori::quatToRPY(stateEstimate.orientation) + this->_data->locomotionCtrlData.vBody_Ori_des * this->_data->controlParameters->controller_dt;
     _wbc_data->vBody_Ori_des = this->_data->locomotionCtrlData.vBody_Ori_des;
 
-    for (size_t i(0); i < 4; ++i) {
-      if (this->_data->locomotionCtrlData.contact_state[i] > 0.9) {
-        _wbc_data->pFoot_des[i] = this->_data->_legController->datas[i].p;
-        _wbc_data->vFoot_des[i] = Eigen::Matrix<T, 3, 1>::Zero();
-        _wbc_data->aFoot_des[i] = Eigen::Matrix<T, 3, 1>::Zero();
-        _wbc_data->Fr_des[i] = this->_data->locomotionCtrlData.vFoot_des[i];
-      } else {
-        _wbc_data->pFoot_des[i] =
-            this->_data->_legController->datas[i].p +
-            this->_data->locomotionCtrlData.vFoot_des[i] *
-                this->_data->controlParameters->controller_dt;
-        _wbc_data->vFoot_des[i] = this->_data->locomotionCtrlData.vFoot_des[i];
-        _wbc_data->aFoot_des[i] = Eigen::Matrix<T, 3, 1>::Zero();
-        _wbc_data->Fr_des[i] = Eigen::Matrix<T, 3, 1>::Zero();
-      }
+    for (size_t i(0); i < 4; ++i)
+    {
+      _wbc_data->pFoot_des[i] = this->_data->locomotionCtrlData.pFoot_des[i];
+      _wbc_data->vFoot_des[i] = Eigen::Matrix<T, 3, 1>::Zero();
+      _wbc_data->aFoot_des[i] = Eigen::Matrix<T, 3, 1>::Zero();
+      _wbc_data->Fr_des[i] = this->_data->locomotionCtrlData.Fr_des[i] * this->_data->locomotionCtrlData.contact_state[i];
     }
+    
     // _wbc_data->contact_state = cMPCOld.contact_state;
   if(this->_data->userParameters->use_wbc > 0.9 || 1 ){
     // _wbc_data->pBody_des = cMPCOld.pBody_des;
