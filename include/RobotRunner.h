@@ -26,11 +26,14 @@
 #include "Utilities/PeriodicTask.h"
 #include <Utilities/RobotCommands.h>
 #include "Utilities/utilities.h"
-#ifdef MANUAL
+#ifdef LCM
 #include <lcm-cpp.hpp>
-#include <Simulation/Simulation.h>
+#endif
 // #include "cheetah_visualization_lcmt.hpp"
 #include "state_estimator_lcmt.hpp"
+#ifdef MANUAL
+#include <Simulation/Simulation.h>
+
 #endif
 #include <Dynamics/ParseURDFtoQuadruped.h>
 
@@ -65,11 +68,11 @@ class RobotRunner : public PeriodicTask {
   SpiCommand* _Command;
   #ifdef MANUAL
   Simulation* _Sim;
+  #endif
   lcm::LCM _lcm;
   leg_control_command_lcmt leg_control_command_lcm;
   state_estimator_lcmt state_estimator_lcm;
   leg_control_data_lcmt leg_control_data_lcm;
-  #endif
   float _period;
 
   // TiBoardCommand* tiBoardCommand;

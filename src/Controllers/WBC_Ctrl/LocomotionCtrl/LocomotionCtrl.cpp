@@ -151,7 +151,7 @@ void LocomotionCtrl<T>::_CleanUp(){
   WBCtrl::_contact_list.clear();
   WBCtrl::_task_list.clear();
 }
-#ifdef MANUAL
+#ifdef LCM
 template<typename T>
 void LocomotionCtrl<T>::_LCM_PublishData() {
   int iter(0);
