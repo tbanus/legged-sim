@@ -27,7 +27,7 @@
 #include <Utilities/RobotCommands.h>
 #include "Utilities/utilities.h"
 #ifdef LCM
-#include <lcm-cpp.hpp>
+#include <lcm/lcm-cpp.hpp>
 #endif
 // #include "cheetah_visualization_lcmt.hpp"
 #include "state_estimator_lcmt.hpp"
@@ -69,7 +69,9 @@ class RobotRunner : public PeriodicTask {
   #ifdef MANUAL
   Simulation* _Sim;
   #endif
+  #ifdef LCM
   lcm::LCM _lcm;
+  #endif
   leg_control_command_lcmt leg_control_command_lcm;
   state_estimator_lcmt state_estimator_lcm;
   leg_control_data_lcmt leg_control_data_lcm;

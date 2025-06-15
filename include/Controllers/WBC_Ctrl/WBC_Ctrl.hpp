@@ -8,8 +8,8 @@
 #include <WBC/WBIC/WBIC.hpp>
 #include <WBC/WBIC/KinWBC.hpp>
 #ifdef LCM
-#include <lcm-cpp.hpp>
-#include "wbc_data_lcmt.hpp"
+  #include <lcm/lcm-cpp.hpp>
+  #include "wbc_data_lcmt.hpp"
 #endif
 
 #define WBCtrl WBC_Ctrl<T>
