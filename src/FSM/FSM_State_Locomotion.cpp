@@ -51,11 +51,12 @@ FSM_State_Locomotion<T>::FSM_State_Locomotion(ControlFSMData<T>* _controlFSMData
   this->footstepLocations = Mat34<T>::Zero();
   _wbc_ctrl = new LocomotionCtrl<T>(_controlFSMData->_quadruped->buildModel());
   _wbc_data = new LocomotionCtrlData<T>();
+  _wbc_ctrl->setFloatingBaseWeight(10000.);
 }
 
 template <typename T>
 void FSM_State_Locomotion<T>::onEnter() {
-    DEBUG_MSG(".");
+    // DEBUG_MSG(".");
 
   // Default is to not transition
   this->nextStateName = this->stateName;

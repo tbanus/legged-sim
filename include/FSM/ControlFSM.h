@@ -2,8 +2,8 @@
 #define CONTROLFSM_H
 
 #include <iostream>
-#ifdef MANUAL
-#include <lcm-cpp.hpp>
+#ifdef LCM_ENABLED2
+#include <lcm/lcm-cpp.hpp>
 #endif
 // Contains all of the control related data
 #include "ControlFSMData.h"
@@ -115,7 +115,7 @@ class ControlFSM {
   int printIter = 0;  // make larger than printNum to not print
 
   int iter = 0;
-  #ifdef MANUAL
+  #ifdef LCM_ENABLED2
   lcm::LCM state_estimator_lcm;
   state_estimator_lcmt _state_estimator;
   #endif

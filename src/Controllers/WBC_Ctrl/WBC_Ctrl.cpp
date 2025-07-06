@@ -8,7 +8,7 @@ WBC_Ctrl<T>::WBC_Ctrl(FloatingBaseModel<T> model):
   _tau_ff(cheetah::num_act_joint),
   _des_jpos(cheetah::num_act_joint),
   _des_jvel(cheetah::num_act_joint)
-  #ifdef LCM
+  #ifdef LCM_ENABLED
   ,
   _wbcLCM(getLcmUrl(255))
   #endif

@@ -21,7 +21,7 @@ class LocomotionCtrl: public WBC_Ctrl<T>{
     virtual void _ContactTaskUpdateTEST(void * input, ControlFSMData<T> & data);
     void _ParameterSetup(const MIT_UserParameters* param);
     void _CleanUp();
-    #ifdef LCM
+    #ifdef LCM_ENABLED
     virtual void _LCM_PublishData();
     #endif
     LocomotionCtrlData<T>* _input_data;

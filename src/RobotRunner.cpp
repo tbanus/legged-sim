@@ -25,7 +25,7 @@ RobotRunner::RobotRunner(RobotController* robot_ctrl,
     float period, std::string name):
   PeriodicTask(manager, period, name)
    {
-
+    controlParameters = new RobotControlParameters();
     _robot_ctrl = robot_ctrl;
     _period = period;
     // _robot_ctrl->_controlFSM->currentState->onEnter();
@@ -242,7 +242,7 @@ void RobotRunner::finalizeStep() {
 //   } else {
 //     assert(false);
 //   }
-#ifdef LCM
+#ifdef LCM_ENABLED
   _legController->setLcm(&leg_control_data_lcm, &leg_control_command_lcm);
   _stateEstimate.setLcm(state_estimator_lcm);
   _lcm.publish("leg_control_command", &leg_control_command_lcm);
